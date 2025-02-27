@@ -33,6 +33,25 @@ jobs:
     displayName: 'Run linter'
 
 
+- job: BuildDocumentation
+  timeoutInMinutes: 3
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - script: |
+      sudo apt-get update
+
+      sudo apt-get install -y doxygen graphviz
+    displayName: 'Install build dependencies'
+
+  - script: |
+      mkdir build
+
+      doxygen
+    displayName: 'Run doxygen'
+
+
 - job: ClangStaticAnalysis
   timeoutInMinutes: 3
   pool:
