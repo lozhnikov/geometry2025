@@ -112,11 +112,13 @@ add_executable(
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
+  include/insertion_sort.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  methods/insertion_sort_method.cpp
   methods/main.cpp
   methods/methods.hpp
 )
@@ -141,12 +143,14 @@ add_executable(
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
+  include/insertion_sort.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
   tests/edge_test.cpp
+  tests/insertion_sort_test.cpp
   tests/io.hpp
   tests/main.cpp
   tests/orientation_test.cpp
