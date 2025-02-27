@@ -32,6 +32,12 @@ void TestOrientation();
 
 /* Сюда нужно добавить объявления тестовых функций. */
 
+/**
+ * @brief Набор тестов для алгоритма сортировки вставками.
+ *
+ * @param cli Указатель на HTTP клиент.
+ */
+void TestInsertionSort(httplib::Client* cli);
 
 
 /* Конец вставки. */
