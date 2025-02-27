@@ -37,7 +37,7 @@ void TestPoint() {
  */
 template<typename T>
 static void BuildTest() {
-  const T eps = std::numeric_limits<T>::epsilon() * 1e3;
+  const T eps = std::numeric_limits<T>::epsilon() * T(1e3);
 
   {
     Point<T> point;

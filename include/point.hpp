@@ -235,15 +235,15 @@ class Point {
       return -1;
 
     if (std::fabs(data[0]) < precision)
-      return Y() > 0 ? 90 : 270;
+      return Y() > 0 ? T(90) : T(270);
 
     T theta = T(std::atan(Y() / X()));
     theta *= T(360.0 / (2 * PI));
 
     if (X() > 0)
-      return Y() > 0 ? theta : 360 + theta;
+      return Y() > 0 ? T(theta) : T(360 + theta);
     else
-      return 180 + theta;
+      return T(180 + theta);
   }
 
   /**

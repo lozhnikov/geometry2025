@@ -36,7 +36,7 @@ void TestOrientation() {
  */
 template<typename T>
 static void BuildTest() {
-  const T eps = std::numeric_limits<T>::epsilon() * 1e3;
+  const T eps = std::numeric_limits<T>::epsilon() * T(1e3);
   {
     Point<T> p0(T(0.0), T(0.0));
     Point<T> p1(T(1.0), T(0.0));
