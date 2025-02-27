@@ -1,0 +1,12 @@
+bin
+build
+data
+cmake-build-debug
+.idea
+.vs
+test
+*~
+*.user*
+*.DS_Store
+*.ipynb_checkpoints
+*.bin
