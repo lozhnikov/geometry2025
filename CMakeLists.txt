@@ -99,6 +99,10 @@ if (NOT MSVC)
   set(GEOMETRY_LIBS "pthread")
 endif ()
 
+if (WIN32)
+  set(WINDOWS_LIBS "ws2_32")
+endif (WIN32)
+
 include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 ####################################################################
@@ -127,7 +131,7 @@ add_executable(
 
 
 
-target_link_libraries(geometry_server ${GEOMETRY_LIBS})
+target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
 ####################################################################
 #    Исходные файлы клиентской части (набор тестов).
@@ -163,5 +167,5 @@ add_executable(
 
 
 
-target_link_libraries(geometry_test ${GEOMETRY_LIBS})
+target_link_libraries(geometry_test ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
