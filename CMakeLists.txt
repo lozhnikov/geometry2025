@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.5)
 
 project(geometry CXX)
 
@@ -99,6 +99,10 @@ if (NOT MSVC)
   set(GEOMETRY_LIBS "pthread")
 endif ()
 
+if (WIN32)
+  set(WINDOWS_LIBS "ws2_32")
+endif (WIN32)
+
 include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 ####################################################################
@@ -112,6 +116,7 @@ add_executable(
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
+  include/my_polig.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
@@ -119,6 +124,7 @@ add_executable(
   include/polygon_impl.hpp
   methods/main.cpp
   methods/methods.hpp
+  methods/my_polig_method.cpp
 )
 
 ####################################################################
@@ -126,8 +132,7 @@ add_executable(
 ####################################################################
 
 
-
-target_link_libraries(geometry_server ${GEOMETRY_LIBS})
+target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
 ####################################################################
 #    Исходные файлы клиентской части (набор тестов).
@@ -141,6 +146,7 @@ add_executable(
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
+  include/my_polig.hpp 
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
@@ -149,6 +155,7 @@ add_executable(
   tests/edge_test.cpp
   tests/io.hpp
   tests/main.cpp
+  tests/my_polig_test.cpp
   tests/orientation_test.cpp
   tests/point_test.cpp
   tests/polygon_test.cpp
@@ -163,5 +170,5 @@ add_executable(
 
 
 
-target_link_libraries(geometry_test ${GEOMETRY_LIBS})
+target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 

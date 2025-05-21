@@ -1,23 +1,20 @@
 /**
  * @file methods/methods.hpp
- * @author Mikhail Lozhnikov
+ * @author Nika Adzhindzhal
  *
- * Объявления функий для серверной части алгоритмов. Эти функции должны
- * считать JSON, который прислал клиент, выполнить алгоритм и отправить клиенту
- * JSON с результатом работы алгоритма.
+ * Объявление функции для алгоритма построения звездчатого многоугольника.
  */
 
 #ifndef METHODS_METHODS_HPP_
 #define METHODS_METHODS_HPP_
 
+#include <nlohmann/json.hpp>
+
 namespace geometry {
 
-/* Сюда нужно вставить объявление серверной части алгоритма. */
+	int My_PoligMethod(const nlohmann::json& input, nlohmann::json* output);
 
 
+} // namespace geometry
 
-/* Конец вставки. */
-
-}  // namespace geometry
-
-#endif  // METHODS_METHODS_HPP_
+#endif // METHODS_METHODS_HPP_
