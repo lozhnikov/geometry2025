@@ -1,12 +1,14 @@
 /**
  * @file tests/my_polig_test.cpp
  * @author Nika Adzhindzhal
+ *
+ * Тесты для алгоритма построения звездчатого многоугольника.
  */
 
+#include <httplib.h>
 #include <vector>
 #include <random>
 #include <nlohmann/json.hpp>
-#include <httplib.h>
 #include "test_core.hpp"
 #include "test.hpp"
 
@@ -14,7 +16,7 @@ namespace geometry {
     struct Point {
         double x, y;
     };
-} // namespace geometry
+}  // namespace geometry
 
 static void BasicTest(httplib::Client* cli);
 static void ValidationTest(httplib::Client* cli);
@@ -34,7 +36,8 @@ static void BasicTest(httplib::Client* cli) {
         "radius": 100.0
     })"_json;
 
-    httplib::Result res = cli->Post("/My_Polig", input.dump(), "application/json");
+    httplib::Result res = cli->Post("/My_Polig", input.dump(),
+        "application/json");
     nlohmann::json output = nlohmann::json::parse(res->body);
 
     REQUIRE_EQUAL(output["vertices"].size(), 5);
@@ -42,8 +45,10 @@ static void BasicTest(httplib::Client* cli) {
 
     REQUIRE_CLOSE(output["vertices"][0]["x"].get<double>(), 100.0, 1e-5);
     REQUIRE_CLOSE(output["vertices"][0]["y"].get<double>(), 0.0, 1e-5);
-    
-    std::vector<std::pair<int, int>> expected_edges = { {0,2}, {2,4}, {4,1}, {1,3}, {3,0} };
+
+    std::vector<std::pair<int, int>> expected_edges = {
+        {0, 2}, {2, 4}, {4, 1}, {1, 3}, {3, 0}
+    };
     for (size_t i = 0; i < 5; ++i) {
         REQUIRE_EQUAL(output["edges"][i]["a"], expected_edges[i].first);
         REQUIRE_EQUAL(output["edges"][i]["b"], expected_edges[i].second);
@@ -56,7 +61,8 @@ static void ValidationTest(httplib::Client* cli) {
         "k": 2
     })"_json;
 
-    httplib::Result res = cli->Post("/My_Polig", input.dump(), "application/json");
+    httplib::Result res = cli->Post("/My_Polig", input.dump(),
+        "application/json");
     REQUIRE_EQUAL(res->status, 400);
 }
 
@@ -78,7 +84,8 @@ static void RandomTest(httplib::Client* cli) {
         input["n"] = n;
         input["k"] = k;
 
-        httplib::Result res = cli->Post("/My_Polig", input.dump(), "application/json");
+        httplib::Result res = cli->Post("/My_Polig", input.dump(),
+            "application/json");
         REQUIRE_EQUAL(res->status, 200);
 
         nlohmann::json output = nlohmann::json::parse(res->body);

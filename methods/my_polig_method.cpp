@@ -2,6 +2,7 @@
  * @file methods/my_polig_method.cpp
  * @author Nika Adzhindzhal
  *
+ * Реализация алгоритма построения звездчатого многоугольника.
  */
 
 #define _USE_MATH_DEFINES
@@ -83,4 +84,4 @@ namespace geometry {
         return 0;
     }
 
-} // namespace geometry
+}  // namespace geometry

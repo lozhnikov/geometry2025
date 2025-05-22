@@ -2,7 +2,7 @@
  * @file include/my_polig.hpp
  * @author Nika Adzhindzhal
  *
- * 
+ * Реализация алгоритма построения звездчатого многоугольника.
  */
 
 #ifndef INCLUDE_MY_POLIG_HPP_
@@ -15,10 +15,11 @@
 #include <stdexcept>
 
 namespace geometry {
+
     template<typename T = double>
     struct Point {
         T x, y;
-        Point(T x = T(), T y = T()) : x(x), y(y) {}
+        explicit Point(T x = T(), T y = T()) : x(x), y(y) {}
     };
 
     template<typename T>
@@ -55,15 +56,16 @@ namespace geometry {
         return edges;
     }
 
-    
     template<typename T = double, typename IndexType = int>
-    std::pair<std::vector<Point<T>>, std::vector<std::pair<IndexType, IndexType>>>
-        BuildStarPolygon(int n, int k, T radius = T(100.0)) {
+    std::pair<
+        std::vector<Point<T>>,
+        std::vector<std::pair<IndexType, IndexType>>
+    > BuildStarPolygon(int n, int k, T radius = T(100.0)) {
         auto points = GeneratePoints<T>(n, radius);
         auto edges = BuildStarEdges<IndexType>(n, k);
         return { std::move(points), std::move(edges) };
     }
 
-} 
+}  // namespace geometry
 
-#endif 
+#endif  // INCLUDE_MY_POLIG_HPP_

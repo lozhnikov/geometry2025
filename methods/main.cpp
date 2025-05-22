@@ -27,7 +27,8 @@ int main(int argc, char* argv[]) {
 
     /* Сюда нужно вставить обработчик post запроса для алгоритма. */
 
-    svr.Post("/My_Polig", [&](const httplib::Request& req, httplib::Response& res) {
+    svr.Post("/My_Polig",
+        [&](const httplib::Request& req, httplib::Response& res) {
         nlohmann::json input = nlohmann::json::parse(req.body);
         nlohmann::json output;
 
