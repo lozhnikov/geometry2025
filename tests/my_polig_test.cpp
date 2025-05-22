@@ -40,8 +40,8 @@ static void BasicTest(httplib::Client* cli) {
     REQUIRE_EQUAL(output["vertices"].size(), 5);
     REQUIRE_EQUAL(output["edges"].size(), 5);
 
-    REQUIRE_CLOSE(output["vertices"][0]["x"], 100.0, 1e-5);
-    REQUIRE_CLOSE(output["vertices"][0]["y"], 0.0, 1e-5);
+    REQUIRE_CLOSE(output["vertices"][0]["x"].get<double>(), 100.0, 1e-5);
+    REQUIRE_CLOSE(output["vertices"][0]["y"].get<double>(), 0.0, 1e-5);
     
     std::vector<std::pair<int, int>> expected_edges = { {0,2}, {2,4}, {4,1}, {1,3}, {3,0} };
     for (size_t i = 0; i < 5; ++i) {

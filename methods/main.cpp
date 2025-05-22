@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
     }
     std::cerr << "Listening on port " << port << "..." << std::endl;
     httplib::Server svr;
-.
+
     svr.Get("/stop", [&](const httplib::Request&, httplib::Response&) {
         svr.stop();
         });

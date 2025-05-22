@@ -6,8 +6,10 @@
  * считать JSON, который прислал клиент, выполнить алгоритм и отправить клиенту
  * JSON с результатом работы алгоритма.
  */
+
 #ifndef METHODS_METHODS_HPP_
 #define METHODS_METHODS_HPP_
+
 namespace geometry {
 
 	/* Сюда нужно вставить объявление серверной части алгоритма. */
@@ -24,8 +26,6 @@ namespace geometry {
 	 * в JSON формате. Результат также выдаётся в JSON формате.
 	 */
 	int My_PoligMethod(const nlohmann::json& input, nlohmann::json* output);
-
-
 	/* Конец вставки. */
 }  // namespace geometry
 #endif  // METHODS_METHODS_HPP_
