@@ -17,13 +17,19 @@ static void SimpleConvexTest(httplib::Client* cli);
 static void CollinearPointsTest(httplib::Client* cli);
 static void RandomPointsTest(httplib::Client* cli);
 
+/**
+ * @brief tests
+ * 
+ * @param cli pointer to HTTP client
+ */
+
 void TestGrahamScan(httplib::Client* cli) {
   TestSuite suite("TestGrahamScan");
 
   RUN_TEST_REMOTE(suite, cli, SimpleConvexTest);
   RUN_TEST_REMOTE(suite, cli, CollinearPointsTest);
   RUN_TEST_REMOTE(suite, cli, RandomPointsTest);
- }
+}
 
 /**
  * @brief The simplest test with a convex polygon
@@ -98,7 +104,7 @@ static void CollinearPointsTest(httplib::Client* cli) {
       REQUIRE(std::find(expected.begin(), expected.end(), p)
               != expected.end());
     }
- }
+}
 
 /**
  * @brief random test with the properties of a convex hull checking
@@ -129,7 +135,7 @@ static void RandomPointsTest(httplib::Client* cli) {
                                     input.dump(), "application/json");
 
     nlohmann::json output = nlohmann::json::parse(res->body);
-    
+
     REQUIRE_EQUAL(size, output["original_size"]);
     REQUIRE(output["hull_size"] <= size);
 
@@ -144,7 +150,7 @@ static void RandomPointsTest(httplib::Client* cli) {
         auto& c = output["convex_hull"][k];
 
         double cross = (b["x"].get<double>() - a["x"].get<double>()) *
-                       (c["y"].get<double>() - a["y"].get<double>()) - 
+                       (c["y"].get<double>() - a["y"].get<double>()) -
                        (b["y"].get<double>() - a["y"].get<double>()) *
                        (c["x"].get<double>() - a["x"].get<double>());
 
