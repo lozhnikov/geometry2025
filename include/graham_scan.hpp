@@ -25,7 +25,8 @@ namespace geometry {
  */
   template<typename T>
   T CrossProduct(const Point<T>& a, const Point<T>& b, const Point<T>& c) {
-    return (b.X() - a.X()) * (c.Y() - a.Y()) - (b.Y() - a.Y()) * (c.X() - a.X());
+    return (b.X() - a.X()) * (c.Y() - a.Y())
+           - (b.Y() - a.Y()) * (c.X() - a.X());
   }
 
   /**
@@ -49,8 +50,7 @@ namespace geometry {
              CrossProduct(
                hull[hull.size() - 2],
                hull.back(),
-               points[i]
-             ) <= 0) {
+               points[i]) <= 0) {
         hull.pop_back();
       }
       hull.push_back(points[i]);
@@ -62,8 +62,7 @@ namespace geometry {
              CrossProduct(
                hull[hull.size() - 2],
                hull.back(),
-               points[i - 1]
-             ) <= 0) {
+               points[i - 1]) <= 0) {
         hull.pop_back();
       }
       hull.push_back(points[i - 1]);
