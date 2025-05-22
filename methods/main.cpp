@@ -8,10 +8,11 @@
 #include <httplib.h>
 #include <iostream>
 #include <cstdio>
+#include <string>
 #include <nlohmann/json.hpp>
 #include "methods.hpp"
 
- using json = nlohmann::json;
+using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
   // Порт по-умолчанию.
@@ -36,7 +37,8 @@ int main(int argc, char* argv[]) {
 
   /* Сюда нужно вставить обработчик post запроса для алгоритма. */
 
-  svr.Post("/GrahamScan", [&](const httplib::Request& req, httplib::Response& res) {
+  svr.Post("/GrahamScan",
+           [&](const httplib::Request& req, httplib::Response& res) {
     try {
       auto input = json::parse(req.body);
       json output;
@@ -44,7 +46,7 @@ int main(int argc, char* argv[]) {
       int result = geometry::GrahamScanMethod(input, &output);
 
       if (result != 0) {
-        res.status = 400; //Bad request
+        res.status = 400;  // Bad request
       }
 
       res.set_content(output.dump(), "application/json");

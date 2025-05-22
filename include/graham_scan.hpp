@@ -5,14 +5,14 @@
  * @brief Graham scan convex hull algorithm implementation.
  */
 
- #ifndef INCLUDE_GRAHAM_SCAN_HPP_
- #define INCLUDE_GRAHAM_SCAN_HPP_
+#ifndef INCLUDE_GRAHAM_SCAN_HPP_
+#define INCLUDE_GRAHAM_SCAN_HPP_
 
- #include <vector>
- #include <algorithm>
- #include "point.hpp"
+#include <vector>
+#include <algorithm>
+#include "point.hpp"
 
- namespace geometry {
+namespace geometry {
 
 /**
  * @brief Calculate the cross product to determine orientation.
@@ -24,10 +24,10 @@
  * @return T cross product value
  */
   template<typename T>
-  T crossProduct(const Point<T>& a, const Point<T>& b, const Point<T>& c) {
+  T CrossProduct(const Point<T>& a, const Point<T>& b, const Point<T>& c) {
     return (b.X() - a.X()) * (c.Y() - a.Y()) - (b.Y() - a.Y()) * (c.X() - a.X());
   }
- 
+
   /**
    * @brief Graham scan algorithm.
    * 
@@ -45,7 +45,12 @@
     std::vector<Point<T>> hull;
 
     for (size_t i = 0; i < n; i++) {
-      while (hull.size() >= 2 && crossProduct(hull[hull.size() - 2], hull.back(), points[i]) <= 0) {
+      while (hull.size() >= 2 &&
+             CrossProduct(
+               hull[hull.size() - 2],
+               hull.back(),
+               points[i]
+             ) <= 0) {
         hull.pop_back();
       }
       hull.push_back(points[i]);
@@ -53,7 +58,12 @@
 
     size_t lower_hull_size = hull.size();
     for (size_t i = n - 1; i > 0; i--) {
-      while (hull.size() > lower_hull_size && crossProduct(hull[hull.size() - 2], hull.back(), points[i - 1]) <= 0) {
+      while (hull.size() > lower_hull_size &&
+             CrossProduct(
+               hull[hull.size() - 2],
+               hull.back(),
+               points[i - 1]
+             ) <= 0) {
         hull.pop_back();
       }
       hull.push_back(points[i - 1]);
@@ -63,6 +73,6 @@
 
     return hull;
   }
- } //namespace geometry
+}  // namespace geometry
 
- #endif // INCLUDE_GRAHAM_SCAN_HPP_
+#endif  // INCLUDE_GRAHAM_SCAN_HPP_
