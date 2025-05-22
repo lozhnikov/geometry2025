@@ -17,12 +17,6 @@ static void SimpleConvexTest(httplib::Client* cli);
 static void CollinearPointsTest(httplib::Client* cli);
 static void RandomPointsTest(httplib::Client* cli);
 
-/**
- * @brief tests
- * 
- * @param cli pointer to HTTP client
- */
-
 void TestGrahamScan(httplib::Client* cli) {
   TestSuite suite("TestGrahamScan");
 
