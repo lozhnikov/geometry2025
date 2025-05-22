@@ -1,8 +1,6 @@
 /**
  * @file tests/my_polig_test.cpp
  * @author Nika Adzhindzhal
- *
- * Реализация тестов для алгоритма построения звездчатого многоугольника.
  */
 
 #include <vector>
@@ -42,11 +40,9 @@ static void BasicTest(httplib::Client* cli) {
     REQUIRE_EQUAL(output["vertices"].size(), 5);
     REQUIRE_EQUAL(output["edges"].size(), 5);
 
-    // Проверка координат первой вершины
     REQUIRE_CLOSE(output["vertices"][0]["x"], 100.0, 1e-5);
     REQUIRE_CLOSE(output["vertices"][0]["y"], 0.0, 1e-5);
-
-    // Проверка ребер
+    
     std::vector<std::pair<int, int>> expected_edges = { {0,2}, {2,4}, {4,1}, {1,3}, {3,0} };
     for (size_t i = 0; i < 5; ++i) {
         REQUIRE_EQUAL(output["edges"][i]["a"], expected_edges[i].first);
@@ -55,7 +51,6 @@ static void BasicTest(httplib::Client* cli) {
 }
 
 static void ValidationTest(httplib::Client* cli) {
-    // Тест с недопустимыми параметрами (n и k не взаимно просты)
     nlohmann::json input = R"({
         "n": 6,
         "k": 2
@@ -88,11 +83,9 @@ static void RandomTest(httplib::Client* cli) {
 
         nlohmann::json output = nlohmann::json::parse(res->body);
 
-        // Проверка количества вершин и ребер
         REQUIRE_EQUAL(output["vertices"].size(), n);
         REQUIRE_EQUAL(output["edges"].size(), n);
 
-        // Проверка замкнутости ребер
         int current = 0;
         int count = 0;
         do {

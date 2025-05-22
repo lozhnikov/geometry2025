@@ -2,8 +2,6 @@
  * @file methods/my_polig_method.cpp
  * @author Nika Adzhindzhal
  *
- * Файл содержит функцию, которая вызывает алгоритм сортировки вставками.
- * Функция принимает и возвращает данные в JSON формате.
  */
 
 #include <vector>
