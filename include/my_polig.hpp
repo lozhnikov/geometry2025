@@ -2,6 +2,7 @@
  * @file include/my_polig.hpp
  * @author Nika Adzhindzhal
  *
+ * Реализация алгоритма построения звездчатого многоугольника.
  */
 
 #ifndef INCLUDE_MY_POLIG_HPP_
@@ -30,8 +31,7 @@ namespace geometry {
             T angle = static_cast<T>(2 * M_PI * i / n);
             points.emplace_back(
                 radius * std::cos(angle),
-                radius * std::sin(angle)
-            );
+                radius * std::sin(angle));
         }
         return points;
     }
@@ -59,7 +59,7 @@ namespace geometry {
     std::pair<
         std::vector<Point<T>>,
         std::vector<std::pair<IndexType, IndexType>>
-    > BuildStarPolygon(int n, int k, T radius = T(100.0)) {
+    > BuildStarPolygon(int n, int k, T radius = T(100.0)) { 
         auto points = GeneratePoints<T>(n, radius);
         auto edges = BuildStarEdges<IndexType>(n, k);
         return { std::move(points), std::move(edges) };
