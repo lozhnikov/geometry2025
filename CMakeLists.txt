@@ -105,12 +105,6 @@ endif (WIN32)
 
 include_directories(${GEOMETRY_INCLUDE_DIRS})
 
-####################################################################
-#    Исходные файлы серверной части. Сюда нужно добавить файлы
-#    - include/my_algorithm_name.hpp
-#    - methods/my_algorithm_name_method.cpp
-####################################################################
-
 add_executable(
   geometry_server
   include/common.hpp
@@ -127,19 +121,8 @@ add_executable(
   methods/my_polig_method.cpp
 )
 
-####################################################################
-#    Конец вставки
-####################################################################
-
-
 target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
-####################################################################
-#    Исходные файлы клиентской части (набор тестов).
-#    Сюда нужно добавить файлы
-#    - include/my_algorithm_name.hpp
-#    - tests/my_algorithm_name_test.cpp
-####################################################################
 
 add_executable(
   geometry_test
@@ -164,11 +147,5 @@ add_executable(
   tests/test_core.hpp
 )
 
-#####################################################################
-#    Конец вставки
-####################################################################
-
-
-
-target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
+target_link_libraries(geometry_test ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
