@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
    * @brief A set of tests for the Graham scan algorithm.
    */
 
-   TestGrahamScan(&cli);
+  TestGrahamScan(&cli);
 
   /* Конец вставки. */
 

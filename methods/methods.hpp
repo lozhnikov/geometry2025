@@ -22,7 +22,7 @@ namespace geometry {
  * @return return code: 0 - success, otherwise - error
  */
 
-   int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
+  int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
 
 /* Конец вставки. */
 
