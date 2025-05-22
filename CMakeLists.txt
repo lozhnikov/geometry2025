@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.5)
 
 project(geometry CXX)
 
@@ -99,19 +99,18 @@ if (NOT MSVC)
   set(GEOMETRY_LIBS "pthread")
 endif ()
 
-include_directories(${GEOMETRY_INCLUDE_DIRS})
+if (WIN32)
+  set(WINDOWS_LIBS "ws2_32")
+endif (WIN32)
 
-####################################################################
-#    Исходные файлы серверной части. Сюда нужно добавить файлы
-#    - include/my_algorithm_name.hpp
-#    - methods/my_algorithm_name_method.cpp
-####################################################################
+include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 add_executable(
   geometry_server
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
+  include/my_polig.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
@@ -119,28 +118,18 @@ add_executable(
   include/polygon_impl.hpp
   methods/main.cpp
   methods/methods.hpp
+  methods/my_polig_method.cpp
 )
 
-####################################################################
-#    Конец вставки
-####################################################################
+target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
-
-
-target_link_libraries(geometry_server ${GEOMETRY_LIBS})
-
-####################################################################
-#    Исходные файлы клиентской части (набор тестов).
-#    Сюда нужно добавить файлы
-#    - include/my_algorithm_name.hpp
-#    - tests/my_algorithm_name_test.cpp
-####################################################################
 
 add_executable(
   geometry_test
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
+  include/my_polig.hpp 
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
@@ -149,6 +138,7 @@ add_executable(
   tests/edge_test.cpp
   tests/io.hpp
   tests/main.cpp
+  tests/my_polig_test.cpp
   tests/orientation_test.cpp
   tests/point_test.cpp
   tests/polygon_test.cpp
@@ -157,11 +147,5 @@ add_executable(
   tests/test_core.hpp
 )
 
-#####################################################################
-#    Конец вставки
-####################################################################
-
-
-
-target_link_libraries(geometry_test ${GEOMETRY_LIBS})
+target_link_libraries(geometry_test ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 

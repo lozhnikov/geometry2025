@@ -32,7 +32,13 @@ void TestOrientation();
 
 /* Сюда нужно добавить объявления тестовых функций. */
 
+/**
+ * @brief Набор тестов для алгоритма построения звездчатого многоугольника.
+ *
+ * @param cli pointer to HTTP client
+ */
 
+void TestMyPolig(httplib::Client* cli);
 
 /* Конец вставки. */
 
