@@ -2,7 +2,6 @@
  * @file include/my_polig.hpp
  * @author Nika Adzhindzhal
  *
- * Реализация алгоритма построения звездчатого многоугольника.
  */
 
 #ifndef INCLUDE_MY_POLIG_HPP_

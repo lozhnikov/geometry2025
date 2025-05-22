@@ -2,7 +2,6 @@
  * @file tests/my_polig_test.cpp
  * @author Nika Adzhindzhal
  *
- * Тесты для алгоритма построения звездчатого многоугольника.
  */
 
 #include <httplib.h>
