@@ -4,8 +4,9 @@
  *
  */
 
-#include <vector>
+#define _USE_MATH_DEFINES
 #include <cmath>
+#include <vector>
 #include <utility>
 #include <nlohmann/json.hpp>
 #include "methods.hpp"
