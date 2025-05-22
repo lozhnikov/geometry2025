@@ -59,7 +59,7 @@ namespace geometry {
     std::pair<
         std::vector<Point<T>>,
         std::vector<std::pair<IndexType, IndexType>>
-    > BuildStarPolygon(int n, int k, T radius = T(100.0)) { 
+    > BuildStarPolygon(int n, int k, T radius = T(100.0)) {
         auto points = GeneratePoints<T>(n, radius);
         auto edges = BuildStarEdges<IndexType>(n, k);
         return { std::move(points), std::move(edges) };
