@@ -5,164 +5,61 @@
  * Реализация набора тестов для алгоритма построения звездного полигона.
  */
 
-#include <my_polig.hpp>
+#ifndef INCLUDE_MY_POLIG_HPP
+#define INCLUDE_MY_POLIG_HPP
+
 #include <point.hpp>
 #include <polygon.hpp>
 #include <vector>
-#include <random>
-#include <algorithm>
-#include "test_core.hpp"
-#include "test.hpp"
-#include <httplib.h>
-#include <nlohmann/json.hpp>
+#include <memory>
 
 namespace geometry {
 
-    static void SimpleTest(httplib::Client* cli);
-    static void CollinearTest(httplib::Client* cli);
-    static void RandomTest(httplib::Client* cli);
+    template<typename T>
+    int polarCmp(const Point<T>& p, const Point<T>& q, const Point<T>& originPt, T precision) {
+        Point<T> vp = p - originPt;
+        Point<T> vq = q - originPt;
 
-    void TestMyPolig(httplib::Client* cli) {
-        TestSuite suite("TestMyPolig");
+        T angle_p = vp.PolarAngle(precision);
+        T angle_q = vq.PolarAngle(precision);
 
-        RUN_TEST_REMOTE(suite, cli, SimpleTest);
-        RUN_TEST_REMOTE(suite, cli, CollinearTest);
-        RUN_TEST_REMOTE(suite, cli, RandomTest);
+        if (angle_p < angle_q) return -1;
+        if (angle_p > angle_q) return 1;
+
+        T len_p = vp.Length();
+        T len_q = vq.Length();
+
+        if (len_p < len_q) return -1;
+        if (len_p > len_q) return 1;
+        return 0;
     }
 
-    /**
-     * @brief Простейший тест с упорядоченными точками.
-     *
-     * @param cli Указатель на HTTP клиент.
-     */
-    static void SimpleTest(httplib::Client* cli) {
-        nlohmann::json input = R"(
-    {
-      "points": [
-        {"x": 0.0, "y": 0.0},
-        {"x": 1.0, "y": 0.0},
-        {"x": 0.0, "y": 1.0},
-        {"x": -1.0, "y": 0.0},
-        {"x": 0.0, "y": -1.0}
-      ],
-      "precision": 1e-9
-    }
-  )"_json;
+    template<typename T>
+    Polygon<T>* starPolygon(const std::vector<Point<T>>& points, T precision) {
+        if (points.empty()) return nullptr;
 
-        httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
-        nlohmann::json output = nlohmann::json::parse(res->body);
+        Polygon<T>* polygon = new Polygon<T>();
+        polygon->insert(points[0]);
+        std::list<Point<T>> origin = polygon->Vertices();
+        Point<T> originPt = origin.front();
 
-        REQUIRE_EQUAL(5, output["hull_size"]);
-        REQUIRE_EQUAL(5, output["original_size"]);
+        auto itToOrigin = polygon.Current();
 
-        std::vector<std::pair<double, double>> expected = {
-          {0.0, 0.0}, {1.0, 0.0}, {0.0, 1.0}, {-1.0, 0.0}, {0.0, -1.0}
-        };
+        for (size_t i = 1; i < points.size(); ++i) {
+            polygon.Current() = itToOrigin;
+            polygon->Advance(Rotation::ClockWise); // CLOCKWISE
 
-        size_t idx = 0;
-        for (const auto& point : output["polygon"]) {
-            REQUIRE_EQUAL(expected[idx].first, point["x"].get<double>());
-            REQUIRE_EQUAL(expected[idx].second, point["y"].get<double>());
-            idx++;
-        }
-    }
-
-    /**
-     * @brief Тест с коллинеарными точками.
-     *
-     * @param cli Указатель на HTTP клиент.
-     */
-    static void CollinearTest(httplib::Client* cli) {
-        nlohmann::json input = R"(
-    {
-      "points": [
-        {"x": 0.0, "y": 0.0},
-        {"x": 3.0, "y": 0.0},
-        {"x": 1.0, "y": 0.0},
-        {"x": 2.0, "y": 0.0}
-      ],
-      "precision": 1e-9
-    }
-  )"_json;
-
-        httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
-        nlohmann::json output = nlohmann::json::parse(res->body);
-
-        REQUIRE_EQUAL(4, output["hull_size"]);
-        REQUIRE_EQUAL(4, output["original_size"]);
-
-        std::vector<std::pair<double, double>> expected = {
-          {0.0, 0.0}, {1.0, 0.0}, {2.0, 0.0}, {3.0, 0.0}
-        };
-
-        size_t idx = 0;
-        for (const auto& point : output["polygon"]) {
-            REQUIRE_EQUAL(expected[idx].first, point["x"].get<double>());
-            REQUIRE_EQUAL(expected[idx].second, point["y"].get<double>());
-            idx++;
-        }
-    }
-
-    /**
-     * @brief Тест со случайными точками.
-     *
-     * @param cli Указатель на HTTP клиент.
-     */
-    static void RandomTest(httplib::Client* cli) {
-        const int numTries = 50;
-        const int maxPoints = 100;
-        const double eps = 1e-9;
-
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<size_t> sizeDist(3, maxPoints);
-        std::uniform_real_distribution<double> coordDist(-100.0, 100.0);
-
-        for (int it = 0; it < numTries; it++) {
-            size_t size = sizeDist(gen);
-            nlohmann::json input;
-
-            input["points"][0]["x"] = 0.0;
-            input["points"][0]["y"] = 0.0;
-
-            for (size_t i = 1; i < size; i++) {
-                input["points"][i]["x"] = coordDist(gen);
-                input["points"][i]["y"] = coordDist(gen);
+            while (polarCmp(points[i], *polygon.Current(), originPt, precision)) {
+                polygon->Advance(Rotation::ClockWise);
             }
 
-            input["precision"] = 1e-9;
-
-            httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
-            nlohmann::json output = nlohmann::json::parse(res->body);
-
-            REQUIRE_EQUAL(size, output["hull_size"]);
-            REQUIRE_EQUAL(size, output["original_size"]);
-
-            std::vector<Point<double>> polygon;
-            for (const auto& pt : output["polygon"]) {
-                polygon.emplace_back(pt["x"].get<double>(), pt["y"].get<double>());
-            }
-
-            Point<double> origin = polygon[0];
-            for (size_t i = 1; i < polygon.size(); ++i) {
-                Point<double> current = polygon[i] - origin;
-                Point<double> prev = polygon[i - 1] - origin;
-
-                double angle_prev = prev.PolarAngle(eps);
-                double angle_current = current.PolarAngle(eps);
-
-                if (angle_prev > angle_current + eps) {
-                    REQUIRE(false); // Угол должен быть неубывающим
-                }
-                else if (std::abs(angle_prev - angle_current) < eps) {
-                    double len_prev = prev.Length();
-                    double len_current = current.Length();
-                    if (len_prev > len_current + eps) {
-                        REQUIRE(false); // При равных углах расстояние должно быть неубывающим
-                    }
-                }
-            }
+            polygon->Advance(Rotation::CounterClockWise); // COUNTER_CLOCKWISE
+            polygon->Insert(points[i]);
         }
+
+        return polygon;
     }
 
 } // namespace geometry
+
+#endif // INCLUDE_MY_POLIG_HPP
