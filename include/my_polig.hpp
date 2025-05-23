@@ -4,66 +4,61 @@
  *
  */
 
-#ifndef INCLUDE_MY_POLIG_HPP_
-#define INCLUDE_MY_POLIG_HPP_
+#ifndef INCLUDE_MY_POLIG_HPP
+#define INCLUDE_MY_POLIG_HPP
 
+#include <point.hpp>
+#include <polygon.hpp>
 #include <vector>
-#include <cmath>
-#include <utility>
-#include <numeric>
-#include <stdexcept>
+#include <memory>
 
 namespace geometry {
 
-    template<typename T = double>
-    struct Point {
-        T x, y;
-        explicit Point(T x = T(), T y = T()) : x(x), y(y) {}
-    };
+    template<typename T>
+    int polarCmp(const Point<T>& p, const Point<T>& q, const Point<T>& originPt, T precision) {
+        Point<T> vp = p - originPt;
+        Point<T> vq = q - originPt;
+
+        T angle_p = vp.PolarAngle(precision);
+        T angle_q = vq.PolarAngle(precision);
+
+        if (angle_p < angle_q) return -1;
+        if (angle_p > angle_q) return 1;
+
+        T len_p = vp.Length();
+        T len_q = vq.Length();
+
+        if (len_p < len_q) return -1;
+        if (len_p > len_q) return 1;
+        return 0;
+    }
 
     template<typename T>
-    std::vector<Point<T>> GeneratePoints(int n, T radius) {
-        std::vector<Point<T>> points;
-        points.reserve(n);
+    Polygon<T>* starPolygon(const std::vector<Point<T>>& points, T precision) {
+        if (points.empty()) return nullptr;
 
-        for (int i = 0; i < n; ++i) {
-            T angle = static_cast<T>(2 * M_PI * i / n);
-            points.emplace_back(
-                radius * std::cos(angle),
-                radius * std::sin(angle));
+        Polygon<T>* polygon = new Polygon<T>();
+        polygon->insert(points[0]);
+        std::list<Point<T>> origin = polygon->Vertices();
+        Point<T> originPt = origin.front();
+
+        auto itToOrigin = polygon.Current();
+
+        for (size_t i = 1; i < points.size(); ++i) {
+            polygon.Current() = itToOrigin;
+            polygon->Advance(Rotation::ClockWise); // CLOCKWISE
+
+            while (polarCmp(points[i], *polygon.Current(), originPt, precision)) {
+                polygon->Advance(Rotation::ClockWise);
+            }
+
+            polygon->Advance(Rotation::CounterClockWise); // COUNTER_CLOCKWISE
+            polygon->Insert(points[i]);
         }
-        return points;
+
+        return polygon;
     }
 
-    template<typename IndexType = int>
-    std::vector<std::pair<IndexType, IndexType>> BuildStarEdges(int n, int k) {
-        if (n < 3 || k <= 0 || k >= n || std::gcd(n, k) != 1) {
-            throw std::invalid_argument("Invalid n/k parameters");
-        }
+} // namespace geometry
 
-        std::vector<std::pair<IndexType, IndexType>> edges;
-        IndexType current = 0;
-        const IndexType start = current;
-
-        do {
-            IndexType next = static_cast<IndexType>((current + k) % n);
-            edges.emplace_back(current, next);
-            current = next;
-        } while (current != start);
-
-        return edges;
-    }
-
-    template<typename T = double, typename IndexType = int>
-    std::pair<
-        std::vector<Point<T>>,
-        std::vector<std::pair<IndexType, IndexType>>
-    > BuildStarPolygon(int n, int k, T radius = T(100.0)) {
-        auto points = GeneratePoints<T>(n, radius);
-        auto edges = BuildStarEdges<IndexType>(n, k);
-        return { std::move(points), std::move(edges) };
-    }
-
-}  // namespace geometry
-
-#endif  // INCLUDE_MY_POLIG_HPP_
+#endif // INCLUDE_MY_POLIG_HPP
