@@ -1,6 +1,6 @@
 /**
  * @file tests/my_polig_test.cpp
- * @author Nika Adzhindzhal
+ * @author Nik Adzhindzhal
  *
  * Реализация набора тестов для алгоритма построения звездного полигона.
  */
