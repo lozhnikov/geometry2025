@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.10)
 
 project(geometry CXX)
 
@@ -110,6 +110,7 @@ include_directories(${GEOMETRY_INCLUDE_DIRS})
 add_executable(
   geometry_server
   include/common.hpp
+  include/convex_polygon_intersection.hpp
   include/edge.hpp
   include/edge_impl.hpp
   include/orientation.hpp
@@ -117,6 +118,7 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  methods/convex_polygon_intersection.cpp
   methods/main.cpp
   methods/methods.hpp
 )
@@ -139,6 +141,7 @@ target_link_libraries(geometry_server ${GEOMETRY_LIBS})
 add_executable(
   geometry_test
   include/common.hpp
+  include/convex_polygon_intersection.hpp
   include/edge.hpp
   include/edge_impl.hpp
   include/orientation.hpp
@@ -146,6 +149,7 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  tests/convex_polygon_intersection_test.cpp
   tests/edge_test.cpp
   tests/io.hpp
   tests/main.cpp

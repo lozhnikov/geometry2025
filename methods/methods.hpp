@@ -14,10 +14,10 @@ namespace geometry {
 
 /* Сюда нужно вставить объявление серверной части алгоритма. */
 
+int ConvexPolygonIntersectionMethod(const nlohmann::json& input, nlohmann::json* output);
 
+} 
 
 /* Конец вставки. */
-
-}  // namespace geometry
 
 #endif  // METHODS_METHODS_HPP_

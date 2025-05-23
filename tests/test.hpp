@@ -32,7 +32,7 @@ void TestOrientation();
 
 /* Сюда нужно добавить объявления тестовых функций. */
 
-
+void TestConvexPolygonIntersection();
 
 /* Конец вставки. */
 

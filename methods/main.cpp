@@ -35,7 +35,39 @@ int main(int argc, char* argv[]) {
   });
 
   /* Сюда нужно вставить обработчик post запроса для алгоритма. */
+ // Обработчик POST запроса для алгоритма пересечения многоугольников
+  svr.Post("/intersect", [](const httplib::Request& req, httplib::Response& res) {
+    try {
 
+      auto json_data = json::parse(req.body);
+      
+
+      std::vector<Point> polygon1;
+      for (auto& point : json_data["polygon1"]) {
+        polygon1.push_back({point["x"], point["y"]});
+      }
+      
+
+      std::vector<Point> polygon2;
+      for (auto& point : json_data["polygon2"]) {
+        polygon2.push_back({point["x"], point["y"]});
+      }
+      
+
+      std::vector<Point> result = Process(polygon1, polygon2);
+      
+   
+      json response;
+      for (auto& point : result) {
+        response["result"].push_back({{"x", point.x}, {"y", point.y}});
+      }
+      
+      res.set_content(response.dump(), "application/json");
+    } catch (const std::exception& e) {
+      res.status = 400;
+      res.set_content(json({{"error", e.what()}}).dump(), "application/json");
+    }
+  });
 
 
   /* Конец вставки. */
