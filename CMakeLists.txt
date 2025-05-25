@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5)
 
 project(geometry CXX)
 
@@ -99,6 +99,10 @@ if (NOT MSVC)
   set(GEOMETRY_LIBS "pthread")
 endif ()
 
+if (WIN32)
+  set(WINDOWS_LIBS "ws2_32")
+endif (WIN32)
+
 include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 ####################################################################
@@ -110,15 +114,15 @@ include_directories(${GEOMETRY_INCLUDE_DIRS})
 add_executable(
   geometry_server
   include/common.hpp
-  include/convex_polygon_intersection.hpp
   include/edge.hpp
   include/edge_impl.hpp
+  include/sutherland_hodgman.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
-  methods/convex_polygon_intersection.cpp
+  methods/sutherland_hodgman_method.cpp
   methods/main.cpp
   methods/methods.hpp
 )
@@ -129,7 +133,7 @@ add_executable(
 
 
 
-target_link_libraries(geometry_server ${GEOMETRY_LIBS})
+target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
 ####################################################################
 #    Исходные файлы клиентской части (набор тестов).
@@ -141,7 +145,6 @@ target_link_libraries(geometry_server ${GEOMETRY_LIBS})
 add_executable(
   geometry_test
   include/common.hpp
-  include/convex_polygon_intersection.hpp
   include/edge.hpp
   include/edge_impl.hpp
   include/orientation.hpp
@@ -149,8 +152,8 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
-  tests/convex_polygon_intersection_test.cpp
   tests/edge_test.cpp
+  tests/sutherland_hodgman_test.cpp
   tests/io.hpp
   tests/main.cpp
   tests/orientation_test.cpp
@@ -167,5 +170,6 @@ add_executable(
 
 
 
-target_link_libraries(geometry_test ${GEOMETRY_LIBS})
+target_link_libraries(geometry_test ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
+
 

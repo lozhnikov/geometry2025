@@ -1,15 +1,7 @@
-/**
- * @file tests/test.hpp
- * @author Mikhail Lozhnikov
- *
- * Заголовочный файл для объявлений основных тестовых функций.
- */
-
 #ifndef TESTS_TEST_HPP_
 #define TESTS_TEST_HPP_
 
 #include <httplib.h>
-
 /**
  * @brief Набор тестов для класса geometry::Point.
  */
@@ -30,10 +22,13 @@ void TestPolygon();
  */
 void TestOrientation();
 
-/* Сюда нужно добавить объявления тестовых функций. */
+/* Объявления тестовых функций */
 
-void TestConvexPolygonIntersection();
 
-/* Конец вставки. */
+/**
+ * @brief Тестирование функции пересечения выпуклых полигонов
+ */
+void TestSutherlandHodgman(httplib::Client* cli);
+
 
 #endif  // TESTS_TEST_HPP_

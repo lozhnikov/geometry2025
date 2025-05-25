@@ -41,29 +41,8 @@ int main(int argc, char* argv[]) {
   httplib::Client cli(url.c_str());
 
   /* Сюда нужно вставить вызов набора тестов для алгоритма. */
-  
-  // Локальные тесты алгоритма
-  TestConvexPolygonIntersection();
 
-  // Тесты через HTTP запросы
-  TEST("HTTP: ConvexPolygonIntersection endpoint", {
-    nlohmann::json input = {
-      {"polygon1", {{{"x", 0}, {"y", 0}}, {{"x", 2}, {"y", 0}}, 
-                   {{"x", 2}, {"y", 2}}, {{"x", 0}, {"y", 2}}}},
-      {"polygon2", {{{"x", 1}, {"y", 1}}, {{"x", 3}, {"y", 1}}, 
-                   {{"x", 3}, {"y", 3}}, {{"x", 1}, {"y", 3}}}}
-    };
-
-    auto res = cli.Post("/ConvexPolygonIntersection", 
-                       input.dump(), 
-                       "application/json");
-
-    ASSERT(res->status == 200);
-    
-    auto output = nlohmann::json::parse(res->body);
-    ASSERT(output.contains("result"));
-    ASSERT(output["result"].size() == 4);
-  });
+  TestSutherlandHodgman(&cli);
 
   /* Конец вставки. */
 
