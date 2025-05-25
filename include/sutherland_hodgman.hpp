@@ -28,30 +28,6 @@ bool Inside(const Point<T>& p, const Point<T>& cp1, const Point<T>& cp2) {
            (cp2.Y() - cp1.Y()) * (p.X() - cp1.X());
 }
 
-/**
- * @brief Compute intersection of two lines
- * @tparam T point coordinate type
- * @param cp1 First point of clipping edge
- * @param cp2 Second point of clipping edge
- * @param s Start point of subject edge
- * @param e End point of subject edge
- * @return Intersection point
- */
-template<typename T>
-Point<T> ComputeIntersection(const Point<T>& cp1, const Point<T>& cp2,
-                            const Point<T>& s, const Point<T>& e) {
-    Point<T> dc = {cp1.X() - cp2.X(), cp1.Y() - cp2.Y()};
-    Point<T> dp = {s.X() - e.X(), s.Y() - e.Y()};
-    T n1 = cp1.X() * cp2.Y() - cp1.Y() * cp2.X();
-    T n2 = s.X() * e.Y() - s.Y() * e.X();
-    T n3 = (dc.X() * dp.Y() - dc.Y() * dp.X());
-    
-    return {
-        (n1 * dp.X() - n2 * dc.X()) / n3,
-        (n1 * dp.Y() - n2 * dc.Y()) / n3
-    };
-}
-
 } // namespace detail
 
 /**
@@ -82,14 +58,45 @@ std::vector<Point<T>> SutherlandHodgman(
         
         Point<T> s = input_list.back();
         for (const auto& e : input_list) {
-            if (detail::Inside(e, cp1, cp2)) {
-                if (!detail::Inside(s, cp1, cp2)) {
-                    output_list.push_back(detail::ComputeIntersection(cp1, cp2, s, e));
+            const auto cp2x_cp1x = cp2.X() - cp1.X();
+            const auto cp2y_cp1y = cp2.Y() - cp1.Y();
+            const auto e_inside = cp2x_cp1x * (e.Y() - cp1.Y()) > cp2y_cp1y * (e.X() - cp1.X());
+            const auto s_inside = cp2x_cp1x * (s.Y() - cp1.Y()) > cp2y_cp1y * (s.X() - cp1.X());
+            
+            if (e_inside) {
+                if (!s_inside) {
+                    const auto dcx = cp1.X() - cp2.X();
+                    const auto dcy = cp1.Y() - cp2.Y();
+                    const auto dpx = s.X() - e.X();
+                    const auto dpy = s.Y() - e.Y();
+                    const auto n3 = dcx * dpy - dcy * dpx;
+                    
+                    if (n3 != 0) { 
+                        const auto n1 = cp1.X() * cp2.Y() - cp1.Y() * cp2.X();
+                        const auto n2 = s.X() * e.Y() - s.Y() * e.X();
+                        output_list.emplace_back(
+                            (n1 * dpx - n2 * dcx) / n3,
+                            (n1 * dpy - n2 * dcy) / n3
+                        );
+                    }
                 }
                 output_list.push_back(e);
             } 
-            else if (detail::Inside(s, cp1, cp2)) {
-                output_list.push_back(detail::ComputeIntersection(cp1, cp2, s, e));
+            else if (s_inside) {
+                const auto dcx = cp1.X() - cp2.X();
+                const auto dcy = cp1.Y() - cp2.Y();
+                const auto dpx = s.X() - e.X();
+                const auto dpy = s.Y() - e.Y();
+                const auto n3 = dcx * dpy - dcy * dpx;
+                
+                if (n3 != 0) {
+                    const auto n1 = cp1.X() * cp2.Y() - cp1.Y() * cp2.X();
+                    const auto n2 = s.X() * e.Y() - s.Y() * e.X();
+                    output_list.emplace_back(
+                        (n1 * dpx - n2 * dcx) / n3,
+                        (n1 * dpy - n2 * dcy) / n3
+                    );
+                }
             }
             s = e;
         }
