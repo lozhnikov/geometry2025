@@ -32,7 +32,7 @@ void TestOrientation();
 
 /* Сюда нужно добавить объявления тестовых функций. */
 
-
+void TestSutherlandHodgman(httplib::Client* cli);
 
 /* Конец вставки. */
 

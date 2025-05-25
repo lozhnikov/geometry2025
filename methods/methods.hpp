@@ -14,7 +14,7 @@ namespace geometry {
 
 /* Сюда нужно вставить объявление серверной части алгоритма. */
 
-
+int SutherlandHodgmanMethod(const nlohmann::json& input, nlohmann::json* output);
 
 /* Конец вставки. */
 

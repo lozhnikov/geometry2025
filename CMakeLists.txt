@@ -117,8 +117,10 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  include/sutherland_hodgman.hpp
   methods/main.cpp
   methods/methods.hpp
+  methods/sutherland_hodgman_method.cpp
 )
 
 ####################################################################
@@ -152,6 +154,7 @@ add_executable(
   tests/orientation_test.cpp
   tests/point_test.cpp
   tests/polygon_test.cpp
+  tests/sutherland_hodgman_test.cpp
   tests/test.hpp
   tests/test_core.cpp
   tests/test_core.hpp
