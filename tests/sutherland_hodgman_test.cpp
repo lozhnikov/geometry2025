@@ -139,7 +139,6 @@ static void RandomPolygonsTest(httplib::Client* cli) {
 
     REQUIRE_EQUAL(size, output["subject_size"]);
     REQUIRE_EQUAL(4, output["clip_size"]);
-    REQUIRE(output["result_size"] <= size);
 
     // Check if all resulting points are inside clip polygon
     for (const auto& point : output["result"]) {

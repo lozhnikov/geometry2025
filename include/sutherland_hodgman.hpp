@@ -12,23 +12,6 @@
 #include "point.hpp"
 
 namespace geometry {
-namespace detail {
-
-/**
- * @brief Inside test for clipping edge
- * @tparam T point coordinate type
- * @param p Test point
- * @param cp1 First point of clipping edge
- * @param cp2 Second point of clipping edge
- * @return true if point is inside the edge, false otherwise
- */
-template<typename T>
-bool Inside(const Point<T>& p, const Point<T>& cp1, const Point<T>& cp2) {
-    return (cp2.X() - cp1.X()) * (p.Y() - cp1.Y()) > 
-           (cp2.Y() - cp1.Y()) * (p.X() - cp1.X());
-}
-
-} // namespace detail
 
 /**
  * @brief Sutherland-Hodgman polygon clipping algorithm

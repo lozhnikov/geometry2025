@@ -96,7 +96,7 @@ else ()
 endif ()
 
 if (NOT MSVC)
-  set(GEOMETRY_LIBS "pthread")
+  set(GEOMETRY_LIBS "pthread;ws2_32")
 endif ()
 
 include_directories(${GEOMETRY_INCLUDE_DIRS})
