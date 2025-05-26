@@ -1,3 +1,10 @@
+/**
+ * @file methods/main.cpp
+ * @author Mikhail Lozhnikov
+ *
+ * Файл с функией main() для серверной части программы.
+ */
+
 #include <nlohmann/json.hpp>
 #include <httplib.h>
 #include <iostream>
@@ -31,11 +38,11 @@ int main(int argc, char* argv[]) {
 
   /* Сюда нужно вставить обработчик post запроса для алгоритма. */
 
-  svr.Post("/SutherlandHodgman", [&](const httplib::Request& req, httplib::Response& res) {
+  svr.Post("/ConvexIntersection", [&](const httplib::Request& req, httplib::Response& res) {
   try {
     auto input = json::parse(req.body);
     json output;
-    int result = geometry::SutherlandHodgmanMethod(input, &output);
+    int result = geometry::ConvexIntersectionMethod(input, &output);
     if (result != 0)
         res.status = 400;
     res.set_content(output.dump(), "application/json");

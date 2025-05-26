@@ -1,3 +1,10 @@
+/**
+ * @file tests/test.hpp
+ * @author Mikhail Lozhnikov
+ *
+ * Заголовочный файл для объявлений основных тестовых функций.
+ */
+
 #ifndef TESTS_TEST_HPP_
 #define TESTS_TEST_HPP_
 
@@ -28,7 +35,7 @@ void TestOrientation();
 /**
  * @brief Тестирование функции пересечения выпуклых полигонов
  */
-void TestSutherlandHodgman(httplib::Client* cli);
+void TestConvexIntersection(httplib::Client* cli);
 
 
 #endif  // TESTS_TEST_HPP_

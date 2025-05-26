@@ -1,11 +1,18 @@
+/** 
+ * @file methods/convex_intersection_method.cpp 
+ * @author German Semenov
+ * 
+ * @brief convex intersection algorithm.
+ */
+
 #include <vector>
 #include <string>
 #include <nlohmann/json.hpp>
-#include "../include/sutherland_hodgman.hpp"
+#include "../include/convex_intersection.hpp"
 
 namespace geometry {
 
-int SutherlandHodgmanMethod(const nlohmann::json& input, nlohmann::json* output) {
+int ConvexIntersectionMethod(const nlohmann::json& input, nlohmann::json* output) {
   if (!input.contains("subject") || !input.contains("clip"))
     return 1;
 
@@ -17,11 +24,10 @@ int SutherlandHodgmanMethod(const nlohmann::json& input, nlohmann::json* output)
   for (const auto& p : input["clip"])
     clip.emplace_back(p["x"], p["y"]);
 
-  auto result = SutherlandHodgman(subject, clip);
+  auto result = ConvexIntersection(subject, clip);
 
-  for (const auto& p : result) {
+  for (const auto& p : result)
     (*output)["intersection"].push_back({{"x", p.X()}, {"y", p.Y()}});
-  }
 
   (*output)["subject_size"] = subject.size();
   (*output)["clip_size"] = clip.size();
@@ -30,4 +36,4 @@ int SutherlandHodgmanMethod(const nlohmann::json& input, nlohmann::json* output)
   return 0;
 }
 
-}  // namespace geometry
+}
