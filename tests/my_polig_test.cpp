@@ -14,13 +14,11 @@
 #include "test.hpp"
 
 namespace geometry {
-
     // Функция для сравнения точек с учетом точности
     template<typename T>
     bool PointEquals(const Point<T>& p1, const Point<T>& p2, T epsilon) {
         return std::abs(p1.x - p2.x) < epsilon && std::abs(p1.y - p2.y) < epsilon;
     }
-
 } // namespace geometry
 
 static void EmptyTest(httplib::Client* cli);
@@ -61,8 +59,8 @@ static void SinglePointTest(httplib::Client* cli) {
     nlohmann::json output = nlohmann::json::parse(res->body);
 
     REQUIRE_EQUAL(output["polygon"].size(), 1);
-    REQUIRE_EQUAL(output["polygon"][0][0], 0);
-    REQUIRE_EQUAL(output["polygon"][0][1], 0);
+    REQUIRE_EQUAL(output["polygon"][0][0].get<double>(), 0);
+    REQUIRE_EQUAL(output["polygon"][0][1].get<double>(), 0);
 }
 
 static void ThreePointsTest(httplib::Client* cli) {
@@ -81,8 +79,10 @@ static void ThreePointsTest(httplib::Client* cli) {
     for (const auto& pt : expected) {
         bool found = false;
         for (const auto& poly_pt : output["polygon"]) {
-            if (std::abs(poly_pt[0] - pt[0]) < 1e-9 &&
-                std::abs(poly_pt[1] - pt[1]) < 1e-9) {
+            double x = poly_pt[0].get<double>();
+            double y = poly_pt[1].get<double>();
+            if (std::abs(x - pt[0]) < 1e-9 &&
+                std::abs(y - pt[1]) < 1e-9) {
                 found = true;
                 break;
             }
@@ -105,8 +105,10 @@ static void CollinearPointsTest(httplib::Client* cli) {
     // Ожидаемый порядок: сначала самые удаленные точки
     std::vector<std::vector<double>> expected_order = { {0,0}, {3,0}, {2,0}, {1,0} };
     for (size_t i = 0; i < expected_order.size(); ++i) {
-        REQUIRE_EQUAL(output["polygon"][i][0], expected_order[i][0]);
-        REQUIRE_EQUAL(output["polygon"][i][1], expected_order[i][1]);
+        double x = output["polygon"][i][0].get<double>();
+        double y = output["polygon"][i][1].get<double>();
+        REQUIRE_EQUAL(x, expected_order[i][0]);
+        REQUIRE_EQUAL(y, expected_order[i][1]);
     }
 }
 
@@ -128,7 +130,7 @@ static void RandomTest(httplib::Client* cli) {
         // Первая точка - начало координат
         points.push_back({ 0.0, 0.0 });
 
-        // Остальные точки случайные (исключаем дубликаты)
+        // Остальные точки случайные
         for (size_t j = 1; j < num_points; ++j) {
             double x = dist(gen);
             double y = dist(gen);
@@ -147,8 +149,10 @@ static void RandomTest(httplib::Client* cli) {
         for (const auto& pt : points) {
             bool found = false;
             for (const auto& poly_pt : output["polygon"]) {
-                if (std::abs(poly_pt[0] - pt[0]) < precision &&
-                    std::abs(poly_pt[1] - pt[1]) < precision) {
+                double x = poly_pt[0].get<double>();
+                double y = poly_pt[1].get<double>();
+                if (std::abs(x - pt[0]) < precision &&
+                    std::abs(y - pt[1]) < precision) {
                     found = true;
                     break;
                 }
