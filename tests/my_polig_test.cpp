@@ -16,19 +16,17 @@
 #include <httplib.h>
 #include <nlohmann/json.hpp>
 
-namespace geometry {
+static void SimpleTest(httplib::Client* cli); 
+static void CollinearTest(httplib::Client* cli);
+static void RandomTest(httplib::Client* cli);
 
-    static void SimpleTest(httplib::Client* cli);
-    static void CollinearTest(httplib::Client* cli);
-    static void RandomTest(httplib::Client* cli);
+void TestMyPolig(httplib::Client* cli) {
+    TestSuite suite("TestMyPolig");
 
-    void TestMyPolig(httplib::Client* cli) {
-        TestSuite suite("TestMyPolig");
-
-        RUN_TEST_REMOTE(suite, cli, SimpleTest);
-        RUN_TEST_REMOTE(suite, cli, CollinearTest);
-        RUN_TEST_REMOTE(suite, cli, RandomTest);
-    }
+    RUN_TEST_REMOTE(suite, cli, SimpleTest);
+    RUN_TEST_REMOTE(suite, cli, CollinearTest);
+    RUN_TEST_REMOTE(suite, cli, RandomTest);
+}
 
     /**
      * @brief Простейший тест с упорядоченными точками.
@@ -165,4 +163,3 @@ namespace geometry {
         }
     }
 
-} // namespace geometry
