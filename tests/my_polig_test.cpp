@@ -38,7 +38,7 @@ static void CollinearPointsTest(httplib::Client* cli);
 static void RandomTest(httplib::Client* cli);
 
 void TestMyPolig(httplib::Client* cli) {
-    TestSuite suite("TestMyPoilg");
+    TestSuite suite("TestMyPolig");
 
     RUN_TEST_REMOTE(suite, cli, EmptyTest);
     RUN_TEST_REMOTE(suite, cli, SinglePointTest);
@@ -53,7 +53,7 @@ static void EmptyTest(httplib::Client* cli) {
         "precision": 0.0001
     })"_json;
 
-    httplib::Result res = cli->Post("/MyPoilg", input.dump(), "application/json");
+    httplib::Result res = cli->Post("/MyPolig", input.dump(), "application/json");
 
     // ѕровер€ем успешность запроса и код ответа
     REQUIRE_EQUAL(res.error(), httplib::Error::Success);
@@ -78,7 +78,7 @@ static void SinglePointTest(httplib::Client* cli) {
         "precision": 0.0001
     })"_json;
 
-    httplib::Result res = cli->Post("/MyPoilg", input.dump(), "application/json");
+    httplib::Result res = cli->Post("/MyPolig", input.dump(), "application/json");
 
     REQUIRE_EQUAL(res.error(), httplib::Error::Success);
     REQUIRE(res != nullptr);
@@ -102,7 +102,7 @@ static void ThreePointsTest(httplib::Client* cli) {
         "precision": 0.0001
     })"_json;
 
-    httplib::Result res = cli->Post("/MyPoilg", input.dump(), "application/json");
+    httplib::Result res = cli->Post("/MyPolig", input.dump(), "application/json");
 
     REQUIRE_EQUAL(res.error(), httplib::Error::Success);
     REQUIRE(res != nullptr);
@@ -139,7 +139,7 @@ static void CollinearPointsTest(httplib::Client* cli) {
         "precision": 0.0001
     })"_json;
 
-    httplib::Result res = cli->Post("/MyPoilg", input.dump(), "application/json");
+    httplib::Result res = cli->Post("/MyPolig", input.dump(), "application/json");
 
     REQUIRE_EQUAL(res.error(), httplib::Error::Success);
     REQUIRE(res != nullptr);
@@ -191,7 +191,7 @@ static void RandomTest(httplib::Client* cli) {
 
         input["points"] = points;
 
-        httplib::Result res = cli->Post("/MyPoilg", input.dump(), "application/json");
+        httplib::Result res = cli->Post("/MyPolig", input.dump(), "application/json");
 
         REQUIRE_EQUAL(res.error(), httplib::Error::Success);
         REQUIRE(res != nullptr);
