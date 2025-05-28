@@ -16,7 +16,7 @@
 #include <httplib.h>
 #include <nlohmann/json.hpp>
 
-static void SimpleTest(httplib::Client* cli); 
+static void SimpleTest(httplib::Client* cli);
 static void CollinearTest(httplib::Client* cli);
 static void RandomTest(httplib::Client* cli);
 
@@ -28,13 +28,13 @@ void TestMyPolig(httplib::Client* cli) {
     RUN_TEST_REMOTE(suite, cli, RandomTest);
 }
 
-    /**
-     * @brief Простейший тест с упорядоченными точками.
-     *
-     * @param cli Указатель на HTTP клиент.
-     */
-    static void SimpleTest(httplib::Client* cli) {
-        nlohmann::json input = R"(
+/**
+ * @brief Простейший тест с упорядоченными точками.
+ *
+ * @param cli Указатель на HTTP клиент.
+ */
+static void SimpleTest(httplib::Client* cli) {
+    nlohmann::json input = R"(
     {
       "points": [
         {"x": 0.0, "y": 0.0},
@@ -47,31 +47,31 @@ void TestMyPolig(httplib::Client* cli) {
     }
   )"_json;
 
-        httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
-        nlohmann::json output = nlohmann::json::parse(res->body);
+    httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
+    nlohmann::json output = nlohmann::json::parse(res->body);
 
-        REQUIRE_EQUAL(5, output["hull_size"]);
-        REQUIRE_EQUAL(5, output["original_size"]);
+    REQUIRE_EQUAL(5, output["hull_size"]);
+    REQUIRE_EQUAL(5, output["original_size"]);
 
-        std::vector<std::pair<double, double>> expected = {
-          {0.0, 0.0}, {1.0, 0.0}, {0.0, 1.0}, {-1.0, 0.0}, {0.0, -1.0}
-        };
+    std::vector<std::pair<double, double>> expected = {
+      {0.0, 0.0}, {1.0, 0.0}, {0.0, 1.0}, {-1.0, 0.0}, {0.0, -1.0}
+    };
 
-        size_t idx = 0;
-        for (const auto& point : output["polygon"]) {
-            REQUIRE_EQUAL(expected[idx].first, point["x"].get<double>());
-            REQUIRE_EQUAL(expected[idx].second, point["y"].get<double>());
-            idx++;
-        }
+    size_t idx = 0;
+    for (const auto& point : output["polygon"]) {
+        REQUIRE_EQUAL(expected[idx].first, point["x"].get<double>());
+        REQUIRE_EQUAL(expected[idx].second, point["y"].get<double>());
+        idx++;
     }
+}
 
-    /**
-     * @brief Тест с коллинеарными точками.
-     *
-     * @param cli Указатель на HTTP клиент.
-     */
-    static void CollinearTest(httplib::Client* cli) {
-        nlohmann::json input = R"(
+/**
+ * @brief Тест с коллинеарными точками.
+ *
+ * @param cli Указатель на HTTP клиент.
+ */
+static void CollinearTest(httplib::Client* cli) {
+    nlohmann::json input = R"(
     {
       "points": [
         {"x": 0.0, "y": 0.0},
@@ -83,83 +83,87 @@ void TestMyPolig(httplib::Client* cli) {
     }
   )"_json;
 
+    httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
+    nlohmann::json output = nlohmann::json::parse(res->body);
+
+    REQUIRE_EQUAL(4, output["hull_size"]);
+    REQUIRE_EQUAL(4, output["original_size"]);
+
+    std::vector<std::pair<double, double>> expected = {
+      {0.0, 0.0}, {1.0, 0.0}, {2.0, 0.0}, {3.0, 0.0}
+    };
+
+    size_t idx = 0;
+    for (const auto& point : output["polygon"]) {
+        REQUIRE_EQUAL(expected[idx].first, point["x"].get<double>());
+        REQUIRE_EQUAL(expected[idx].second, point["y"].get<double>());
+        idx++;
+    }
+}
+
+/**
+ * @brief Тест со случайными точками.
+ *
+ * @param cli Указатель на HTTP клиент.
+ */
+static void RandomTest(httplib::Client* cli) {
+    const int numTries = 50;
+    const int maxPoints = 100;
+    const double eps = 1e-9;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<size_t> sizeDist(3, maxPoints);
+    std::uniform_real_distribution<double> coordDist(-100.0, 100.0);
+
+    for (int it = 0; it < numTries; it++) {
+        size_t size = sizeDist(gen);
+        nlohmann::json input;
+
+        input["points"][0]["x"] = 0.0;
+        input["points"][0]["y"] = 0.0;
+
+        for (size_t i = 1; i < size; i++) {
+            input["points"][i]["x"] = coordDist(gen);
+            input["points"][i]["y"] = coordDist(gen);
+        }
+
+        input["precision"] = 1e-9;
+
         httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
         nlohmann::json output = nlohmann::json::parse(res->body);
 
-        REQUIRE_EQUAL(4, output["hull_size"]);
-        REQUIRE_EQUAL(4, output["original_size"]);
+        REQUIRE_EQUAL(size, output["hull_size"]);
+        REQUIRE_EQUAL(size, output["original_size"]);
 
-        std::vector<std::pair<double, double>> expected = {
-          {0.0, 0.0}, {1.0, 0.0}, {2.0, 0.0}, {3.0, 0.0}
-        };
-
-        size_t idx = 0;
-        for (const auto& point : output["polygon"]) {
-            REQUIRE_EQUAL(expected[idx].first, point["x"].get<double>());
-            REQUIRE_EQUAL(expected[idx].second, point["y"].get<double>());
-            idx++;
+        // Исправление 1: Добавлено пространство имён geometry::
+        std::vector<geometry::Point<double>> polygon;
+        for (const auto& pt : output["polygon"]) {
+            polygon.emplace_back(pt["x"].get<double>(), pt["y"].get<double>());
         }
-    }
 
-    /**
-     * @brief Тест со случайными точками.
-     *
-     * @param cli Указатель на HTTP клиент.
-     */
-    static void RandomTest(httplib::Client* cli) {
-        const int numTries = 50;
-        const int maxPoints = 100;
-        const double eps = 1e-9;
+        // Исправление 2: Добавлено пространство имён geometry::
+        geometry::Point<double> origin = polygon[0];
+        for (size_t i = 1; i < polygon.size(); ++i) {
+            // Исправление 3: Добавлено пространство имён geometry::
+            geometry::Point<double> current = polygon[i] - origin;
 
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<size_t> sizeDist(3, maxPoints);
-        std::uniform_real_distribution<double> coordDist(-100.0, 100.0);
+            // Исправление 4: Переименована переменная prev -> prev_point
+            geometry::Point<double> prev_point = polygon[i - 1] - origin;
 
-        for (int it = 0; it < numTries; it++) {
-            size_t size = sizeDist(gen);
-            nlohmann::json input;
+            double angle_prev = prev_point.PolarAngle(eps);
+            double angle_current = current.PolarAngle(eps);
 
-            input["points"][0]["x"] = 0.0;
-            input["points"][0]["y"] = 0.0;
-
-            for (size_t i = 1; i < size; i++) {
-                input["points"][i]["x"] = coordDist(gen);
-                input["points"][i]["y"] = coordDist(gen);
+            if (angle_prev > angle_current + eps) {
+                REQUIRE(false); // Угол должен быть неубывающим
             }
-
-            input["precision"] = 1e-9;
-
-            httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
-            nlohmann::json output = nlohmann::json::parse(res->body);
-
-            REQUIRE_EQUAL(size, output["hull_size"]);
-            REQUIRE_EQUAL(size, output["original_size"]);
-
-            std::vector<Point<double>> polygon;
-            for (const auto& pt : output["polygon"]) {
-                polygon.emplace_back(pt["x"].get<double>(), pt["y"].get<double>());
-            }
-
-            Point<double> origin = polygon[0];
-            for (size_t i = 1; i < polygon.size(); ++i) {
-                Point<double> current = polygon[i] - origin;
-                Point<double> prev = polygon[i - 1] - origin;
-
-                double angle_prev = prev.PolarAngle(eps);
-                double angle_current = current.PolarAngle(eps);
-
-                if (angle_prev > angle_current + eps) {
-                    REQUIRE(false); // Угол должен быть неубывающим
-                }
-                else if (std::abs(angle_prev - angle_current) < eps) {
-                    double len_prev = prev.Length();
-                    double len_current = current.Length();
-                    if (len_prev > len_current + eps) {
-                        REQUIRE(false); // При равных углах расстояние должно быть неубывающим
-                    }
+            else if (std::abs(angle_prev - angle_current) < eps) {
+                double len_prev = prev_point.Length();
+                double len_current = current.Length();
+                if (len_prev > len_current + eps) {
+                    REQUIRE(false); // При равных углах расстояние должно быть неубывающим
                 }
             }
         }
     }
-
+}
