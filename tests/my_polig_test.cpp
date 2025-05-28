@@ -48,20 +48,37 @@ static void SimpleTest(httplib::Client* cli) {
   )"_json;
 
     httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
-    nlohmann::json output = nlohmann::json::parse(res->body);
 
-    REQUIRE_EQUAL(5, output["hull_size"]);
-    REQUIRE_EQUAL(5, output["original_size"]);
+    // Проверка успешности запроса
+    if (!res) {
+        REQUIRE(false); // Запрос не удался
+        return;
+    }
 
-    std::vector<std::pair<double, double>> expected = {
-      {0.0, 0.0}, {1.0, 0.0}, {0.0, 1.0}, {-1.0, 0.0}, {0.0, -1.0}
-    };
+    // Проверка статуса ответа
+    if (res->status != 200) {
+        REQUIRE_EQUAL(200, res->status); // Ожидался статус 200 OK
+        return;
+    }
 
-    size_t idx = 0;
-    for (const auto& point : output["polygon"]) {
-        REQUIRE_EQUAL(expected[idx].first, point["x"].get<double>());
-        REQUIRE_EQUAL(expected[idx].second, point["y"].get<double>());
-        idx++;
+    try {
+        nlohmann::json output = nlohmann::json::parse(res->body);
+        REQUIRE_EQUAL(5, output["hull_size"]);
+        REQUIRE_EQUAL(5, output["original_size"]);
+
+        std::vector<std::pair<double, double>> expected = {
+          {0.0, 0.0}, {1.0, 0.0}, {0.0, 1.0}, {-1.0, 0.0}, {0.0, -1.0}
+        };
+
+        size_t idx = 0;
+        for (const auto& point : output["polygon"]) {
+            REQUIRE_EQUAL(expected[idx].first, point["x"].get<double>());
+            REQUIRE_EQUAL(expected[idx].second, point["y"].get<double>());
+            idx++;
+        }
+    }
+    catch (const nlohmann::json::parse_error& e) {
+        REQUIRE(false); // Ошибка парсинга JSON
     }
 }
 
@@ -84,20 +101,37 @@ static void CollinearTest(httplib::Client* cli) {
   )"_json;
 
     httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
-    nlohmann::json output = nlohmann::json::parse(res->body);
 
-    REQUIRE_EQUAL(4, output["hull_size"]);
-    REQUIRE_EQUAL(4, output["original_size"]);
+    // Проверка успешности запроса
+    if (!res) {
+        REQUIRE(false);
+        return;
+    }
 
-    std::vector<std::pair<double, double>> expected = {
-      {0.0, 0.0}, {1.0, 0.0}, {2.0, 0.0}, {3.0, 0.0}
-    };
+    // Проверка статуса ответа
+    if (res->status != 200) {
+        REQUIRE_EQUAL(200, res->status);
+        return;
+    }
 
-    size_t idx = 0;
-    for (const auto& point : output["polygon"]) {
-        REQUIRE_EQUAL(expected[idx].first, point["x"].get<double>());
-        REQUIRE_EQUAL(expected[idx].second, point["y"].get<double>());
-        idx++;
+    try {
+        nlohmann::json output = nlohmann::json::parse(res->body);
+        REQUIRE_EQUAL(4, output["hull_size"]);
+        REQUIRE_EQUAL(4, output["original_size"]);
+
+        std::vector<std::pair<double, double>> expected = {
+          {0.0, 0.0}, {1.0, 0.0}, {2.0, 0.0}, {3.0, 0.0}
+        };
+
+        size_t idx = 0;
+        for (const auto& point : output["polygon"]) {
+            REQUIRE_EQUAL(expected[idx].first, point["x"].get<double>());
+            REQUIRE_EQUAL(expected[idx].second, point["y"].get<double>());
+            idx++;
+        }
+    }
+    catch (const nlohmann::json::parse_error& e) {
+        REQUIRE(false);
     }
 }
 
@@ -131,39 +165,51 @@ static void RandomTest(httplib::Client* cli) {
         input["precision"] = 1e-9;
 
         httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
-        nlohmann::json output = nlohmann::json::parse(res->body);
 
-        REQUIRE_EQUAL(size, output["hull_size"]);
-        REQUIRE_EQUAL(size, output["original_size"]);
-
-        // Исправление 1: Добавлено пространство имён geometry::
-        std::vector<geometry::Point<double>> polygon;
-        for (const auto& pt : output["polygon"]) {
-            polygon.emplace_back(pt["x"].get<double>(), pt["y"].get<double>());
+        // Проверка успешности запроса
+        if (!res) {
+            REQUIRE(false);
+            continue;
         }
 
-        // Исправление 2: Добавлено пространство имён geometry::
-        geometry::Point<double> origin = polygon[0];
-        for (size_t i = 1; i < polygon.size(); ++i) {
-            // Исправление 3: Добавлено пространство имён geometry::
-            geometry::Point<double> current = polygon[i] - origin;
+        // Проверка статуса ответа
+        if (res->status != 200) {
+            REQUIRE_EQUAL(200, res->status);
+            continue;
+        }
 
-            // Исправление 4: Переименована переменная prev -> prev_point
-            geometry::Point<double> prev_point = polygon[i - 1] - origin;
+        try {
+            nlohmann::json output = nlohmann::json::parse(res->body);
+            REQUIRE_EQUAL(size, output["hull_size"]);
+            REQUIRE_EQUAL(size, output["original_size"]);
 
-            double angle_prev = prev_point.PolarAngle(eps);
-            double angle_current = current.PolarAngle(eps);
-
-            if (angle_prev > angle_current + eps) {
-                REQUIRE(false); // Угол должен быть неубывающим
+            std::vector<geometry::Point<double>> polygon;
+            for (const auto& pt : output["polygon"]) {
+                polygon.emplace_back(pt["x"].get<double>(), pt["y"].get<double>());
             }
-            else if (std::abs(angle_prev - angle_current) < eps) {
-                double len_prev = prev_point.Length();
-                double len_current = current.Length();
-                if (len_prev > len_current + eps) {
-                    REQUIRE(false); // При равных углах расстояние должно быть неубывающим
+
+            geometry::Point<double> origin = polygon[0];
+            for (size_t i = 1; i < polygon.size(); ++i) {
+                geometry::Point<double> current = polygon[i] - origin;
+                geometry::Point<double> prev_point = polygon[i - 1] - origin;
+
+                double angle_prev = prev_point.PolarAngle(eps);
+                double angle_current = current.PolarAngle(eps);
+
+                if (angle_prev > angle_current + eps) {
+                    REQUIRE(false); // Угол должен быть неубывающим
+                }
+                else if (std::abs(angle_prev - angle_current) < eps) {
+                    double len_prev = prev_point.Length();
+                    double len_current = current.Length();
+                    if (len_prev > len_current + eps) {
+                        REQUIRE(false); // При равных углах расстояние должно быть неубывающим
+                    }
                 }
             }
+        }
+        catch (const nlohmann::json::parse_error& e) {
+            REQUIRE(false);
         }
     }
 }
