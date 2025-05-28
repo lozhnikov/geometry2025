@@ -12,6 +12,19 @@
 #include "test_core.hpp"
 #include "test.hpp"
 
+// Добавляем оператор вывода для httplib::Error
+namespace httplib {
+    std::ostream& operator<<(std::ostream& os, const Error& err) {
+        switch (err) {
+        case Error::Success: return os << "Success";
+        case Error::Unknown: return os << "Unknown";
+        case Error::Connection: return os << "Connection";
+            // Добавьте другие варианты по необходимости
+        default: return os << "Error(" << static_cast<int>(err) << ")";
+        }
+    }
+} // namespace httplib
+
 namespace geometry {
     // Функция для сравнения точек с учетом точности
     template<typename T>
