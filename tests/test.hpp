@@ -33,12 +33,12 @@ void TestOrientation();
 /* Сюда нужно добавить объявления тестовых функций. */
 
 /**
- * @brief testing Graham scan
- * 
+ * @brief Набор тестов для алгоритма построения звездчатого многоугольника.
+ *
  * @param cli pointer to HTTP client
  */
 
-void TestGrahamScan(httplib::Client* cli);
+void TestMyPolig(httplib::Client* cli);
 
 /* Конец вставки. */
 
