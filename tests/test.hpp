@@ -31,7 +31,7 @@ void TestPolygon();
 void TestOrientation();
 
 /* Сюда нужно добавить объявления тестовых функций. */
-
+void TestDimcirus(httplib::Client* cli);
 
 
 /* Конец вставки. */

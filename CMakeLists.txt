@@ -110,6 +110,7 @@ include_directories(${GEOMETRY_INCLUDE_DIRS})
 add_executable(
   geometry_server
   include/common.hpp
+  include/dimcirus.hpp
   include/edge.hpp
   include/edge_impl.hpp
   include/orientation.hpp
@@ -117,6 +118,7 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  methods/dimcirus_method.cpp
   methods/main.cpp
   methods/methods.hpp
 )
@@ -139,6 +141,7 @@ target_link_libraries(geometry_server ${GEOMETRY_LIBS})
 add_executable(
   geometry_test
   include/common.hpp
+  include/dimcirus.hpp
   include/edge.hpp
   include/edge_impl.hpp
   include/orientation.hpp
@@ -146,6 +149,7 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  tests/dimcirus_test.cpp
   tests/edge_test.cpp
   tests/io.hpp
   tests/main.cpp
