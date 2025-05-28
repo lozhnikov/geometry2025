@@ -42,13 +42,13 @@ namespace geometry {
         std::list<Point<T>> origin = polygon->Vertices();
         Point<T> originPt = origin.front();
 
-        auto itToOrigin = polygon.Current();
+        auto itToOrigin = polygon->Current();
 
         for (size_t i = 1; i < points.size(); ++i) {
-            polygon.Current() = itToOrigin;
+            polygon->Current() = itToOrigin;
             polygon->Advance(Rotation::ClockWise); // CLOCKWISE
 
-            while (polarCmp(points[i], *polygon.Current(), originPt, precision)) {
+            while (polarCmp(points[i], *polygon->Current(), originPt, precision)) {
                 polygon->Advance(Rotation::ClockWise);
             }
 
