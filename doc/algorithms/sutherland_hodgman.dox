@@ -2,41 +2,42 @@
  * @file algorithms/sutherland_hodgman.dox 
  * @brief Documentation for Sutherland-Hodgman algorithm
  *
- * @page sutherland_hodgman Алгоритм Сазерленда-Ходгмана
+ * @page sutherland_hodgman Sutherland-Hodgman Clipping Algorithm
  *
- * @subsection overview Обзор
+ * @section sh_overview Overview
  *
- * Алгоритм Сазерленда-Ходгмана для отсечения произвольного полигона выпуклым клипп-полигоном.
- * Реализация последовательно обрабатывает каждое ребро клипп-полигона как отсекающую плоскость.
+ * The Sutherland-Hodgman algorithm for clipping arbitrary polygons against a convex clip polygon.
+ * The implementation sequentially processes each edge of the clip polygon as a clipping plane.
  *
- * @subsection complexity Сложность
- * - Временная сложность: O(n*m)
- * - Память: O(n)
+ * @section sh_complexity Complexity
+ * - Time complexity: O(n*m)
+ * - Space complexity: O(n)
  *
- * n - число вершин субъект-полигона, m - число вершин клипп-полигона
+ * Where:
+ * - n = number of vertices in subject polygon
+ * - m = number of vertices in clip polygon
  *
- * @section implementation Реализация
- * Основные этапы работы:
- * 1. Проверка минимального размера полигонов (не менее 3 вершин).
- * 2. Последовательная обработка каждого ребра клипп-полигона.
- * 3. Формирование нового полигона после каждого отсечения.
- * 4. Возврат итогового отсеченного полигона.
+ * @section sh_implementation Implementation
  *
- * @subsection details Детали реализации
- * 1. Обработка ребер клипп-полигона:
- *    - Для каждого ребра (cp1, cp2) клипп-полигона.
- *    - Построение нового полигона на основе текущего отсечения.
+ * Main workflow stages:
+ * 1. Validate minimum polygon size (at least 3 vertices)
+ * 2. Process each edge of the clip polygon sequentially
+ * 3. Build new polygon after each clipping operation
+ * 4. Return final clipped polygon
  *
- * 2. Проверка видимости точек:
- *    - Функция inside(p, cp1, cp2) определяет, находится ли точка p внутри ребра (cp1, cp2).
- *    - Используется векторное произведение для определения ориентации.
+ * @subsection sh_processing Edge Processing
+ * 1. For each edge (cp1, cp2) of the clip polygon:
+ *    - Construct new polygon based on current clipping
  *
- * 3. Вычисление пересечений:
- *    - При пересечении ребра субъект-полигона с ребром клипп-полигона.
- *    - Точка пересечения добавляется в новый полигон.
+ * @subsection sh_visibility Visibility Check
+ * - inside(p, cp1, cp2) function determines if point p is inside edge (cp1, cp2)
+ * - Uses cross product for orientation testing
  *
- * 4. Формирование результата:
- *    - После обработки всех ребер клипп-полигона возвращается итоговый отсеченный полигон.
- *    - Если полигон полностью вне клипп-области - возвращается пустой результат.
+ * @subsection sh_intersection Intersection Calculation
+ * - When subject polygon edge intersects clip polygon edge
+ * - Intersection point is added to new polygon
  *
+ * @subsection sh_result Result Formation
+ * - After processing all clip polygon edges, returns final clipped polygon
+ * - Returns empty result if polygon is completely outside clip area
  */
