@@ -9,4 +9,6 @@
 
 @subpage sutherland_hodgman "Алгоритм Сазерленда-Ходжмана"
 
+@subpage graham_scan "Алгоритм Грэхема"
+
 */

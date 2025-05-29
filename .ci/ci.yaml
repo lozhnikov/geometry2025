@@ -67,10 +67,10 @@ jobs:
   - script: |
       mkdir build && cd build
 
-      scan-build-14 --use-c++=g++-11 cmake -G "Unix Makefiles" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON ../
+      scan-build-14 --use-c++=g++-13 cmake -G "Unix Makefiles" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON ../
     displayName: 'Run CMake'
 
-  - script: cd build && scan-build-14 --use-c++=g++-11 --status-bugs make -j2
+  - script: cd build && scan-build-14 --use-c++=g++-13 --status-bugs make -j2
     displayName: 'Run static analysis with clang'
 
 - job: Linux
@@ -80,11 +80,11 @@ jobs:
   strategy:
     matrix:
       GCC:
-        CMakeArgs: '-D CMAKE_CXX_COMPILER=g++-11 -D CMAKE_BUILD_TYPE=Release'
+        CMakeArgs: '-D CMAKE_CXX_COMPILER=g++-13 -D CMAKE_BUILD_TYPE=Release'
         TestsEnvArgs: ''
         ExtraPackages: ''
       libstdc++DebugDefines:
-        CMakeArgs: '-D CMAKE_CXX_COMPILER=g++-11 -D CMAKE_BUILD_TYPE=Debug -D CMAKE_CXX_FLAGS="-O1 -D _GLIBCXX_DEBUG -D _GLIBCXX_DEBUG_PEDANTIC"'
+        CMakeArgs: '-D CMAKE_CXX_COMPILER=g++-13 -D CMAKE_BUILD_TYPE=Debug -D CMAKE_CXX_FLAGS="-O1 -D _GLIBCXX_DEBUG -D _GLIBCXX_DEBUG_PEDANTIC"'
         TestsEnvArgs: ''
         ExtraPackages: ''
       libc++DebugDefines:
