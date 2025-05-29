@@ -5,17 +5,17 @@
  * Реализация набора тестов для алгоритма построения звездного многоугольника.
  */
 
-#include "test_core.hpp"
-#include "test.hpp"
 #include <point.hpp>
 #include <polygon.hpp>
+#include <httplib.h>
 #include <vector>
 #include <random>
 #include <algorithm>
 #include <iostream>
 #include <string>
-#include <httplib.h>
 #include <nlohmann/json.hpp>
+#include "test_core.hpp"
+#include "test.hpp"
 
 namespace geometry {
 
@@ -143,7 +143,6 @@ static void RandomTest(httplib::Client* cli) {
         std::string request_body = input.dump();
         auto res = cli->Post("/MyPolig", request_body, "application/json");
 
-        // Проверка успешности запроса
         REQUIRE(res != nullptr);
         if (res->status != 200) {
             std::cerr << "===== REQUEST (try " << it << ") =====" << std::endl;
@@ -170,16 +169,16 @@ static void RandomTest(httplib::Client* cli) {
             REQUIRE_EQUAL(origin.X(), vertices[0].X());
             REQUIRE_EQUAL(origin.Y(), vertices[0].Y());
 
-            std::vector<geometry::Point<double>> polyPoints(vertices.begin() + 1,
-                vertices.end());
+            std::vector<geometry::Point<double>> polyPoints(
+                vertices.begin() + 1, vertices.end());
             std::vector<geometry::Point<double>> inputPoints(points.begin() + 1,
                 points.end());
 
-            // Сортировка для проверки
             std::sort(inputPoints.begin(), inputPoints.end(),
-                [&](const geometry::Point<double>& a, 
+                [&](const geometry::Point<double>& a,
                     const geometry::Point<double>& b) {
-                    int cmp = geometry::PolarCmpForTest(a, b, origin, precision);
+                    int cmp = geometry::PolarCmpForTest(a, b,
+                        origin, precision);
                     if (cmp != 0) return cmp > 0;
                     return (a - origin).Length() < (b - origin).Length();
                 });
