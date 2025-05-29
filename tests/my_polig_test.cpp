@@ -2,222 +2,147 @@
  * @file tests/my_polig_test.cpp
  * @author Nika Adzhindzhal
  *
- * Реализация набора тестов для алгоритма построения звездного полигона.
+ * Реализация набора тестов для алгоритма построения звездного многоугольника.
  */
 #include <my_polig.hpp>
-#include <httplib.h>
+#include <point.hpp>
+#include <polygon.hpp>
 #include <vector>
 #include <random>
+#include <algorithm>
+#include <httplib.h>
 #include <nlohmann/json.hpp>
 #include "test_core.hpp"
 #include "test.hpp"
 
- // Оператор вывода для httplib::Error
-namespace httplib {
-    std::ostream& operator<<(std::ostream& os, const Error& err) {
-        switch (err) {
-        case Error::Success: return os << "Success";
-        case Error::Unknown: return os << "Unknown";
-        case Error::Connection: return os << "Connection";
-        default: return os << "Error(" << static_cast<int>(err) << ")";
-        }
-    }
-} // namespace httplib
-
 namespace geometry {
+
     template<typename T>
-    bool PointEquals(const Point<T>& p1, const Point<T>& p2, T epsilon) {
-        return std::abs(p1.x - p2.x) < epsilon && std::abs(p1.y - p2.y) < epsilon;
+    int PolarCmpForTest(const Point<T>& p, const Point<T>& q, const Point<T>& origin, T precision) {
+        Point<T> vp = p - origin;
+        Point<T> vq = q - origin;
+        T angle_p = vp.PolarAngle(precision);
+        T angle_q = vq.PolarAngle(precision);
+
+        if (angle_p < angle_q) return -1;
+        if (angle_p > angle_q) return 1;
+
+        T len_p = vp.Length();
+        T len_q = vq.Length();
+
+        if (len_p < len_q) return -1;
+        if (len_p > len_q) return 1;
+        return 0;
     }
+
 } // namespace geometry
 
-static void EmptyTest(httplib::Client* cli);
-static void SinglePointTest(httplib::Client* cli);
-static void ThreePointsTest(httplib::Client* cli);
-static void CollinearPointsTest(httplib::Client* cli);
+static void SimpleTest(httplib::Client* cli);
 static void RandomTest(httplib::Client* cli);
 
 void TestMyPolig(httplib::Client* cli) {
     TestSuite suite("TestMyPolig");
-
-    RUN_TEST_REMOTE(suite, cli, EmptyTest);
-    RUN_TEST_REMOTE(suite, cli, SinglePointTest);
-    RUN_TEST_REMOTE(suite, cli, ThreePointsTest);
-    RUN_TEST_REMOTE(suite, cli, CollinearPointsTest);
+    RUN_TEST_REMOTE(suite, cli, SimpleTest);
     RUN_TEST_REMOTE(suite, cli, RandomTest);
 }
 
-static void EmptyTest(httplib::Client* cli) {
+static void SimpleTest(httplib::Client* cli) {
     nlohmann::json input = R"({
-        "points": [],
-        "precision": 0.0001
+        "id": 1,
+        "precision": 1e-5,
+        "points": [
+            {"x": 0.5, "y": 0.5},
+            {"x": 1.0, "y": 0.0},
+            {"x": 0.0, "y": 1.0},
+            {"x": -1.0, "y": 0.0},
+            {"x": 0.0, "y": -1.0}
+        ]
     })"_json;
 
-    httplib::Result res = cli->Post("/MyPolig", input.dump(), "application/json");
+    httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
+    nlohmann::json output = nlohmann::json::parse(res->body);
 
-    // Проверяем успешность запроса и код ответа
-    REQUIRE_EQUAL(res.error(), httplib::Error::Success);
-    REQUIRE(res != nullptr);
-    REQUIRE_EQUAL(res->status, 200);
+    REQUIRE_EQUAL(1, output["id"]);
+    REQUIRE_EQUAL(5, output["vertices"].size());
 
-    try {
-        nlohmann::json output = nlohmann::json::parse(res->body);
-        // Для пустого набора точек ожидаем пустой полигон или отсутствие поля
-        REQUIRE(output.contains("polygon"));
-        REQUIRE(output["polygon"].is_array());
-        REQUIRE_EQUAL(output["polygon"].size(), 0);
-    }
-    catch (...) {
-        REQUIRE_EQUAL("JSON parse error", "No error");
-    }
-}
+    // Ожидаемый порядок вершин
+    std::vector<geometry::Point<double>> expected = {
+        {0.5, 0.5}, {0.0, -1.0}, {-1.0, 0.0}, {0.0, 1.0}, {1.0, 0.0}
+    };
 
-static void SinglePointTest(httplib::Client* cli) {
-    nlohmann::json input = R"({
-        "points": [[0, 0]],
-        "precision": 0.0001
-    })"_json;
-
-    httplib::Result res = cli->Post("/MyPolig", input.dump(), "application/json");
-
-    REQUIRE_EQUAL(res.error(), httplib::Error::Success);
-    REQUIRE(res != nullptr);
-    REQUIRE_EQUAL(res->status, 200);
-
-    try {
-        nlohmann::json output = nlohmann::json::parse(res->body);
-        REQUIRE(output.contains("polygon"));
-        REQUIRE_EQUAL(output["polygon"].size(), 1);
-        REQUIRE_EQUAL(output["polygon"][0][0].get<double>(), 0);
-        REQUIRE_EQUAL(output["polygon"][0][1].get<double>(), 0);
-    }
-    catch (...) {
-        REQUIRE_EQUAL("JSON parse error", "No error");
-    }
-}
-
-static void ThreePointsTest(httplib::Client* cli) {
-    nlohmann::json input = R"({
-        "points": [[0, 0], [1, 0], [0, 1]],
-        "precision": 0.0001
-    })"_json;
-
-    httplib::Result res = cli->Post("/MyPolig", input.dump(), "application/json");
-
-    REQUIRE_EQUAL(res.error(), httplib::Error::Success);
-    REQUIRE(res != nullptr);
-    REQUIRE_EQUAL(res->status, 200);
-
-    try {
-        nlohmann::json output = nlohmann::json::parse(res->body);
-        REQUIRE(output.contains("polygon"));
-        REQUIRE_EQUAL(output["polygon"].size(), 3);
-
-        std::vector<std::vector<double>> expected = { {0,0}, {1,0}, {0,1} };
-        for (const auto& pt : expected) {
-            bool found = false;
-            for (const auto& poly_pt : output["polygon"]) {
-                double x = poly_pt[0].get<double>();
-                double y = poly_pt[1].get<double>();
-                if (std::abs(x - pt[0]) < 1e-9 &&
-                    std::abs(y - pt[1]) < 1e-9) {
-                    found = true;
-                    break;
-                }
-            }
-            REQUIRE_EQUAL(found, true);
-        }
-    }
-    catch (...) {
-        REQUIRE_EQUAL("JSON parse error", "No error");
-    }
-}
-
-static void CollinearPointsTest(httplib::Client* cli) {
-    nlohmann::json input = R"({
-        "points": [[0, 0], [1, 0], [2, 0], [3, 0]],
-        "precision": 0.0001
-    })"_json;
-
-    httplib::Result res = cli->Post("/MyPolig", input.dump(), "application/json");
-
-    REQUIRE_EQUAL(res.error(), httplib::Error::Success);
-    REQUIRE(res != nullptr);
-    REQUIRE_EQUAL(res->status, 200);
-
-    try {
-        nlohmann::json output = nlohmann::json::parse(res->body);
-        REQUIRE(output.contains("polygon"));
-        REQUIRE_EQUAL(output["polygon"].size(), 4);
-
-        // Для коллинеарных точек порядок может быть разным
-        std::vector<std::vector<double>> expected_points = { {0,0}, {1,0}, {2,0}, {3,0} };
-        for (const auto& pt : expected_points) {
-            bool found = false;
-            for (const auto& poly_pt : output["polygon"]) {
-                double x = poly_pt[0].get<double>();
-                double y = poly_pt[1].get<double>();
-                if (std::abs(x - pt[0]) < 1e-9 &&
-                    std::abs(y - pt[1]) < 1e-9) {
-                    found = true;
-                    break;
-                }
-            }
-            REQUIRE_EQUAL(found, true);
-        }
-    }
-    catch (...) {
-        REQUIRE_EQUAL("JSON parse error", "No error");
+    for (size_t i = 0; i < 5; i++) {
+        REQUIRE_EQUAL(expected[i].x, output["vertices"][i]["x"]);
+        REQUIRE_EQUAL(expected[i].y, output["vertices"][i]["y"]);
     }
 }
 
 static void RandomTest(httplib::Client* cli) {
+    const int numTries = 50;
+    const double precision = 1e-5;
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dist(-10.0, 10.0);
-    const double precision = 1e-6;
+    std::uniform_real_distribution<double> coord(-10.0, 10.0);
+    std::uniform_int_distribution<size_t> sizeDist(5, 20);
 
-    for (int i = 0; i < 3; ++i) { // Уменьшил количество тестов для скорости
+    for (int it = 0; it < numTries; it++) {
+        size_t size = sizeDist(gen);
         nlohmann::json input;
+        input["id"] = it;
         input["precision"] = precision;
+        input["points"] = nlohmann::json::array();
 
-        std::uniform_int_distribution<size_t> size_dist(5, 10);
-        size_t num_points = size_dist(gen);
-        std::vector<std::vector<double>> points;
+        // Генерация origin (не слишком близко к нулю)
+        geometry::Point<double> origin;
+        do {
+            origin.x = coord(gen);
+            origin.y = coord(gen);
+        } while (std::abs(origin.x) < 0.1 && std::abs(origin.y) < 0.1);
 
-        for (size_t j = 0; j < num_points; ++j) {
-            points.push_back({ dist(gen), dist(gen) });
+        input["points"].push_back({ {"x", origin.x}, {"y", origin.y} });
+
+        // Генерация остальных точек
+        std::vector<geometry::Point<double>> points;
+        points.push_back(origin);
+
+        for (size_t i = 1; i < size; i++) {
+            geometry::Point<double> p;
+            do {
+                p.x = coord(gen);
+                p.y = coord(gen);
+            } while (std::abs(p.x - origin.x) < 0.1 &&
+                std::abs(p.y - origin.y) < 0.1);
+
+            input["points"].push_back({ {"x", p.x}, {"y", p.y} });
+            points.push_back(p);
         }
 
-        input["points"] = points;
+        httplib::Result res = cli->Post("/StarPolygon", input.dump(), "application/json");
+        nlohmann::json output = nlohmann::json::parse(res->body);
 
-        httplib::Result res = cli->Post("/MyPolig", input.dump(), "application/json");
+        REQUIRE_EQUAL(it, output["id"]);
+        REQUIRE_EQUAL(size, output["vertices"].size());
 
-        REQUIRE_EQUAL(res.error(), httplib::Error::Success);
-        REQUIRE(res != nullptr);
-        REQUIRE_EQUAL(res->status, 200);
-
-        try {
-            nlohmann::json output = nlohmann::json::parse(res->body);
-            REQUIRE(output.contains("polygon"));
-            REQUIRE_EQUAL(output["polygon"].size(), num_points);
-
-            for (const auto& pt : points) {
-                bool found = false;
-                for (const auto& poly_pt : output["polygon"]) {
-                    double x = poly_pt[0].get<double>();
-                    double y = poly_pt[1].get<double>();
-                    if (std::abs(x - pt[0]) < precision &&
-                        std::abs(y - pt[1]) < precision) {
-                        found = true;
-                        break;
-                    }
-                }
-                REQUIRE_EQUAL(found, true);
-            }
+        // Проверка порядка вершин
+        std::vector<geometry::Point<double>> vertices;
+        for (const auto& vertex : output["vertices"]) {
+            vertices.emplace_back(vertex["x"], vertex["y"]);
         }
-        catch (...) {
-            REQUIRE_EQUAL("JSON parse error", "No error");
+
+        REQUIRE_EQUAL(origin, vertices[0]);
+
+        std::vector<geometry::Point<double>> polyPoints(vertices.begin() + 1, vertices.end());
+        std::vector<geometry::Point<double>> inputPoints(points.begin() + 1, points.end());
+
+        // Сортировка для проверки
+        std::sort(inputPoints.begin(), inputPoints.end(),
+            [&](const geometry::Point<double>& a, const geometry::Point<double>& b) {
+                int cmp = geometry::PolarCmpForTest(a, b, origin, precision);
+                if (cmp != 0) return cmp > 0;
+                return (a - origin).Length() < (b - origin).Length();
+            });
+
+        for (size_t i = 0; i < polyPoints.size(); i++) {
+            REQUIRE_EQUAL(inputPoints[i], polyPoints[i]);
         }
     }
 }
