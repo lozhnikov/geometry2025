@@ -25,29 +25,21 @@ int main(int argc, char* argv[]) {
     TestOrientation();
 
     if (argc >= 2) {
-        // Меняем хост, если предоставлен соответствующий аргумент командной строки.
         host = std::string(argv[1]);
     }
 
     if (argc >= 3) {
-        // Меняем порт, если предоставлен соответствующий аргумент командной строки.
         if (std::sscanf(argv[2], "%d", &port) != 1) {
             return -1;
         }
     }
 
-    // Адрес подключения в формате хост:порт.
     std::string url = host + ":" + std::to_string(port);
 
     httplib::Client cli(url.c_str());
-
-    // Запуск тестов для алгоритма Цируса-Бека
-    geometry::TestDimcirus(&cli);
-
-    // Запуск тестов для алгоритма Грэхема
-    TestGrahamScan(&cli);
-
-    // Отправляем GET запрос для остановки сервера.
+    
+    TestCyrusBek(&cli);
+    
     httplib::Result res = cli.Get("/stop");
 
     if (res->status != 200) {

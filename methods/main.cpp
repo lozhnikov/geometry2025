@@ -1,6 +1,6 @@
 /**
  * @file methods/main.cpp
- * @author Mikhail Lozhnikov
+ * @author Mikhail Lozhnikov, Dmitrii Chebanov
  *
  * Файл с функией main() для серверной части программы.
  */
@@ -15,70 +15,43 @@
 using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
-    // Порт по-умолчанию.
-    int port = 8080;
+  // Порт по-умолчанию.
+  int port = 8080;
 
-    if (argc >= 2) {
-        // Меняем порт по умолчанию, если предоставлен соответствующий
-        // аргумент командной строки.
-        if (std::sscanf(argv[1], "%d", &port) != 1) {
-            return -1;
+  if (argc >= 2) {
+    // Меняем порт по умолчанию, если предоставлен соответствующий
+    // аргумент командной строки.
+    if (std::sscanf(argv[1], "%d", &port) != 1)
+      return -1;
+  }
+
+  std::cerr << "Listening on port " << port << "..." << std::endl;
+
+  httplib::Server svr;
+
+  // Обработчик для GET запроса по адресу /stop. Этот обработчик
+  // останавливает сервер.
+  svr.Get("/stop", [&](const httplib::Request&, httplib::Response&) {
+    svr.stop();
+  });
+
+  server.Post("/CyrusBek",[](const httplib::Request& req,
+                             httplib::Response& res) {
+    nlohmann::json input, output;
+    try {
+      input = nlohmann::json::parse(req.body);
+      } catch (...) {
+        output["error"] = "Invalid JSON";
+        res.set_content(output.dump(), "application/json");
+        return;
         }
-    }
+        
+        int ret = CyrusBekMethod(input, &output);
+        res.status = ret == 0 ? 200 : 400;
+        res.set_content(output.dump(), "application/json");
+  });
 
-    std::cerr << "Listening on port " << port << "..." << std::endl;
+  svr.listen("0.0.0.0", port);
 
-    httplib::Server svr;
-
-    // Обработчик для GET запроса по адресу /stop. Этот обработчик
-    // останавливает сервер.
-    svr.Get("/stop", [&](const httplib::Request&, httplib::Response&) {
-        svr.stop();
-    });
-
-    svr.Post("/Dimcirus",
-            [&](const httplib::Request& req, httplib::Response& res) {
-        try {
-            auto input = json::parse(req.body);
-            json output;
-
-            int result = geometry::DimcirusMethod(input, &output);
-
-            if (result != 0) {
-                res.status = 400;  // Bad request
-            }
-
-            res.set_content(output.dump(), "application/json");
-        } catch (const std::exception& e) {
-            json error_output = {{"error", std::string("Parse error: ") + e.what()}};
-            res.status = 400;
-            res.set_content(error_output.dump(), "application/json");
-        }
-    });
-
-    svr.Post("/GrahamScan",
-            [&](const httplib::Request& req, httplib::Response& res) {
-        try {
-            auto input = json::parse(req.body);
-            json output;
-
-            int result = geometry::GrahamScanMethod(input, &output);
-
-            if (result != 0) {
-                res.status = 400;  // Bad request
-            }
-
-            res.set_content(output.dump(), "application/json");
-        } catch (const std::exception& e) {
-            json error_output = {{"error", std::string("Parse error: ") + e.what()}};
-            res.status = 400;
-            res.set_content(error_output.dump(), "application/json");
-        }
-    });
-
-    // Эта функция запускает сервер на указанном порту. Программа не завершится
-    // до тех пор, пока сервер не будет остановлен.
-    svr.listen("0.0.0.0", port);
-
-    return 0;
+  return 0;
 }

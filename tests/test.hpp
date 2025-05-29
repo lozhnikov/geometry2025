@@ -35,22 +35,7 @@ void TestOrientation();
  *
  * @param cli указатель на HTTP клиент
  */
-void TestDimcirus(httplib::Client* cli);
 
-namespace geometry {
-    /**
-     * @brief Набор тестов для алгоритма Цируса-Бека (пространство geometry)
-     *
-     * @param cli указатель на HTTP клиент
-     */
-    void TestDimcirus(httplib::Client* cli);
-}
-
-/**
- * @brief Набор тестов для алгоритма Грэхема (построение выпуклой оболочки)
- *
- * @param cli указатель на HTTP клиент
- */
-void TestGrahamScan(httplib::Client* cli);
+void TestCyrusBek(httplib::Client* cli);
 
 #endif  // TESTS_TEST_HPP_
