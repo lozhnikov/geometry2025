@@ -117,7 +117,6 @@ include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 add_executable(
   geometry_server
-  include/clip_algorithm.hpp
   include/common.hpp
   include/dimcirus.hpp
   include/edge.hpp
@@ -154,7 +153,6 @@ target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
 add_executable(
   geometry_test
-  include/clip_algorithm.hpp
   include/common.hpp
   include/dimcirus.hpp
   include/edge.hpp

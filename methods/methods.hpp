@@ -12,20 +12,23 @@
 
 namespace geometry {
 
-/* Сюда нужно вставить объявление серверной части алгоритма. */
+/**
+ * @brief Method for Cyrus-Beck line clipping algorithm realization.
+ *
+ * @param input input data in JSON format containing segment and polygon
+ * @param output pointer to JSON output with clipping result
+ * @return return code: 0 - success, otherwise - error
+ */
+int DimcirusMethod(const nlohmann::json& input, nlohmann::json* output);
 
-    int DimcirusMethod(const nlohmann::json& input, nlohmann::json* output);
-/** 
+/**
  * @brief Method for Graham scan convex hull algorithm realization.
- * 
+ *
  * @param input input data in JSON format
  * @param output pointer to JSON output
  * @return return code: 0 - success, otherwise - error
  */
-
-  int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
-
-/* Конец вставки. */
+int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
 
 }  // namespace geometry
 

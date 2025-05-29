@@ -5,12 +5,12 @@
  * Файл с функией main() для серверной части программы.
  */
 
-#include "methods.hpp"
 #include <httplib.h>
 #include <iostream>
 #include <cstdio>
 #include <string>
 #include <nlohmann/json.hpp>
+#include "methods.hpp"
 
 using json = nlohmann::json;
 
@@ -36,20 +36,28 @@ int main(int argc, char* argv[]) {
         svr.stop();
     });
 
-    svr.Post("/Dimcirus", [&](const httplib::Request& req,
-                             httplib::Response& res) {
-        nlohmann::json input = nlohmann::json::parse(req.body);
-        nlohmann::json output;
+    svr.Post("/Dimcirus",
+            [&](const httplib::Request& req, httplib::Response& res) {
+        try {
+            auto input = json::parse(req.body);
+            json output;
 
-        if (geometry::DimcirusMethod(input, &output) < 0) {
+            int result = geometry::DimcirusMethod(input, &output);
+
+            if (result != 0) {
+                res.status = 400;  // Bad request
+            }
+
+            res.set_content(output.dump(), "application/json");
+        } catch (const std::exception& e) {
+            json error_output = {{"error", std::string("Parse error: ") + e.what()}};
             res.status = 400;
+            res.set_content(error_output.dump(), "application/json");
         }
-        
-        res.set_content(output.dump(), "application/json");
     });
 
-    svr.Post("/GrahamScan", [&](const httplib::Request& req,
-                               httplib::Response& res) {
+    svr.Post("/GrahamScan",
+            [&](const httplib::Request& req, httplib::Response& res) {
         try {
             auto input = json::parse(req.body);
             json output;
