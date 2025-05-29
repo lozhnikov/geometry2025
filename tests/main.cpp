@@ -43,6 +43,7 @@ int main(int argc, char* argv[]) {
   /* Сюда нужно вставить вызов набора тестов для алгоритма. */
 
   TestGrahamScan(&cli);
+  TestCheckConvex(&cli);
 
   /* Конец вставки. */
 
