@@ -5,7 +5,7 @@
  * @brief Main server application file.
  */
 
-
+#include <cstdio>
 #include <httplib.h>
 #include <iostream>
 #include <string>
