@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(geometry CXX)
 
+set(SSL_CERT_FILE "C:/mingw/mingw64/ssl/certs/cacert.pem")
+
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake")
@@ -113,6 +115,7 @@ include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 add_executable(
   geometry_server
+  include/angle_point_in_polygon.hpp
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
@@ -122,6 +125,7 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  methods/angle_point_in_polygon_method.cpp
   methods/graham_scan_method.cpp
   methods/main.cpp
   methods/methods.hpp
