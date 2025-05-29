@@ -52,8 +52,7 @@ std::vector<Point<T>> SutherlandHodgman(
                         const auto n2 = s.X() * e.Y() - s.Y() * e.X();
                         output_list.emplace_back(
                             (n1 * dpx - n2 * dcx) / n3,
-                            (n1 * dpy - n2 * dcy) / n3
-                        );
+                            (n1 * dpy - n2 * dcy) / n3);
                     }
                 }
                 output_list.push_back(e);
@@ -69,8 +68,7 @@ std::vector<Point<T>> SutherlandHodgman(
                     const auto n2 = s.X() * e.Y() - s.Y() * e.X();
                     output_list.emplace_back(
                         (n1 * dpx - n2 * dcx) / n3,
-                        (n1 * dpy - n2 * dcy) / n3
-                    );
+                        (n1 * dpy - n2 * dcy) / n3);
                 }
             }
             s = e;
