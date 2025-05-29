@@ -8,6 +8,7 @@
 #include <httplib.h>
 #include <vector>
 #include <random>
+#include <algorithm>
 #include <nlohmann/json.hpp>
 #include "test_core.hpp"
 #include "test.hpp"
@@ -40,7 +41,8 @@ static void SimpleMonotoneTest(httplib::Client* cli) {
         }
     )"_json;
 
-    httplib::Result res = cli->Post("/MonotonePolygonTriangulation", input.dump(), "application/json");
+    httplib::Result res = cli->Post("/MonotonePolygonTriangulation",
+                                    input.dump(), "application/json");
     nlohmann::json output = nlohmann::json::parse(res->body);
 
     REQUIRE_EQUAL(0, output["diagonals_count"]);
@@ -64,7 +66,8 @@ static void SquareTest(httplib::Client* cli) {
         }
     )"_json;
 
-    httplib::Result res = cli->Post("/MonotonePolygonTriangulation", input.dump(), "application/json");
+    httplib::Result res = cli->Post("/MonotonePolygonTriangulation",
+                                    input.dump(), "application/json");
     nlohmann::json output = nlohmann::json::parse(res->body);
 
     REQUIRE_EQUAL(1, output["diagonals_count"]);
@@ -102,7 +105,6 @@ static void RandomMonotoneTest(httplib::Client* cli) {
     for (int it = 0; it < numTries; it++) {
         size_t size = sizeDist(gen);
         nlohmann::json input;
-
         std::vector<double> xCoords(size);
         std::vector<double> yCoords(size);
         
@@ -127,9 +129,9 @@ static void RandomMonotoneTest(httplib::Client* cli) {
             }
         }
 
-        httplib::Result res = cli->Post("/MonotonePolygonTriangulation", input.dump(), "application/json");
+        httplib::Result res = cli->Post("/MonotonePolygonTriangulation",
+                                        input.dump(), "application/json");
         nlohmann::json output = nlohmann::json::parse(res->body);
-
         REQUIRE_EQUAL(size, output["vertices_count"]);
         
         // кол-во диагоналей должно быть n-3

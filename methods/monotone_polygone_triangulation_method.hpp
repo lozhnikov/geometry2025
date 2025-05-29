@@ -1,13 +1,7 @@
-//
-//  monotone_p_triang_method.hpp
-//  
-//
-//  Created by Mac on 29.05.2025.
-//
+#infdef METHODS_MONOTONE_POLYGONE_TRIANGULATION_METHOD_HPP_
 
-#ifndef monotone_p_triang_method_hpp
 #define monotone_p_triang_method_hpp
 
 #include <stdio.h>
 
-#endif /* monotone_p_triang_method_hpp */
+#endif  // TESTS_MONOTONE_P_TRIANG_TEST_HPP_
