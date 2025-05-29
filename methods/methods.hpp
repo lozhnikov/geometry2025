@@ -12,17 +12,27 @@
 
 namespace geometry {
 
-/* Сюда нужно вставить объявление серверной части алгоритма. */
 
-/** 
+/**
  * @brief Method for Graham scan convex hull algorithm realization.
- * 
+ *
  * @param input input data in JSON format
  * @param output pointer to JSON output
  * @return return code: 0 - success, otherwise - error
  */
 
   int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
+
+
+/**
+ * @brief Implementation of an algorithm for checking the convexity of a polygon vertex.
+ *
+ * @param input input data in JSON format
+ * @param output pointer to JSON output
+ * @return return code: 0 - success, otherwise - error
+ */
+
+  int CheckConvex(const nlohmann::json& input, nlohmann::json* output);
 
 /* Конец вставки. */
 

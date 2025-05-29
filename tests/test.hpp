@@ -34,11 +34,20 @@ void TestOrientation();
 
 /**
  * @brief testing Graham scan
- * 
+ *
  * @param cli pointer to HTTP client
  */
 
 void TestGrahamScan(httplib::Client* cli);
+
+/**
+ * @brief testing checking the convexity of a polygon vertex
+ *
+ * @param cli pointer to HTTP client
+ */
+
+void TestCheckConvex(httplib::Client* cli);
+
 
 /* Конец вставки. */
 

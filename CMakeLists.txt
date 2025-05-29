@@ -107,12 +107,12 @@ include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 ####################################################################
 #    Исходные файлы серверной части. Сюда нужно добавить файлы
-#    - include/my_algorithm_name.hpp
-#    - methods/my_algorithm_name_method.cpp
+#   
 ####################################################################
 
 add_executable(
   geometry_server
+  include/check_convex.hpp
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
@@ -122,6 +122,7 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  methods/check_convex_method.cpp
   methods/graham_scan_method.cpp
   methods/main.cpp
   methods/methods.hpp
@@ -138,12 +139,11 @@ target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 ####################################################################
 #    Исходные файлы клиентской части (набор тестов).
 #    Сюда нужно добавить файлы
-#    - include/my_algorithm_name.hpp
-#    - tests/my_algorithm_name_test.cpp
 ####################################################################
 
 add_executable(
   geometry_test
+  include/check_convex.hpp
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
@@ -152,6 +152,7 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  tests/check_convex_test.cpp
   tests/edge_test.cpp
   tests/graham_scan_test.cpp
   tests/io.hpp
