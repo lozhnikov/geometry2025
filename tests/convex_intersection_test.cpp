@@ -11,8 +11,8 @@
 #include <utility>
 #include <vector>
 
-#include <httplib.h>
 #include <nlohmann/json.hpp>
+#include <httplib.h>
 
 #include "test_core.hpp"
 #include "test.hpp"

@@ -9,8 +9,8 @@
 #include <iostream>
 #include <string>
 
-#include <httplib.h>
 #include <nlohmann/json.hpp>
+#include <httplib.h>
 
 #include "methods.hpp"
 
