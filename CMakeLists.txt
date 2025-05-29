@@ -171,5 +171,3 @@ add_executable(
 
 
 target_link_libraries(geometry_test ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
-
-

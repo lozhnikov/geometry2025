@@ -31,11 +31,17 @@ void TestOrientation();
 
 /* Объявления тестовых функций */
 
+/**
+ * @brief testing Graham scan
+ * 
+ * @param cli pointer to HTTP client
+ */
 
 /**
  * @brief Тестирование функции пересечения выпуклых полигонов
  */
 void TestConvexIntersection(httplib::Client* cli);
+
 
 
 #endif  // TESTS_TEST_HPP_

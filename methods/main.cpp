@@ -12,8 +12,7 @@
 #include <string>
 #include "methods.hpp"
 
-
- using json = nlohmann::json;
+using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
   // Порт по-умолчанию.
@@ -38,6 +37,7 @@ int main(int argc, char* argv[]) {
 
   /* Сюда нужно вставить обработчик post запроса для алгоритма. */
 
+
   svr.Post("/ConvexIntersection", [&](const httplib::Request& req, httplib::Response& res) {
   try {
     auto input = json::parse(req.body);
@@ -54,5 +54,6 @@ int main(int argc, char* argv[]) {
 svr.listen("0.0.0.0", port);
 return 0;
 }
+
 
   /* Конец вставки. */
