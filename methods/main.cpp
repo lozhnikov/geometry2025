@@ -5,13 +5,13 @@
  * @brief Main server application file.
  */
 
-#include <cstdio>
 
+#include <httplib.h>
 #include <iostream>
 #include <string>
 
 #include <nlohmann/json.hpp>
-#include <httplib.h>
+
 
 #include "methods.hpp"
 
