@@ -42,9 +42,9 @@ std::vector<Point<T>> SutherlandHodgman(
     for (const auto& e : input_list) {
       const auto cp2x_cp1x = cp2.X() - cp1.X();
       const auto cp2y_cp1y = cp2.Y() - cp1.Y();
-      const auto e_inside = cp2x_cp1x * (e.Y() - cp1.Y()) > 
+      const auto e_inside = cp2x_cp1x * (e.Y() - cp1.Y()) >
                            cp2y_cp1y * (e.X() - cp1.X());
-      const auto s_inside = cp2x_cp1x * (s.Y() - cp1.Y()) > 
+      const auto s_inside = cp2x_cp1x * (s.Y() - cp1.Y()) >
                            cp2y_cp1y * (s.X() - cp1.X());
 
       if (e_inside) {
@@ -55,7 +55,7 @@ std::vector<Point<T>> SutherlandHodgman(
           const auto dpy = s.Y() - e.Y();
           const auto n3 = dcx * dpy - dcy * dpx;
 
-          if (n3 != 0) { 
+          if (n3 != 0) {
             const auto n1 = cp1.X() * cp2.Y() - cp1.Y() * cp2.X();
             const auto n2 = s.X() * e.Y() - s.Y() * e.X();
             output_list.emplace_back(
