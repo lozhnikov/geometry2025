@@ -4,16 +4,19 @@
  *
  */
 
+#include "test_core.hpp"
+#include "test.hpp"
+
 #include <dimcirus.hpp>
 #include <edge.hpp>
 #include <polygon.hpp>
-#include <httplib.h>
+
 #include <string>
 #include <vector>
 #include <random>
+
+#include <httplib.h>
 #include <nlohmann/json.hpp>
-#include "test_core.hpp"
-#include "test.hpp"
 
 namespace geometry {
 
@@ -161,5 +164,4 @@ namespace geometry {
         }
     }
 
-} 
-
+} // namespace geometry
