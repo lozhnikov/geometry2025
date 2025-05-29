@@ -4,6 +4,7 @@
  *
  * @brief Tests for convex intersection algorithm
  */
+#include <cstdio>
 
 #include <algorithm>
 #include <cmath>
