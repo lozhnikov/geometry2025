@@ -38,7 +38,7 @@ namespace geometry {
         if (points.empty()) return nullptr;
 
         Polygon<T>* polygon = new Polygon<T>();
-        polygon->insert(points[0]);
+        polygon->Insert(points[0]);
         std::list<Point<T>> origin = polygon->Vertices();
         Point<T> originPt = origin.front();
 

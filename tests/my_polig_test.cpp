@@ -14,6 +14,7 @@
 #include <nlohmann/json.hpp>
 #include "test_core.hpp"
 #include "test.hpp"
+#include "my_polig.hpp"
 
 namespace geometry {
 

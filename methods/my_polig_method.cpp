@@ -1,86 +1,64 @@
 /**
  * @file methods/my_polig_method.cpp
  * @author Nika Adzhindzhal
- *
  */
 
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include <vector>
-#include <utility>
+#include <iostream>
 #include <nlohmann/json.hpp>
 #include "methods.hpp"
+#include <point.hpp>
+#include <polygon.hpp>     
+#include <my_polig.hpp>    // Для starPolygon
 
 namespace geometry {
 
-    struct Point {
-        double x, y;
-    };
-
-    int gcd(int a, int b) {
-        return b == 0 ? a : gcd(b, a % b);
-    }
-
-    std::vector<Point> generate_points(int n, double radius) {
-        std::vector<Point> points;
-        for (int i = 0; i < n; ++i) {
-            double angle = 2 * M_PI * i / n;
-            points.push_back({ radius * cos(angle), radius * sin(angle) });
-        }
-        return points;
-    }
-
-    std::vector<std::pair<int, int>> build_star_edges(int n, int k) {
-        std::vector<std::pair<int, int>> edges;
-        int current = 0;
-        int start = current;
-        do {
-            int next = (current + k) % n;
-            edges.emplace_back(current, next);
-            current = next;
-        } while (current != start);
-        return edges;
-    }
-
     int My_PoligMethod(const nlohmann::json& input, nlohmann::json* output) {
-        int n, k;
-        double radius = 100.0;
+        double precision;
+        std::vector<Point<double>> points;
 
         try {
-            n = input.at("n");
-            k = input.at("k");
-            if (input.contains("radius")) {
-                radius = input.at("radius");
+            // Читаем новые параметры (точность и точки)
+            precision = input.at("precision").get<double>();
+            auto pointsArray = input.at("points");
+            for (const auto& point : pointsArray) {
+                double x = point.at("x").get<double>();
+                double y = point.at("y").get<double>();
+                points.push_back(Point<double>(x, y));
             }
         }
         catch (const nlohmann::json::exception& e) {
+            std::cerr << "Ошибка JSON: " << e.what() << std::endl;
             return -1;
         }
 
-        if (n < 3 || k <= 0 || k >= n || gcd(n, k) != 1) {
-            std::cout << "Incorrect input data!" << std::end;
+        // Проверяем наличие точек
+        if (points.empty()) {
+            std::cerr << "Точки не предоставлены" << std::endl;
             return -1;
         }
 
-        auto points = generate_points(n, radius);
-        auto edges = build_star_edges(n, k);
+        // Вызываем алгоритм построения многоугольника
+        Polygon<double>* poly = starPolygon(points, precision);
+        if (poly == nullptr) {
+            std::cerr << "Ошибка создания многоугольника" << std::endl;
+            return -1;
+        }
 
+        // Получаем вершины многоугольника
+        std::list<Point<double>> vertices = poly->Vertices();
+
+        // Формируем выходные данные
         (*output)["vertices"] = nlohmann::json::array();
-        for (const auto& p : points) {
-            nlohmann::json vertex;
-            vertex["x"] = p.x;
-            vertex["y"] = p.y;
-            (*output)["vertices"].push_back(vertex);
+        for (const auto& vertex : vertices) {
+            nlohmann::json v;
+            v["x"] = vertex.X();
+            v["y"] = vertex.Y();
+            (*output)["vertices"].push_back(v);
         }
 
-        (*output)["edges"] = nlohmann::json::array();
-        for (const auto& e : edges) {
-            nlohmann::json edge;
-            edge["a"] = e.first;
-            edge["b"] = e.second;
-            (*output)["edges"].push_back(edge);
-        }
-
+        delete poly;  // Освобождаем память
         return 0;
     }
 
