@@ -32,7 +32,7 @@ int SutherlandHodgmanMethod(const nlohmann::json& input,
     }
 
     std::vector<geometry::Point<double>> subject_polygon, clip_polygon;
-    
+
     // Parse subject polygon
     for (const auto& point_json : input["subject_polygon"]) {
       if (!point_json.is_object() ||
