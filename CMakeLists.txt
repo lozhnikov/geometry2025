@@ -96,7 +96,7 @@ else ()
 endif ()
 
 if (NOT MSVC)
-  set(GEOMETRY_LIBS "pthread;ws2_32")
+  set(GEOMETRY_LIBS "pthread")
 endif ()
 
 if (WIN32)
