@@ -3,15 +3,17 @@
  * @author Nika Adzhindzhal
  */
 
+#include "my_polig_method.h"
+#include "methods.hpp"
+#include "point.hpp"
+#include "polygon.hpp"
+#include "my_polig.hpp"
 #include <cmath>
 #include <vector>
 #include <iostream>
-#include <nlohmann/json.hpp>
-#include "methods.hpp"
-#include <point.hpp>
-#include <polygon.hpp>   
-#include <my_polig.hpp>
 #include <list>
+#include <nlohmann/json.hpp>
+
 
 namespace geometry {
 
