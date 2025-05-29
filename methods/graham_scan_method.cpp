@@ -5,8 +5,6 @@
  * @brief Graham scan convex hull algorithm implementation.
  */
 
- #include <nlohmann/json.hpp>
- #include "../include/graham_scan.hpp"
 #include <vector>
 #include <string>
 #include <nlohmann/json.hpp>
@@ -20,9 +18,6 @@
  * @return return code: 0 - success, otherwise - error
  */
 
- namespace geometry {
-   int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output) {
-     try {
 namespace geometry {
   int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output) {
     try {
@@ -33,14 +28,12 @@ namespace geometry {
 
       std::vector<geometry::Point<double>> points;
       for (const auto& point_json : input["points"]) {
-        if (!point_json.is_object() || !point_json.contains("x") || !point_json["x"].is_number()) {
         if (!point_json.is_object() ||
             !point_json.contains("x") ||
             !point_json["x"].is_number()) {
           (*output)["error"] = "Each point must have 'x' numeric field";
           return 2;
         }
-        if (!point_json.is_object() || !point_json.contains("y") || !point_json["y"].is_number()) {
         if (!point_json.is_object() ||
             !point_json.contains("y") ||
             !point_json["y"].is_number()) {
@@ -50,8 +43,6 @@ namespace geometry {
 
         points.emplace_back(
           point_json["x"].get<double>(),
-          point_json["y"].get<double>()
-        );
           point_json["y"].get<double>());
       }
 
@@ -70,12 +61,6 @@ namespace geometry {
       (*output)["original_size"] = points.size();
 
       return 0;
-     } catch (const std::exception& e) {
-       (*output)["error"] = std::string("Exception: ") + e.what();
-       return -1;
-     }
-   }
- }
     } catch (const std::exception& e) {
       (*output)["error"] = std::string("Exception: ") + e.what();
       return -1;
