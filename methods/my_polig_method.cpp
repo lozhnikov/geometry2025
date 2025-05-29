@@ -9,8 +9,9 @@
 #include <nlohmann/json.hpp>
 #include "methods.hpp"
 #include <point.hpp>
-#include <polygon.hpp>     
+#include <polygon.hpp>   
 #include <my_polig.hpp>
+#include <list>
 
 namespace geometry {
 

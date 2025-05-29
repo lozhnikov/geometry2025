@@ -4,6 +4,9 @@
  *
  * Реализация набора тестов для алгоритма построения звездного многоугольника.
  */
+#include "my_polig.hpp"
+#include "test_core.hpp"
+#include "test.hpp"
 #include <point.hpp>
 #include <polygon.hpp>
 #include <vector>
@@ -13,9 +16,6 @@
 #include <string>
 #include <httplib.h>
 #include <nlohmann/json.hpp>
-#include "test_core.hpp"
-#include "test.hpp"
-#include "my_polig.hpp"
 
 namespace geometry {
 
@@ -38,7 +38,7 @@ namespace geometry {
         return 0;
     }
 
-} // namespace geometry
+}  // namespace geometry
 
 /* static void SimpleTest(httplib::Client* cli); */
 static void RandomTest(httplib::Client* cli);
@@ -102,12 +102,12 @@ void TestMyPolig(httplib::Client* cli) {
 */
 
 static void RandomTest(httplib::Client* cli) {
-    const int numTries = 5; // Уменьшим количество для отладки
+    const int numTries = 5;
     const double precision = 1e-5;
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> coord(-10.0, 10.0);
-    std::uniform_int_distribution<size_t> sizeDist(3, 10); // Уменьшим размер для отладки
+    std::uniform_int_distribution<size_t> sizeDist(3, 10);
 
     for (int it = 0; it < numTries; it++) {
         size_t size = sizeDist(gen);
@@ -164,19 +164,21 @@ static void RandomTest(httplib::Client* cli) {
             for (const auto& vertex : output["vertices"]) {
                 vertices.emplace_back(
                     vertex["x"].get<double>(),
-                    vertex["y"].get<double>()
-                );
+                    vertex["y"].get<double>() );
             }
 
             REQUIRE_EQUAL(origin.X(), vertices[0].X());
             REQUIRE_EQUAL(origin.Y(), vertices[0].Y());
 
-            std::vector<geometry::Point<double>> polyPoints(vertices.begin() + 1, vertices.end());
-            std::vector<geometry::Point<double>> inputPoints(points.begin() + 1, points.end());
+            std::vector<geometry::Point<double>> polyPoints(vertices.begin() + 1,
+                vertices.end());
+            std::vector<geometry::Point<double>> inputPoints(points.begin() + 1,
+                points.end());
 
             // Сортировка для проверки
             std::sort(inputPoints.begin(), inputPoints.end(),
-                [&](const geometry::Point<double>& a, const geometry::Point<double>& b) {
+                [&](const geometry::Point<double>& a, 
+                    const geometry::Point<double>& b) {
                     int cmp = geometry::PolarCmpForTest(a, b, origin, precision);
                     if (cmp != 0) return cmp > 0;
                     return (a - origin).Length() < (b - origin).Length();

@@ -50,7 +50,8 @@ namespace geometry {
             polygon->Current() = itToOrigin;
             polygon->Advance(Rotation::ClockWise);
 
-            while (polarCmp(points[i], *polygon->Current(), originPt, precision) < 0) {
+            while (polarCmp(points[i], *polygon->Current(),
+                originPt, precision) < 0) {
                 polygon->Advance(Rotation::ClockWise);
             }
 
@@ -61,6 +62,6 @@ namespace geometry {
         return polygon;
     }
 
-} // namespace geometry
+}  // namespace geometry
 
-#endif // INCLUDE_MY_POLIG_HPP_
+#endif  // INCLUDE_MY_POLIG_HPP_
