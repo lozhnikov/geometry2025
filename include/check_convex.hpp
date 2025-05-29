@@ -57,8 +57,7 @@ namespace geometry {
         Point<T> b = (*w) - (*u);
         T sa = a.X() * b.Y() - b.X() * a.Y();
 
-        if (sa < 0.0 || (std::abs(sa) < 1e-10 && Length2(a) < Length2(b)))
-        {
+        if (sa < 0.0 || (std::abs(sa) < 1e-10 && Length2(a) < Length2(b))) {
             convex.push_back(*current);
         }
 

@@ -21,7 +21,6 @@
 static void FirstTest(httplib::Client* cli);
 static void SecondTest(httplib::Client* cli);
 static void ThirdTest(httplib::Client* cli);
-//static void RandomTest(httplib::Client* cli);
 
 void TestCheckConvex(httplib::Client* cli) {
   TestSuite suite("TestCheckConvex");
@@ -29,7 +28,6 @@ void TestCheckConvex(httplib::Client* cli) {
   RUN_TEST_REMOTE(suite, cli, FirstTest);
   RUN_TEST_REMOTE(suite, cli, SecondTest);
   RUN_TEST_REMOTE(suite, cli, ThirdTest);
-//  RUN_TEST_REMOTE(suite, cli, RandomTest);
 }
 
 /**

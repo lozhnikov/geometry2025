@@ -19,8 +19,8 @@
  * @return return code: 0 - success, otherwise - error
  */
 
- namespace geometry {
-  int CheckConvex(const nlohmann::json& input, nlohmann::json* output) {
+namespace geometry {
+    int CheckConvex(const nlohmann::json& input, nlohmann::json* output) {
     try {
       if (!input.contains("points") || !input["points"].is_array()) {
         (*output)["error"] = "Input must contain 'points' array";
