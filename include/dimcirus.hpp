@@ -33,9 +33,9 @@ bool clipLineSegment(Edge<T>& s, Polygon<T>& p, Edge<T>& result) {
 
             T dotProduct = n.X() * v.X() + n.Y() * v.Y();
 
-            if (dotProduct > T(0)) { // ПВ (входящая точка)
+            if (dotProduct > T(0)) {
                 t0 = std::max(t0, t);
-            } else { // ПП (выходящая точка)
+            } else { 
                 t1 = std::min(t1, t);
             }
         } else if (intersection == Intersection::Parallel || intersection == Intersection::Collinear) {

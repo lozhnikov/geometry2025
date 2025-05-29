@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <string>
 #include "methods.hpp"
+#include "clip_algorithm.hpp"
 
 namespace geometry {
 
@@ -41,7 +42,7 @@ static int DimcirusMethodHelper(const nlohmann::json& input,
     for (const auto& vertex : vertices) {
       T x = vertex.at("x");
       T y = vertex.at("y");
-      poly.Add(Point<T>(x, y));
+      poly.Insert(Point<T>(x, y));
     }
 
     Edge<T> result;

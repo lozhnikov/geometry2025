@@ -33,6 +33,9 @@ void TestOrientation();
 /* Сюда нужно добавить объявления тестовых функций. */
 void TestDimcirus(httplib::Client* cli);
 
+namespace geometry {
+    void TestDimcirus(httplib::Client* cli);
+}
 
 /* Конец вставки. */
 
