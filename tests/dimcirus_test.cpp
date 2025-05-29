@@ -4,6 +4,7 @@
  *
  */
 
+#include "dimcirus_test.h"
 #include "test_core.hpp"
 #include "test.hpp"
 
@@ -52,7 +53,8 @@ namespace geometry {
     }
   })"_json;
 
-        httplib::Result res = cli->Post("/Dimcirus", input.dump(), "application/json");
+        httplib::Result res = cli->Post("/Dimcirus", input.dump(),
+                                        "application/json");
         nlohmann::json output = nlohmann::json::parse(res->body);
 
         REQUIRE_EQUAL(true, output["success"]);
@@ -84,7 +86,8 @@ namespace geometry {
     }
   })"_json;
 
-        httplib::Result res = cli->Post("/Dimcirus", input.dump(), "application/json");
+        httplib::Result res = cli->Post("/Dimcirus", input.dump(),
+                                        "application/json");
         nlohmann::json output = nlohmann::json::parse(res->body);
 
         REQUIRE_EQUAL(false, output["success"]);
@@ -109,7 +112,8 @@ namespace geometry {
     }
   })"_json;
 
-        httplib::Result res = cli->Post("/Dimcirus", input.dump(), "application/json");
+        httplib::Result res = cli->Post("/Dimcirus", input.dump(),
+                                        "application/json");
         nlohmann::json output = nlohmann::json::parse(res->body);
 
         REQUIRE_EQUAL(true, output["success"]);
@@ -149,7 +153,8 @@ namespace geometry {
             input["segment"] = segment;
             input["polygon"] = polygon;
 
-            httplib::Result res = cli->Post("/Dimcirus", input.dump(), "application/json");
+            httplib::Result res = cli->Post("/Dimcirus", input.dump(),
+                                            "application/json");
             nlohmann::json output = nlohmann::json::parse(res->body);
 
             if (output["success"]) {

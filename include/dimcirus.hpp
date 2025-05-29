@@ -8,7 +8,6 @@
 #define INCLUDE_DIMCIRUS_HPP
 
 
-
 #include <common.hpp>
 #include <edge.hpp>
 #include <polygon.hpp>
