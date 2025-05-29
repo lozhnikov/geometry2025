@@ -32,7 +32,8 @@ namespace geometry {
  * @return return code: 0 - success, otherwise - error
  */
 
-  int SutherlandHodgmanMethod(const nlohmann::json& input, nlohmann::json* output);
+  int SutherlandHodgmanMethod(const nlohmann::json& input,
+                                nlohmann::json* output);
 
 /* Конец вставки. */
 
