@@ -66,13 +66,16 @@ static void SimpleTest(httplib::Client* cli) {
     REQUIRE_EQUAL(5, output["vertices"].size());
 
     // Ожидаемый порядок вершин
-    std::vector<geometry::Point<double>> expected = {
-        {0.5, 0.5}, {0.0, -1.0}, {-1.0, 0.0}, {0.0, 1.0}, {1.0, 0.0}
-    };
+    std::vector<geometry::Point<double>> expected;
+    expected.push_back(geometry::Point<double>(0.5, 0.5));
+    expected.push_back(geometry::Point<double>(0.0, -1.0));
+    expected.push_back(geometry::Point<double>(-1.0, 0.0));
+    expected.push_back(geometry::Point<double>(0.0, 1.0));
+    expected.push_back(geometry::Point<double>(1.0, 0.0));
 
     for (size_t i = 0; i < 5; i++) {
-        REQUIRE_EQUAL(expected[i].x, output["vertices"][i]["x"]);
-        REQUIRE_EQUAL(expected[i].y, output["vertices"][i]["y"]);
+        REQUIRE_EQUAL(expected[i].X(), output["vertices"][i]["x"]);
+        REQUIRE_EQUAL(expected[i].Y(), output["vertices"][i]["y"]);
     }
 }
 
@@ -92,27 +95,29 @@ static void RandomTest(httplib::Client* cli) {
         input["points"] = nlohmann::json::array();
 
         // Генерация origin (не слишком близко к нулю)
-        geometry::Point<double> origin;
+        double x, y;
         do {
-            origin.x = coord(gen);
-            origin.y = coord(gen);
-        } while (std::abs(origin.x) < 0.1 && std::abs(origin.y) < 0.1);
+            x = coord(gen);
+            y = coord(gen);
+        } while (std::abs(x) < 0.1 && std::abs(y) < 0.1);
 
-        input["points"].push_back({ {"x", origin.x}, {"y", origin.y} });
+        geometry::Point<double> origin(x, y);
+        input["points"].push_back({ {"x", origin.X()}, {"y", origin.Y()} });
 
         // Генерация остальных точек
         std::vector<geometry::Point<double>> points;
         points.push_back(origin);
 
         for (size_t i = 1; i < size; i++) {
-            geometry::Point<double> p;
+            double px, py;
             do {
-                p.x = coord(gen);
-                p.y = coord(gen);
-            } while (std::abs(p.x - origin.x) < 0.1 &&
-                std::abs(p.y - origin.y) < 0.1);
+                px = coord(gen);
+                py = coord(gen);
+            } while (std::abs(px - origin.X()) < 0.1 &&
+                std::abs(py - origin.Y()) < 0.1);
 
-            input["points"].push_back({ {"x", p.x}, {"y", p.y} });
+            geometry::Point<double> p(px, py);
+            input["points"].push_back({ {"x", p.X()}, {"y", p.Y()} });
             points.push_back(p);
         }
 
@@ -125,10 +130,15 @@ static void RandomTest(httplib::Client* cli) {
         // Проверка порядка вершин
         std::vector<geometry::Point<double>> vertices;
         for (const auto& vertex : output["vertices"]) {
-            vertices.emplace_back(vertex["x"], vertex["y"]);
+            vertices.emplace_back(
+                vertex["x"].get<double>(),
+                vertex["y"].get<double>()
+            );
         }
 
-        REQUIRE_EQUAL(origin, vertices[0]);
+        // Проверка первой вершины
+        REQUIRE_EQUAL(origin.X(), vertices[0].X());
+        REQUIRE_EQUAL(origin.Y(), vertices[0].Y());
 
         std::vector<geometry::Point<double>> polyPoints(vertices.begin() + 1, vertices.end());
         std::vector<geometry::Point<double>> inputPoints(points.begin() + 1, points.end());
@@ -142,7 +152,8 @@ static void RandomTest(httplib::Client* cli) {
             });
 
         for (size_t i = 0; i < polyPoints.size(); i++) {
-            REQUIRE_EQUAL(inputPoints[i], polyPoints[i]);
+            REQUIRE_EQUAL(inputPoints[i].X(), polyPoints[i].X());
+            REQUIRE_EQUAL(inputPoints[i].Y(), polyPoints[i].Y());
         }
     }
 }
