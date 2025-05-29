@@ -1,0 +1,43 @@
+/*!
+ * @file algorithms/sutherland_hodgman.dox 
+ * @brief Documentation for Sutherland-Hodgman algorithm
+ *
+ * @page sutherland_hodgman Sutherland-Hodgman Clipping Algorithm
+ *
+ * @section sh_overview Overview
+ *
+ * The Sutherland-Hodgman algorithm for clipping arbitrary polygons against a convex clip polygon.
+ * The implementation sequentially processes each edge of the clip polygon as a clipping plane.
+ *
+ * @section sh_complexity Complexity
+ * - Time complexity: O(n*m)
+ * - Space complexity: O(n)
+ *
+ * Where:
+ * - n = number of vertices in subject polygon
+ * - m = number of vertices in clip polygon
+ *
+ * @section sh_implementation Implementation
+ *
+ * Main workflow stages:
+ * 1. Validate minimum polygon size (at least 3 vertices)
+ * 2. Process each edge of the clip polygon sequentially
+ * 3. Build new polygon after each clipping operation
+ * 4. Return final clipped polygon
+ *
+ * @subsection sh_processing Edge Processing
+ * 1. For each edge (cp1, cp2) of the clip polygon:
+ *    - Construct new polygon based on current clipping
+ *
+ * @subsection sh_visibility Visibility Check
+ * - inside(p, cp1, cp2) function determines if point p is inside edge (cp1, cp2)
+ * - Uses cross product for orientation testing
+ *
+ * @subsection sh_intersection Intersection Calculation
+ * - When subject polygon edge intersects clip polygon edge
+ * - Intersection point is added to new polygon
+ *
+ * @subsection sh_result Result Formation
+ * - After processing all clip polygon edges, returns final clipped polygon
+ * - Returns empty result if polygon is completely outside clip area
+ */

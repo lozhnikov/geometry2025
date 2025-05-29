@@ -37,16 +37,16 @@ int main(int argc, char* argv[]) {
 
   /* Сюда нужно вставить обработчик post запроса для алгоритма. */
 
-  svr.Post("/GrahamScan",
+  svr.Post("/SutherlandHodgman",
            [&](const httplib::Request& req, httplib::Response& res) {
     try {
       auto input = json::parse(req.body);
       json output;
 
-      int result = geometry::GrahamScanMethod(input, &output);
+      int result = geometry::SutherlandHodgmanMethod(input, &output);
 
       if (result != 0) {
-        res.status = 400;  // Bad request
+        res.status = 400;
       }
 
       res.set_content(output.dump(), "application/json");

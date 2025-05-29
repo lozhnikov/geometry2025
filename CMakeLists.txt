@@ -116,15 +116,15 @@ add_executable(
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
-  include/graham_scan.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
-  methods/graham_scan_method.cpp
+  include/sutherland_hodgman.hpp
   methods/main.cpp
   methods/methods.hpp
+  methods/sutherland_hodgman_method.cpp
 )
 
 ####################################################################
@@ -153,12 +153,12 @@ add_executable(
   include/polygon.hpp
   include/polygon_impl.hpp
   tests/edge_test.cpp
-  tests/graham_scan_test.cpp
   tests/io.hpp
   tests/main.cpp
   tests/orientation_test.cpp
   tests/point_test.cpp
   tests/polygon_test.cpp
+  tests/sutherland_hodgman_test.cpp
   tests/test.hpp
   tests/test_core.cpp
   tests/test_core.hpp
