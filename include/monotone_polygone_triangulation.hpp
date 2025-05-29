@@ -141,7 +141,8 @@ std::vector<std::pair<int, int>> TriangulateMonotonePolygon(
                 if ((currentInLeft && cross > 0) ||
                     (!currentInLeft && cross < 0)) {
                     if (!IsPolygonEdge(polygon, current.id, next.id)) {
-                        diagonals.push_back(std::make_pair(current.id, next.id));
+                        diagonals.push_back
+                        (std::make_pair(current.id, next.id));
                     }
                     S.pop();
                 } else {
