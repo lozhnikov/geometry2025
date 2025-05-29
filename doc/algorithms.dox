@@ -9,5 +9,6 @@
 
 @subpage dimcirus "Отсечение линий: алгоритм Цируса-Бека"
 
+@subpage graham_scan "Алгоритм Грэхема"
 
 */
