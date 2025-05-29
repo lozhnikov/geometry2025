@@ -30,7 +30,6 @@ int MonotonePolygonTriangulationMethod(const nlohmann::json& input,
 
         std::vector<Point> polygon;
         int id_counter = 0;
-        
         for (const auto& point_json : input["polygon"]) {
             if (!point_json.is_object() || !point_json.contains("x") ||
                 !point_json["x"].is_number()) {

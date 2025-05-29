@@ -107,7 +107,6 @@ static void RandomMonotoneTest(httplib::Client* cli) {
         nlohmann::json input;
         std::vector<double> xCoords(size);
         std::vector<double> yCoords(size);
-        
         for (size_t i = 0; i < size; i++) {
             xCoords[i] = coordDist(gen);
             yCoords[i] = coordDist(gen);
@@ -121,8 +120,7 @@ static void RandomMonotoneTest(httplib::Client* cli) {
             if (i < size / 2) {
                 input["polygon"][i]["x"] = xCoords[i];
                 input["polygon"][i]["y"] = coordDist(gen) + 50.0;
-            }
-            else {
+            } else {
                 size_t reverse_idx = size - 1 - (i - size / 2);
                 input["polygon"][i]["x"] = xCoords[reverse_idx];
                 input["polygon"][i]["y"] = coordDist(gen) - 50.0;
@@ -133,7 +131,6 @@ static void RandomMonotoneTest(httplib::Client* cli) {
                                         input.dump(), "application/json");
         nlohmann::json output = nlohmann::json::parse(res->body);
         REQUIRE_EQUAL(size, output["vertices_count"]);
-        
         // кол-во диагоналей должно быть n-3
         if (size > 3) {
             REQUIRE_EQUAL(size - 3, output["diagonals_count"]);

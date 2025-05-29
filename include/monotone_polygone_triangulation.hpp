@@ -14,20 +14,16 @@
 #include <algorithm>
 #include <cmath>
 #include <set>
-#include <utility>  
-
+#include <utility>
 struct Point {
     double x, y;
     int id;
-    
     explicit Point(double x = 0, double y = 0, int id = -1)
         : x(x), y(y), id(id) {}
-    
     bool operator<(const Point& other) const {
         if (y != other.y) return y > other.y;
         return x < other.x;
     }
-    
     bool operator==(const Point& other) const {
         return id == other.id;
     }
@@ -110,9 +106,10 @@ std::vector<std::pair<int, int>> TriangulateMonotonePolygon(
             merged.push_back(rightChain[rightPtr++]);
         }
     }
-    while (leftPtr < leftChain.size()) merged.push_back(leftChain[leftPtr++]);
-    while (rightPtr < rightChain.size()) merged.push_back(rightChain[rightPtr++]);
-
+    while (leftPtr < leftChain.size())
+        merged.push_back(leftChain[leftPtr++]);
+    while (rightPtr < rightChain.size())
+        merged.push_back(rightChain[rightPtr++]);
     std::stack<Point> S;
     S.push(merged[0]);
     S.push(merged[1]);
@@ -141,7 +138,6 @@ std::vector<std::pair<int, int>> TriangulateMonotonePolygon(
             while (!S.empty()) {
                 Point next = S.top();
                 double cross = CrossProduct(top, next, current);
-                
                 if ((currentInLeft && cross > 0) ||
                     (!currentInLeft && cross < 0)) {
                     if (!IsPolygonEdge(polygon, current.id, next.id)) {
@@ -159,7 +155,6 @@ std::vector<std::pair<int, int>> TriangulateMonotonePolygon(
     if (!S.empty()) {
         Point lastVertex = merged.back();
         S.pop();
-        
         while (!S.empty()) {
             if (S.size() != 1) {
                 diagonals.push_back(std::make_pair(lastVertex.id, S.top().id));
