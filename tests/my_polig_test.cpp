@@ -84,7 +84,9 @@ static void SimpleTest(httplib::Client* cli) {
         }
     }
     catch (const nlohmann::json::exception& e) {
-        FAIL("JSON parse error: " + std::string(e.what()) + "\nResponse body: " + res->body);
+        // Замена FAIL на REQUIRE с сообщением
+        REQUIRE(false && ("JSON parse error: " + std::string(e.what()) +
+            "\nResponse body: " + res->body).c_str());
     }
 }
 
@@ -151,10 +153,26 @@ static void RandomTest(httplib::Client* cli) {
             REQUIRE_EQUAL(origin.X(), vertices[0].X());
             REQUIRE_EQUAL(origin.Y(), vertices[0].Y());
 
-            // Дополнительные проверки...
+            std::vector<geometry::Point<double>> polyPoints(vertices.begin() + 1, vertices.end());
+            std::vector<geometry::Point<double>> inputPoints(points.begin() + 1, points.end());
+
+            // Сортировка для проверки
+            std::sort(inputPoints.begin(), inputPoints.end(),
+                [&](const geometry::Point<double>& a, const geometry::Point<double>& b) {
+                    int cmp = geometry::PolarCmpForTest(a, b, origin, precision);
+                    if (cmp != 0) return cmp > 0;
+                    return (a - origin).Length() < (b - origin).Length();
+                });
+
+            for (size_t i = 0; i < polyPoints.size(); i++) {
+                REQUIRE_EQUAL(inputPoints[i].X(), polyPoints[i].X());
+                REQUIRE_EQUAL(inputPoints[i].Y(), polyPoints[i].Y());
+            }
         }
         catch (const nlohmann::json::exception& e) {
-            FAIL("JSON parse error: " + std::string(e.what()) + "\nResponse body: " + res->body);
+            // Замена FAIL на REQUIRE с сообщением
+            REQUIRE(false && ("JSON parse error: " + std::string(e.what()) +
+                "\nResponse body: " + res->body).c_str());
         }
     }
 }
