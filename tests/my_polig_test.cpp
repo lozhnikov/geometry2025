@@ -41,7 +41,7 @@ static void SimpleTest(httplib::Client* cli);
 static void RandomTest(httplib::Client* cli);
 
 void TestMyPolig(httplib::Client* cli) {
-    TestSuite suite("TestMyPolig");
+    TestSuite suite("TestMy_Polig");
     RUN_TEST_REMOTE(suite, cli, SimpleTest);
     RUN_TEST_REMOTE(suite, cli, RandomTest);
 }
@@ -59,7 +59,7 @@ static void SimpleTest(httplib::Client* cli) {
         ]
     })"_json;
 
-    auto res = cli->Post("/StarPolygon", input.dump(), "application/json");
+    auto res = cli->Post("/My_Polig", input.dump(), "application/json");
 
     // Проверка успешности запроса
     REQUIRE(res != nullptr);
@@ -130,7 +130,7 @@ static void RandomTest(httplib::Client* cli) {
             points.push_back(p);
         }
 
-        auto res = cli->Post("/StarPolygon", input.dump(), "application/json");
+        auto res = cli->Post("/My_Polig", input.dump(), "application/json");
 
         // Проверка успешности запроса
         REQUIRE(res != nullptr);
