@@ -4,9 +4,9 @@
  *
  * @brief Main server application file.
  */
-
-#include <cstdio>
 #include <httplib.h>
+#include <cstdio>
+
 #include <iostream>
 #include <string>
 
