@@ -4,7 +4,7 @@
  *
  * Реализация набора тестов для алгоритма построения звездного многоугольника.
  */
-#include "my_polig.hpp"
+
 #include "test_core.hpp"
 #include "test.hpp"
 #include <point.hpp>

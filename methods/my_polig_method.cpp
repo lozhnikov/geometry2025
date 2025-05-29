@@ -3,7 +3,6 @@
  * @author Nika Adzhindzhal
  */
 
-#include "my_polig_method.h"
 #include "methods.hpp"
 #include "point.hpp"
 #include "polygon.hpp"
