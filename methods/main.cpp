@@ -5,11 +5,13 @@
  * @brief Main server application file.
  */
 
-#include <nlohmann/json.hpp>
-#include <httplib.h>
-#include <iostream>
 #include <cstdio>
+#include <iostream>
 #include <string>
+
+#include <httplib.h>
+#include <nlohmann/json.hpp>
+
 #include "methods.hpp"
 
 using json = nlohmann::json;
@@ -34,23 +36,27 @@ int main(int argc, char* argv[]) {
   });
 
   // POST handler for convex intersection calculation
-  svr.Post("/ConvexIntersection", 
-      [&](const httplib::Request& req, httplib::Response& res) {
-    try {
-      auto input = json::parse(req.body);
-      json output;
-      int result = geometry::ConvexIntersectionMethod(input, &output);
-      
-      if (result != 0) {
-        res.status = 400;
-      }
-      res.set_content(output.dump(), "application/json");
-    } catch (const std::exception& e) {
-      res.status = 400;
-      res.set_content(json({{"error", e.what()}}).dump(), "application/json");
-    }
-  });
+  svr.Post("/ConvexIntersection",
+           [&](const httplib::Request& req, httplib::Response& res) {
+             try {
+               auto input = json::parse(req.body);
+               json output;
+               int result =
+                   geometry::ConvexIntersectionMethod(input, &output);
+
+               if (result != 0) {
+                 res.status = 400;
+               }
+               res.set_content(output.dump(), "application/json");
+             } catch (const std::exception& e) {
+               res.status = 400;
+               res.set_content(json({{"error", e.what()}})
+                                   .dump(),
+                               "application/json");
+             }
+           });
 
   svr.listen("0.0.0.0", port);
   return 0;
 }
+

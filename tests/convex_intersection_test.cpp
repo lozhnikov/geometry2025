@@ -5,14 +5,14 @@
  * @brief Tests for convex intersection algorithm
  */
 
-#include <httplib.h>
-#include <nlohmann/json.hpp>
-
 #include <algorithm>
 #include <cmath>
 #include <random>
 #include <utility>
 #include <vector>
+
+#include <httplib.h>
+#include <nlohmann/json.hpp>
 
 #include "test_core.hpp"
 #include "test.hpp"
