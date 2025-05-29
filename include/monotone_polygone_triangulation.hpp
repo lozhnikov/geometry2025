@@ -14,12 +14,14 @@
 #include <algorithm>
 #include <cmath>
 #include <set>
+#include <utility>  
 
 struct Point {
     double x, y;
     int id;
     
-    explicit Point(double x = 0, double y = 0, int id = -1) : x(x), y(y), id(id) {}
+    explicit Point(double x = 0, double y = 0, int id = -1)
+        : x(x), y(y), id(id) {}
     
     bool operator<(const Point& other) const {
         if (y != other.y) return y > other.y;
@@ -51,7 +53,7 @@ double CrossProduct(const Point& a, const Point& b, const Point& c) {
  * @param id1 first end of segment
  * @param id2 second end of segment
  *
- * @return true, if segment is polygon edge; fase, if not
+ * @return true, if segment is polygon edge; false, if not
  */
 bool IsPolygonEdge(const std::vector<Point>& polygon, int id1, int id2) {
     for (size_t i = 0; i < polygon.size(); ++i) {
@@ -64,9 +66,15 @@ bool IsPolygonEdge(const std::vector<Point>& polygon, int id1, int id2) {
     return false;
 }
 
-std::vector<std::pair<int, int> > TriangulateMonotonePolygon(
+/**
+ * @brief Triangulate a monotone polygon
+ *
+ * @param polygon input polygon vertices
+ * @return vector of diagonals as vertex index pairs
+ */
+std::vector<std::pair<int, int>> TriangulateMonotonePolygon(
     const std::vector<Point>& polygon) {
-    std::vector<std::pair<int, int> > diagonals;
+    std::vector<std::pair<int, int>> diagonals;
     if (polygon.size() < 3) return diagonals;
 
     std::vector<Point> vertices = polygon;
@@ -113,10 +121,10 @@ std::vector<std::pair<int, int> > TriangulateMonotonePolygon(
         Point current = merged[i];
         Point top = S.top();
 
-        bool currentInLeft = find(leftChain.begin(), leftChain.end(), current) !=
-            leftChain.end();
-        bool topInLeft = find(leftChain.begin(), leftChain.end(), top) !=
-            leftChain.end();
+        bool currentInLeft = find(leftChain.begin(), leftChain.end(), current)
+            != leftChain.end();
+        bool topInLeft = find(leftChain.begin(), leftChain.end(), top)
+            != leftChain.end();
         bool sameChain = (currentInLeft && topInLeft) ||
             (!currentInLeft && !topInLeft);
 

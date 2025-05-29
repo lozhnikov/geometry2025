@@ -6,10 +6,10 @@
  */
 
 #include "methods/monotone_polygone_triangulation_method.hpp"
-#include "../include/monotone_polygone_triangulation.hpp"
-#include <nlohmann/json.hpp>
 #include <vector>
 #include <string>
+#include "../include/monotone_polygone_triangulation.hpp"
+#include <nlohmann/json.hpp>
 
 /**
  * @brief Method for monotone polygon triangulation algorithm implementation.
@@ -18,7 +18,6 @@
  * @param output pointer to JSON output
  * @return return code: 0 - success, otherwise - error
  */
-
 namespace geometry {
 
 int MonotonePolygonTriangulationMethod(const nlohmann::json& input,
@@ -47,8 +46,7 @@ int MonotonePolygonTriangulationMethod(const nlohmann::json& input,
             polygon.emplace_back(
                 point_json["x"].get<double>(),
                 point_json["y"].get<double>(),
-                id_counter++
-            );
+                id_counter++);
         }
 
         if (polygon.size() < 3) {
