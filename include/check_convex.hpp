@@ -63,7 +63,6 @@ namespace geometry {
 
         polygon.Advance(Rotation::ClockWise);
         current = polygon.Current();
-
     } while (current != start);
 
      return convex;
