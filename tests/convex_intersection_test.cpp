@@ -1,25 +1,29 @@
 /**
- * @file tests/convex_intersection_test.cpp 
+ * @file tests/convex_intersection_test.cpp
  * @author German Semenov
- * 
- * @brief Realization of a set of tests for the convex intersection algorithm
+ *
+ * @brief Tests for convex intersection algorithm
  */
 
 #include <httplib.h>
 #include <nlohmann/json.hpp>
-#include <vector>
-#include <random>
-#include <utility>
+
 #include <algorithm>
 #include <cmath>
+#include <random>
+#include <utility>
+#include <vector>
+
 #include "test_core.hpp"
 #include "test.hpp"
 
 static void StaticConvexIntersectionTest(httplib::Client* cli);
 static void RandomConvexIntersectionTest(httplib::Client* cli);
-static bool IsInsideConvexPolygon(const std::vector<std::pair<double, double>>& poly,
-                                  const std::pair<double, double>& p);
-static std::vector<std::pair<double, double>> GenerateConvexHull(std::vector<std::pair<double, double>> points);
+static bool IsInsideConvexPolygon(
+    const std::vector<std::pair<double, double>>& poly,
+    const std::pair<double, double>& p);
+static std::vector<std::pair<double, double>> GenerateConvexHull(
+    std::vector<std::pair<double, double>> points);
 
 void TestConvexIntersection(httplib::Client* cli) {
   TestSuite suite("TestConvexIntersection");
@@ -28,59 +32,59 @@ void TestConvexIntersection(httplib::Client* cli) {
   RUN_TEST_REMOTE(suite, cli, RandomConvexIntersectionTest);
 }
 
-/**
- * @brief Проверка: точка внутри выпуклого многоугольника
- */
-static bool IsInsideConvexPolygon(const std::vector<std::pair<double, double>>& poly,
-                                  const std::pair<double, double>& p) {
+static bool IsInsideConvexPolygon(
+    const std::vector<std::pair<double, double>>& poly,
+    const std::pair<double, double>& p) {
   size_t n = poly.size();
   for (size_t i = 0; i < n; ++i) {
     auto [x1, y1] = poly[i];
     auto [x2, y2] = poly[(i + 1) % n];
-    double cross = (x2 - x1) * (p.second - y1) - (y2 - y1) * (p.first - x1);
+    double cross = (x2 - x1) * (p.second - y1) -
+                   (y2 - y1) * (p.first - x1);
     if (cross < -1e-9) return false;
   }
   return true;
 }
 
-/**
- * @brief Алгоритм Грэхема: построение выпуклой оболочки
- */
-static std::vector<std::pair<double, double>> GenerateConvexHull(std::vector<std::pair<double, double>> points) {
+static std::vector<std::pair<double, double>> GenerateConvexHull(
+    std::vector<std::pair<double, double>> points) {
   if (points.size() <= 2) return points;
 
   auto orientation = [](const auto& a, const auto& b, const auto& c) {
-    return (b.first - a.first) * (c.second - a.second)
-         - (b.second - a.second) * (c.first - a.first);
+    return (b.first - a.first) * (c.second - a.second) -
+           (b.second - a.second) * (c.first - a.first);
   };
 
-  std::swap(points[0], *std::min_element(points.begin(), points.end(),
-    [](const auto& a, const auto& b) {
-      return (a.second < b.second) || (a.second == b.second && a.first < b.first);
-    }));
+  std::swap(points[0], *std::min_element(
+      points.begin(), points.end(),
+      [](const auto& a, const auto& b) {
+        return (a.second < b.second) ||
+               (a.second == b.second && a.first < b.first);
+      }));
 
   auto base = points[0];
-  std::sort(points.begin() + 1, points.end(), [&](const auto& a, const auto& b) {
+  std::sort(points.begin() + 1, points.end(),
+            [&](const auto& a, const auto& b) {
     double ang = orientation(base, a, b);
-    if (std::abs(ang) < 1e-9)
-      return std::hypot(a.first - base.first, a.second - base.second)
-           < std::hypot(b.first - base.first, b.second - base.second);
+    if (std::abs(ang) < 1e-9) {
+      return std::hypot(a.first - base.first, a.second - base.second) <
+             std::hypot(b.first - base.first, b.second - base.second);
+    }
     return ang > 0;
   });
 
   std::vector<std::pair<double, double>> hull;
   for (const auto& pt : points) {
     while (hull.size() >= 2 &&
-           orientation(hull[hull.size()-2], hull[hull.size()-1], pt) <= 0)
+           orientation(hull[hull.size() - 2],
+                       hull[hull.size() - 1], pt) <= 0) {
       hull.pop_back();
+    }
     hull.push_back(pt);
   }
   return hull;
 }
 
-/**
- * @brief Статический тест на пересечение квадратов
- */
 static void StaticConvexIntersectionTest(httplib::Client* cli) {
   nlohmann::json input = {
     {"subject", {
@@ -97,7 +101,8 @@ static void StaticConvexIntersectionTest(httplib::Client* cli) {
     }}
   };
 
-  auto res = cli->Post("/ConvexIntersection", input.dump(), "application/json");
+  auto res = cli->Post("/ConvexIntersection",
+                       input.dump(), "application/json");
   nlohmann::json output = nlohmann::json::parse(res->body);
 
   REQUIRE(output.contains("intersection"));
@@ -108,14 +113,13 @@ static void StaticConvexIntersectionTest(httplib::Client* cli) {
   };
 
   for (const auto& point : output["intersection"]) {
-    auto p = std::make_pair(point["x"].get<double>(), point["y"].get<double>());
-    REQUIRE(std::find(expected.begin(), expected.end(), p) != expected.end());
+    auto p = std::make_pair(point["x"].get<double>(),
+                            point["y"].get<double>());
+    REQUIRE(std::find(expected.begin(), expected.end(), p) !=
+            expected.end());
   }
 }
 
-/**
- * @brief Рандомный тест с выпуклыми многоугольниками и проверкой корректности результата
- */
 static void RandomConvexIntersectionTest(httplib::Client* cli) {
   const int numTries = 30;
   const int maxPoints = 30;
@@ -148,7 +152,8 @@ static void RandomConvexIntersectionTest(httplib::Client* cli) {
       input["clip"][i]["y"] = hull2[i].second;
     }
 
-    auto res = cli->Post("/ConvexIntersection", input.dump(), "application/json");
+    auto res = cli->Post("/ConvexIntersection",
+                         input.dump(), "application/json");
     REQUIRE(res != nullptr);
     REQUIRE(res->status == 200);
 
@@ -158,7 +163,8 @@ static void RandomConvexIntersectionTest(httplib::Client* cli) {
     REQUIRE(output.contains("result_size"));
 
     for (const auto& point : output["intersection"]) {
-      auto p = std::make_pair(point["x"].get<double>(), point["y"].get<double>());
+      auto p = std::make_pair(point["x"].get<double>(),
+                              point["y"].get<double>());
       REQUIRE(IsInsideConvexPolygon(hull1, p));
       REQUIRE(IsInsideConvexPolygon(hull2, p));
     }

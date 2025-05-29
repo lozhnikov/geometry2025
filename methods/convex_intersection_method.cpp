@@ -1,8 +1,8 @@
-/** 
- * @file methods/convex_intersection_method.cpp 
+/**
+ * @file methods/convex_intersection_method.cpp
  * @author German Semenov
- * 
- * @brief convex intersection algorithm.
+ *
+ * @brief Convex intersection algorithm implementation.
  */
 
 #include <vector>
@@ -12,22 +12,28 @@
 
 namespace geometry {
 
-int ConvexIntersectionMethod(const nlohmann::json& input, nlohmann::json* output) {
-  if (!input.contains("subject") || !input.contains("clip"))
+int ConvexIntersectionMethod(const nlohmann::json& input,
+                            nlohmann::json* output) {
+  if (!input.contains("subject") || !input.contains("clip")) {
     return 1;
+  }
 
-  std::vector<Point<double>> subject, clip;
+  std::vector<Point<double>> subject;
+  std::vector<Point<double>> clip;
 
-  for (const auto& p : input["subject"])
+  for (const auto& p : input["subject"]) {
     subject.emplace_back(p["x"], p["y"]);
+  }
 
-  for (const auto& p : input["clip"])
+  for (const auto& p : input["clip"]) {
     clip.emplace_back(p["x"], p["y"]);
+  }
 
   auto result = ConvexIntersection(subject, clip);
 
-  for (const auto& p : result)
+  for (const auto& p : result) {
     (*output)["intersection"].push_back({{"x", p.X()}, {"y", p.Y()}});
+  }
 
   (*output)["subject_size"] = subject.size();
   (*output)["clip_size"] = clip.size();
@@ -36,4 +42,4 @@ int ConvexIntersectionMethod(const nlohmann::json& input, nlohmann::json* output
   return 0;
 }
 
-}
+}  // namespace geometry
