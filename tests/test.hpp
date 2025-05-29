@@ -9,7 +9,6 @@
 #define TESTS_TEST_HPP_
 
 #include <httplib.h>
-
 /**
  * @brief Набор тестов для класса geometry::Point.
  */
@@ -30,7 +29,7 @@ void TestPolygon();
  */
 void TestOrientation();
 
-/* Сюда нужно добавить объявления тестовых функций. */
+/* Объявления тестовых функций */
 
 /**
  * @brief testing Graham scan
@@ -38,8 +37,11 @@ void TestOrientation();
  * @param cli pointer to HTTP client
  */
 
-void TestGrahamScan(httplib::Client* cli);
+/**
+ * @brief Тестирование функции пересечения выпуклых полигонов
+ */
+void TestConvexIntersection(httplib::Client* cli);
 
-/* Конец вставки. */
+
 
 #endif  // TESTS_TEST_HPP_
