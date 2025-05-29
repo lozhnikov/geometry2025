@@ -19,7 +19,8 @@
  * @return return code: 0 - success, otherwise - error
  */
 namespace geometry {
-int AnglePointInPolygonMethod(const nlohmann::json& input, nlohmann::json* output) {
+int AnglePointInPolygonMethod(const nlohmann::json& input,\
+     nlohmann::json* output) {
     try {
         // Validate input
         if (!input.contains("point") || !input["point"].is_object()) {
@@ -44,8 +45,7 @@ int AnglePointInPolygonMethod(const nlohmann::json& input, nlohmann::json* outpu
         
         Point<double> point(
             input["point"]["x"].get<double>(),
-            input["point"]["y"].get<double>()
-        );
+            input["point"]["y"].get<double>());
         
         // Parse polygon
         std::list<Point<double>> polygon_points;
@@ -53,14 +53,14 @@ int AnglePointInPolygonMethod(const nlohmann::json& input, nlohmann::json* outpu
             if (!point_json.is_object() || 
                 !point_json.contains("x") || !point_json["x"].is_number() ||
                 !point_json.contains("y") || !point_json["y"].is_number()) {
-                (*output)["error"] = "Each polygon point must have 'x' and 'y' numeric fields";
+                (*output)["error"] = "Each polygon point must have 'x'\
+                 and 'y' numeric fields";
                 return 5;
             }
             
             polygon_points.emplace_back(
                 point_json["x"].get<double>(),
-                point_json["y"].get<double>()
-            );
+                point_json["y"].get<double>());
         }
         
         Polygon<double> polygon(polygon_points);

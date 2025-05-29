@@ -131,15 +131,13 @@ static void RandomPointsTest(httplib::Client* cli) {
             double angle = 2 * M_PI * i / size;
             points.emplace_back(
                 center_x + radius * cos(angle),
-                center_y + radius * sin(angle)
-            );
+                center_y + radius * sin(angle));
         }
         
         // Generate test point
         Point<double> test_point(
             center_x + (coordDist(gen) / range) * radius,
-            center_y + (coordDist(gen) / range) * radius
-        );
+            center_y + (coordDist(gen) / range) * radius);
         
         // Prepare input
         nlohmann::json input;
@@ -169,6 +167,7 @@ static void RandomPointsTest(httplib::Client* cli) {
         } else if (distance > radius * 1.01) {
             REQUIRE_EQUAL("outside", output["position"]);
         }
-        // For points very close to boundary we don't check due to floating point precision
+        // For points very close to boundary we don't check due to floating\
+         point precision
     }
 }
