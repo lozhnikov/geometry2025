@@ -4,18 +4,20 @@
  *
  */
 
-#ifndef INCLUDE_MY_POLIG_HPP
-#define INCLUDE_MY_POLIG_HPP
+#ifndef INCLUDE_MY_POLIG_HPP_
+#define INCLUDE_MY_POLIG_HPP_
 
-#include <point.hpp>
-#include <polygon.hpp>
 #include <vector>
 #include <memory>
+#include <list>
+#include <point.hpp>
+#include <polygon.hpp>
 
 namespace geometry {
 
     template<typename T>
-    int polarCmp(const Point<T>& p, const Point<T>& q, const Point<T>& originPt, T precision) {
+    int polarCmp(const Point<T>& p, const Point<T>& q,
+        const Point<T>& originPt, T precision) {
         Point<T> vp = p - originPt;
         Point<T> vq = q - originPt;
 
@@ -46,13 +48,13 @@ namespace geometry {
 
         for (size_t i = 1; i < points.size(); ++i) {
             polygon->Current() = itToOrigin;
-            polygon->Advance(Rotation::ClockWise); // CLOCKWISE
+            polygon->Advance(Rotation::ClockWise);
 
             while (polarCmp(points[i], *polygon->Current(), originPt, precision) < 0) {
                 polygon->Advance(Rotation::ClockWise);
             }
 
-            polygon->Advance(Rotation::CounterClockWise); // COUNTER_CLOCKWISE
+            polygon->Advance(Rotation::CounterClockWise);
             polygon->Insert(points[i]);
         }
 
@@ -61,4 +63,4 @@ namespace geometry {
 
 } // namespace geometry
 
-#endif // INCLUDE_MY_POLIG_HPP
+#endif // INCLUDE_MY_POLIG_HPP_

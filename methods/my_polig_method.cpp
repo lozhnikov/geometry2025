@@ -10,7 +10,7 @@
 #include "methods.hpp"
 #include <point.hpp>
 #include <polygon.hpp>     
-#include <my_polig.hpp>    // Для starPolygon
+#include <my_polig.hpp>
 
 namespace geometry {
 
@@ -19,7 +19,6 @@ namespace geometry {
         std::vector<Point<double>> points;
 
         try {
-            // Читаем новые параметры (точность и точки)
             precision = input.at("precision").get<double>();
             auto pointsArray = input.at("points");
             for (const auto& point : pointsArray) {
@@ -29,29 +28,25 @@ namespace geometry {
             }
         }
         catch (const nlohmann::json::exception& e) {
-            std::cerr << "Ошибка JSON: " << e.what() << std::endl;
+            std::cerr << "JSON error: " << e.what() << std::endl;
             return -1;
         }
 
-        // Проверяем наличие точек
         if (points.empty()) {
-            std::cerr << "Точки не предоставлены" << std::endl;
+            std::cerr << "No points provided" << std::endl;
             return -1;
         }
 
-        // Вызываем алгоритм построения многоугольника
         std::cout << "START" << std::endl;
         Polygon<double>* poly = starPolygon(points, precision);
         if (poly == nullptr) {
-            std::cerr << "Ошибка создания многоугольника" << std::endl;
+            std::cerr << "Failed to create polygon" << std::endl;
             return -1;
         }
         std::cout << "FINISH" << std::endl;
 
-        // Получаем вершины многоугольника
         std::list<Point<double>> vertices = poly->Vertices();
 
-        // Формируем выходные данные
         (*output)["vertices"] = nlohmann::json::array();
         for (const auto& vertex : vertices) {
             nlohmann::json v;
@@ -60,7 +55,7 @@ namespace geometry {
             (*output)["vertices"].push_back(v);
         }
 
-        delete poly;  // Освобождаем память
+        delete poly;
         return 0;
     }
 

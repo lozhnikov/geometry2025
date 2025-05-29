@@ -4,12 +4,13 @@
  *
  * Реализация набора тестов для алгоритма построения звездного многоугольника.
  */
-#include <my_polig.hpp>
 #include <point.hpp>
 #include <polygon.hpp>
 #include <vector>
 #include <random>
 #include <algorithm>
+#include <iostream>
+#include <string>
 #include <httplib.h>
 #include <nlohmann/json.hpp>
 #include "test_core.hpp"
@@ -19,7 +20,8 @@
 namespace geometry {
 
     template<typename T>
-    int PolarCmpForTest(const Point<T>& p, const Point<T>& q, const Point<T>& origin, T precision) {
+    int PolarCmpForTest(const Point<T>& p, const Point<T>& q,
+        const Point<T>& origin, T precision) {
         Point<T> vp = p - origin;
         Point<T> vq = q - origin;
         T angle_p = vp.PolarAngle(precision);
@@ -38,7 +40,7 @@ namespace geometry {
 
 } // namespace geometry
 
-/*static void SimpleTest(httplib::Client* cli); */
+/* static void SimpleTest(httplib::Client* cli); */
 static void RandomTest(httplib::Client* cli);
 
 void TestMyPolig(httplib::Client* cli) {
