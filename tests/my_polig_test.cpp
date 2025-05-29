@@ -41,7 +41,7 @@ static void SimpleTest(httplib::Client* cli);
 static void RandomTest(httplib::Client* cli);
 
 void TestMyPolig(httplib::Client* cli) {
-    TestSuite suite("TestMy_Polig");
+    TestSuite suite("TestMyPolig");
     RUN_TEST_REMOTE(suite, cli, SimpleTest);
     RUN_TEST_REMOTE(suite, cli, RandomTest);
 }
@@ -59,10 +59,20 @@ static void SimpleTest(httplib::Client* cli) {
         ]
     })"_json;
 
-    auto res = cli->Post("/My_Polig", input.dump(), "application/json");
+    std::string request_body = input.dump();
+    auto res = cli->Post("/My_Polig", request_body, "application/json");
 
     // Проверка успешности запроса
     REQUIRE(res != nullptr);
+    if (res->status != 200) {
+        std::cerr << "===== REQUEST =====" << std::endl;
+        std::cerr << "POST /MyPolig" << std::endl;
+        std::cerr << "Body: " << request_body << std::endl;
+        std::cerr << "===== RESPONSE =====" << std::endl;
+        std::cerr << "Status: " << res->status << std::endl;
+        std::cerr << "Body: " << res->body << std::endl;
+        std::cerr << "====================" << std::endl;
+    }
     REQUIRE_EQUAL(200, res->status);
 
     try {
@@ -84,7 +94,6 @@ static void SimpleTest(httplib::Client* cli) {
         }
     }
     catch (const nlohmann::json::exception& e) {
-        // Замена FAIL на REQUIRE с сообщением
         REQUIRE(false && ("JSON parse error: " + std::string(e.what()) +
             "\nResponse body: " + res->body).c_str());
     }
@@ -130,10 +139,20 @@ static void RandomTest(httplib::Client* cli) {
             points.push_back(p);
         }
 
-        auto res = cli->Post("/My_Polig", input.dump(), "application/json");
+        std::string request_body = input.dump();
+        auto res = cli->Post("/My_Polig", request_body, "application/json");
 
         // Проверка успешности запроса
         REQUIRE(res != nullptr);
+        if (res->status != 200) {
+            std::cerr << "===== REQUEST (try " << it << ") =====" << std::endl;
+            std::cerr << "POST /MyPolig" << std::endl;
+            std::cerr << "Body: " << request_body << std::endl;
+            std::cerr << "===== RESPONSE =====" << std::endl;
+            std::cerr << "Status: " << res->status << std::endl;
+            std::cerr << "Body: " << res->body << std::endl;
+            std::cerr << "====================" << std::endl;
+        }
         REQUIRE_EQUAL(200, res->status);
 
         try {
@@ -170,7 +189,6 @@ static void RandomTest(httplib::Client* cli) {
             }
         }
         catch (const nlohmann::json::exception& e) {
-            // Замена FAIL на REQUIRE с сообщением
             REQUIRE(false && ("JSON parse error: " + std::string(e.what()) +
                 "\nResponse body: " + res->body).c_str());
         }

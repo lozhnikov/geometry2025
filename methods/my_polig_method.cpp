@@ -58,6 +58,7 @@ namespace geometry {
         }
 
         if (n < 3 || k <= 0 || k >= n || gcd(n, k) != 1) {
+            std::cout << "Incorrect input data!" << std::end;
             return -1;
         }
 
