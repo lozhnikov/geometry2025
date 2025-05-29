@@ -7,12 +7,12 @@
 #ifndef INCLUDE_CLIP_ALGORITHM_HPP_
 #define INCLUDE_CLIP_ALGORITHM_HPP_
 
-#include <edge.hpp>
-#include <polygon.hpp>
-#include <point.hpp>
-#include <common.hpp>
 #include <limits>
 #include <vector>
+#include "common.hpp"
+#include "edge.hpp"
+#include "point.hpp"
+#include "polygon.hpp"
 
 namespace geometry {
 
@@ -41,7 +41,8 @@ bool clipLineSegment(const Edge<T>& edge, const Polygon<T>& poly, Edge<T>& resul
         }
 
         Edge<T> polyEdge(*it, *next);
-        Point<T> normal = polyEdge.Rotate().Destination() - polyEdge.Rotate().Origin();
+        Point<T> normal = polyEdge.Rotate().Destination() -
+                         polyEdge.Rotate().Origin();
 
         Point<T> edgeVec = polyEdge.Destination() - polyEdge.Origin();
         Point<T> toPoint = A - polyEdge.Origin();
@@ -81,6 +82,6 @@ bool clipLineSegment(const Edge<T>& edge, const Polygon<T>& poly, Edge<T>& resul
     return false;
 }
 
-}
+}  // namespace geometry
 
-#endif // INCLUDE_CLIP_ALGORITHM_HPP_
+#endif  // INCLUDE_CLIP_ALGORITHM_HPP_

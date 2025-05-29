@@ -4,13 +4,13 @@
  *
  */
 
-#ifndef INCLUDE_DIMCIRUS_HPP
-#define INCLUDE_DIMCIRUS_HPP
+#ifndef INCLUDE_DIMCIRUS_HPP_
+#define INCLUDE_DIMCIRUS_HPP_
 
-
-#include <common.hpp>
-#include <edge.hpp>
-#include <polygon.hpp>
+#include <algorithm>
+#include "common.hpp"
+#include "edge.hpp"
+#include "polygon.hpp"
 
 namespace geometry {
 
@@ -34,10 +34,11 @@ bool clipLineSegment(Edge<T>& s, Polygon<T>& p, Edge<T>& result) {
 
             if (dotProduct > T(0)) {
                 t0 = std::max(t0, t);
-            } else { 
+            } else {
                 t1 = std::min(t1, t);
             }
-        } else if (intersection == Intersection::Parallel || intersection == Intersection::Collinear) {
+        } else if (intersection == Intersection::Parallel ||
+                  intersection == Intersection::Collinear) {
             Position pos = s.Origin().Classify(e, T(1e-6));
             if (pos == Position::Left) {
                 return false;
@@ -55,6 +56,6 @@ bool clipLineSegment(Edge<T>& s, Polygon<T>& p, Edge<T>& result) {
     return false;
 }
 
-} 
+}  // namespace geometry
 
-#endif // INCLUDE_DIMCIRUS_HPP
+#endif  // INCLUDE_DIMCIRUS_HPP_
