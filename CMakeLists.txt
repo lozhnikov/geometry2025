@@ -1,4 +1,8 @@
+
 cmake_minimum_required(VERSION 3.10...3.25)
+
+cmake_minimum_required(VERSION 3.5)
+
 
 project(geometry CXX)
 
@@ -99,6 +103,10 @@ if (NOT MSVC)
   set(GEOMETRY_LIBS "pthread")
 endif ()
 
+if (WIN32)
+  set(WINDOWS_LIBS "ws2_32")
+endif (WIN32)
+
 include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 ####################################################################
@@ -114,12 +122,17 @@ add_executable(
   include/dimcirus.hpp
   include/edge.hpp
   include/edge_impl.hpp
+  include/graham_scan.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+
   methods/dimcirus_method.cpp
+
+  methods/graham_scan_method.cpp
+
   methods/main.cpp
   methods/methods.hpp
 )
@@ -130,7 +143,7 @@ add_executable(
 
 
 
-target_link_libraries(geometry_server ${GEOMETRY_LIBS})
+target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
 ####################################################################
 #    Исходные файлы клиентской части (набор тестов).
@@ -153,6 +166,7 @@ add_executable(
   include/polygon_impl.hpp
   tests/dimcirus_test.cpp
   tests/edge_test.cpp
+  tests/graham_scan_test.cpp
   tests/io.hpp
   tests/main.cpp
   tests/orientation_test.cpp
@@ -169,5 +183,5 @@ add_executable(
 
 
 
-target_link_libraries(geometry_test ${GEOMETRY_LIBS})
+target_link_libraries(geometry_test ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 

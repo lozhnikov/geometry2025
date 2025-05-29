@@ -8,10 +8,11 @@
 #include <httplib.h>
 #include <iostream>
 #include <cstdio>
+#include <string>
 #include <nlohmann/json.hpp>
 #include "methods.hpp"
 
-
+using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
   // Порт по-умолчанию.
@@ -45,6 +46,24 @@ int main(int argc, char* argv[]) {
       }
       
       res.set_content(output.dump(), "application/json");
+  svr.Post("/GrahamScan",
+           [&](const httplib::Request& req, httplib::Response& res) {
+    try {
+      auto input = json::parse(req.body);
+      json output;
+
+      int result = geometry::GrahamScanMethod(input, &output);
+
+      if (result != 0) {
+        res.status = 400;  // Bad request
+      }
+
+      res.set_content(output.dump(), "application/json");
+    } catch (const std::exception& e) {
+      json error_output = {{"error", std::string("Parse error: ") + e.what()}};
+      res.status = 400;
+      res.set_content(error_output.dump(), "application/json");
+    }
   });
 
   /* Конец вставки. */

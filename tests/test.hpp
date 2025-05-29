@@ -36,6 +36,13 @@ void TestDimcirus(httplib::Client* cli);
 namespace geometry {
     void TestDimcirus(httplib::Client* cli);
 }
+/**
+ * @brief testing Graham scan
+ * 
+ * @param cli pointer to HTTP client
+ */
+
+void TestGrahamScan(httplib::Client* cli);
 
 /* Конец вставки. */
 

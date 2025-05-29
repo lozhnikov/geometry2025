@@ -44,6 +44,8 @@ int main(int argc, char* argv[]) {
   geometry::TestDimcirus(&cli);
 
 
+  TestGrahamScan(&cli);
+
   /* Конец вставки. */
 
   // Отправляем GET запрос для остановки сервера.
