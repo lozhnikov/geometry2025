@@ -48,7 +48,7 @@ namespace geometry {
             polygon->Current() = itToOrigin;
             polygon->Advance(Rotation::ClockWise); // CLOCKWISE
 
-            while (polarCmp(points[i], *polygon->Current(), originPt, precision)) {
+            while (polarCmp(points[i], *polygon->Current(), originPt, precision) < 0) {
                 polygon->Advance(Rotation::ClockWise);
             }
 

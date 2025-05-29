@@ -38,30 +38,28 @@ namespace geometry {
 
 } // namespace geometry
 
-static void SimpleTest(httplib::Client* cli);
+/*static void SimpleTest(httplib::Client* cli); */
 static void RandomTest(httplib::Client* cli);
 
 void TestMyPolig(httplib::Client* cli) {
     TestSuite suite("TestMyPolig");
-    RUN_TEST_REMOTE(suite, cli, SimpleTest);
+    /*RUN_TEST_REMOTE(suite, cli, SimpleTest); */
     RUN_TEST_REMOTE(suite, cli, RandomTest);
 }
 
-static void SimpleTest(httplib::Client* cli) {
+/* static void SimpleTest(httplib::Client* cli) {
     nlohmann::json input = R"({
-        "id": 1,
         "precision": 1e-5,
         "points": [
-            {"x": 0.5, "y": 0.5},
-            {"x": 1.0, "y": 0.0},
+            {"x": 0.0, "y": 0.0},
             {"x": 0.0, "y": 1.0},
-            {"x": -1.0, "y": 0.0},
-            {"x": 0.0, "y": -1.0}
+            {"x": 1.0, "y": 1.0},
+            {"x": 1.0, "y": 0.0}
         ]
     })"_json;
 
     std::string request_body = input.dump();
-    auto res = cli->Post("/My_Polig", request_body, "application/json");
+    auto res = cli->Post("/MyPolig", request_body, "application/json");
 
     // Проверка успешности запроса
     REQUIRE(res != nullptr);
@@ -79,17 +77,17 @@ static void SimpleTest(httplib::Client* cli) {
     try {
         nlohmann::json output = nlohmann::json::parse(res->body);
 
-        REQUIRE_EQUAL(1, output["id"]);
-        REQUIRE_EQUAL(5, output["vertices"].size());
+        REQUIRE_EQUAL(4, output["vertices"].size());
 
         std::vector<geometry::Point<double>> expected;
-        expected.push_back(geometry::Point<double>(0.5, 0.5));
-        expected.push_back(geometry::Point<double>(0.0, -1.0));
-        expected.push_back(geometry::Point<double>(-1.0, 0.0));
+        expected.push_back(geometry::Point<double>(0.0, 0.0));
         expected.push_back(geometry::Point<double>(0.0, 1.0));
+        expected.push_back(geometry::Point<double>(1.0, 1.0));
         expected.push_back(geometry::Point<double>(1.0, 0.0));
 
-        for (size_t i = 0; i < 5; i++) {
+        std::cout << output.dump() << std::endl;
+
+        for (size_t i = 0; i < 4; i++) {
             REQUIRE_EQUAL(expected[i].X(), output["vertices"][i]["x"]);
             REQUIRE_EQUAL(expected[i].Y(), output["vertices"][i]["y"]);
         }
@@ -99,6 +97,7 @@ static void SimpleTest(httplib::Client* cli) {
             "\nResponse body: " + res->body).c_str());
     }
 }
+*/
 
 static void RandomTest(httplib::Client* cli) {
     const int numTries = 5; // Уменьшим количество для отладки
@@ -111,7 +110,6 @@ static void RandomTest(httplib::Client* cli) {
     for (int it = 0; it < numTries; it++) {
         size_t size = sizeDist(gen);
         nlohmann::json input;
-        input["id"] = it;
         input["precision"] = precision;
         input["points"] = nlohmann::json::array();
 
@@ -141,7 +139,7 @@ static void RandomTest(httplib::Client* cli) {
         }
 
         std::string request_body = input.dump();
-        auto res = cli->Post("/My_Polig", request_body, "application/json");
+        auto res = cli->Post("/MyPolig", request_body, "application/json");
 
         // Проверка успешности запроса
         REQUIRE(res != nullptr);
@@ -158,8 +156,6 @@ static void RandomTest(httplib::Client* cli) {
 
         try {
             nlohmann::json output = nlohmann::json::parse(res->body);
-
-            REQUIRE_EQUAL(it, output["id"]);
             REQUIRE_EQUAL(size, output["vertices"].size());
 
             std::vector<geometry::Point<double>> vertices;

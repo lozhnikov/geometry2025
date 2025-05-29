@@ -40,11 +40,13 @@ namespace geometry {
         }
 
         // Вызываем алгоритм построения многоугольника
+        std::cout << "START" << std::endl;
         Polygon<double>* poly = starPolygon(points, precision);
         if (poly == nullptr) {
             std::cerr << "Ошибка создания многоугольника" << std::endl;
             return -1;
         }
+        std::cout << "FINISH" << std::endl;
 
         // Получаем вершины многоугольника
         std::list<Point<double>> vertices = poly->Vertices();
