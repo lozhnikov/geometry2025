@@ -14,15 +14,14 @@ namespace geometry {
 
 /* Сюда нужно вставить объявление серверной части алгоритма. */
 
-/** 
- * @brief Method for Graham scan convex hull algorithm realization.
+/**
+ * @brief Серверная часть метода слияния двух выпуклых оболочек.
  * 
- * @param input input data in JSON format
- * @param output pointer to JSON output
- * @return return code: 0 - success, otherwise - error
+ * @param input JSON с двумя оболочками: "left" и "right" — массивы точек [[x, y], ...]
+ * @param output JSON с результатом — объединённая выпуклая оболочка как массив точек
  */
 
-  int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
+int ShellMergeMethod(const nlohmann::json& input, nlohmann::json* output);
 
 /* Конец вставки. */
 

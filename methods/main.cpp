@@ -4,7 +4,6 @@
  *
  * Файл с функией main() для серверной части программы.
  */
-
 #include <httplib.h>
 #include <iostream>
 #include <cstdio>
@@ -37,23 +36,20 @@ int main(int argc, char* argv[]) {
 
   /* Сюда нужно вставить обработчик post запроса для алгоритма. */
 
-  svr.Post("/GrahamScan",
-           [&](const httplib::Request& req, httplib::Response& res) {
+  svr.Post("/ShellMerge", [&](const httplib::Request& req, httplib::Response& res) {
     try {
-      auto input = json::parse(req.body);
-      json output;
-
-      int result = geometry::GrahamScanMethod(input, &output);
-
-      if (result != 0) {
-        res.status = 400;  // Bad request
+      nlohmann::json input = nlohmann::json::parse(req.body);
+      nlohmann::json output;
+      int status = geometry::ShellMergeMethod(input, &output);
+      if (status == 0) {
+        res.set_content(output.dump(2), "application/json");
+      } else {
+        res.status = 400;
+        res.set_content(R"({"error": "ShellMergeMethod failed"})", "application/json");
       }
-
-      res.set_content(output.dump(), "application/json");
     } catch (const std::exception& e) {
-      json error_output = {{"error", std::string("Parse error: ") + e.what()}};
       res.status = 400;
-      res.set_content(error_output.dump(), "application/json");
+      res.set_content(std::string("{\"error\": \"") + e.what() + "\"}", "application/json");
     }
   });
 
