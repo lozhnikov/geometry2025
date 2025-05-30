@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 
   /* Сюда нужно вставить вызов набора тестов для алгоритма. */
 
-  TestGrahamScan(&cli);
+  TestShellMerge(&cli);
 
   /* Конец вставки. */
 
@@ -54,3 +54,4 @@ int main(int argc, char* argv[]) {
 
   return TestSuite::Status();
 }
+
