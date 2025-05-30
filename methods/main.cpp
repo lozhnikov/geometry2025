@@ -56,7 +56,6 @@ int main(int argc, char* argv[]) {
       res.set_content(error_output.dump(), "application/json");
     }
   });
-    
     svr.Post("/GiftWrapping",
              [&](const httplib::Request& request,
                  httplib::Response& response) {
