@@ -120,44 +120,36 @@ static void RandomPointsTest(httplib::Client* cli) {
         // Generate convex polygon (to simplify testing)
         size_t size = sizeDist(gen);
         std::vector<Point<double>> points;
-        
         // Generate points around a circle
         double center_x = coordDist(gen);
         double center_y = coordDist(gen);
         double radius = coordDist(gen) / 2.0;
         if (radius < 0) radius = -radius;
-        
         for (size_t i = 0; i < size; i++) {
             double angle = 2 * M_PI * i / size;
             points.emplace_back(
                 center_x + radius * cos(angle),
                 center_y + radius * sin(angle));
         }
-        
         // Generate test point
         Point<double> test_point(
             center_x + (coordDist(gen) / range) * radius,
             center_y + (coordDist(gen) / range) * radius);
-        
         // Prepare input
         nlohmann::json input;
         input["point"]["x"] = test_point.X();
         input["point"]["y"] = test_point.Y();
-        
         for (size_t i = 0; i < points.size(); i++) {
             input["polygon"][i]["x"] = points[i].X();
             input["polygon"][i]["y"] = points[i].Y();
         }
-        
         // Call method
         httplib::Result res = cli->Post("/AnglePointInPolygon",
                                       input.dump(), "application/json");
 
         nlohmann::json output = nlohmann::json::parse(res->body);
-        
         // Verify output
         REQUIRE_EQUAL(size, output["polygon_size"]);
-        
         // Simple verification - if point is within radius it should be inside
         double distance = sqrt(pow(test_point.X() - center_x, 2) + 
                               pow(test_point.Y() - center_y, 2));

@@ -19,7 +19,7 @@
  * @return return code: 0 - success, otherwise - error
  */
 namespace geometry {
-int AnglePointInPolygonMethod(const nlohmann::json& input,\
+int AnglePointInPolygonMethod(const nlohmann::json& input, \
      nlohmann::json* output) {
     try {
         // Validate input
@@ -27,12 +27,10 @@ int AnglePointInPolygonMethod(const nlohmann::json& input,\
             (*output)["error"] = "Input must contain 'point' object";
             return 1;
         }
-        
         if (!input.contains("polygon") || !input["polygon"].is_array()) {
             (*output)["error"] = "Input must contain 'polygon' array";
             return 2;
         }
-        
         // Parse point
         if (!input["point"].contains("x") || !input["point"]["x"].is_number()) {
             (*output)["error"] = "Point must have 'x' numeric field";
@@ -42,7 +40,6 @@ int AnglePointInPolygonMethod(const nlohmann::json& input,\
             (*output)["error"] = "Point must have 'y' numeric field";
             return 4;
         }
-        
         Point<double> point(
             input["point"]["x"].get<double>(),
             input["point"]["y"].get<double>());
@@ -57,17 +54,13 @@ int AnglePointInPolygonMethod(const nlohmann::json& input,\
                  and 'y' numeric fields";
                 return 5;
             }
-            
-            polygon_points.emplace_back(
-                point_json["x"].get<double>(),
+            polygon_points.emplace_back(\
+                point_json["x"].get<double>(), \
                 point_json["y"].get<double>());
         }
-        
         Polygon<double> polygon(polygon_points);
-        
         // Run algorithm with default precision
         auto position = AnglePointInPolygon(point, polygon, 1e-9);
-        
         // Prepare output
         switch (position) {
             case PointPosition::INSIDE:
@@ -80,14 +73,11 @@ int AnglePointInPolygonMethod(const nlohmann::json& input,\
                 (*output)["position"] = "boundary";
                 break;
         }
-        
         (*output)["point"] = {
             {"x", point.X()},
             {"y", point.Y()}
         };
-        
         (*output)["polygon_size"] = polygon.Size();
-        
         return 0;
     } catch (const std::exception& e) {
         (*output)["error"] = std::string("Exception: ") + e.what();
