@@ -58,13 +58,17 @@ int main(int argc, char* argv[]) {
   });
     
     svr.Post("/GiftWrapping",
-             [&](const httplib::Request& request, httplib::Response& response) {
+             [&](const httplib::Request& request,
+                 httplib::Response& response) {
       nlohmann::json output;
-      if (geometry::GiftWrappingMethod(nlohmann::json::parse(request.body), &output) == 0) {
-        response.set_content(output.dump(), "application/json");
+      if (geometry::GiftWrappingMethod(nlohmann::json::parse(request.body),
+                                       &output) == 0) {
+        response.set_content(output.dump(),
+                             "application/json");
       } else {
         response.status = 400;
-        response.set_content(output.dump(), "application/json");
+        response.set_content(output.dump(),
+                             "application/json");
       }
     });
 
