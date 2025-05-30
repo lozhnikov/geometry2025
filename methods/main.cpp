@@ -36,7 +36,8 @@ int main(int argc, char* argv[]) {
 
   /* Сюда нужно вставить обработчик post запроса для алгоритма. */
 
-  svr.Post("/ShellMerge", [&](const httplib::Request& req, httplib::Response& res) {
+  svr.Post("/ShellMerge", [&](const httplib::Request& req,
+  httplib::Response& res) {
     try {
       nlohmann::json input = nlohmann::json::parse(req.body);
       nlohmann::json output;
@@ -49,7 +50,8 @@ int main(int argc, char* argv[]) {
       }
     } catch (const std::exception& e) {
       res.status = 400;
-      res.set_content(std::string("{\"error\": \"") + e.what() + "\"}", "application/json");
+      res.set_content(std::string("{\"error\": \"") + e.what() + "\"}",
+       "application/json");
     }
   });
 
