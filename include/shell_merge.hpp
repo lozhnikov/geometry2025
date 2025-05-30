@@ -1,3 +1,10 @@
+/** 
+ * @file include/shell_merge.hpp 
+ * @author Щербинин Виталий
+ * 
+ * @brief Реализация алгоритма слияния двух выпуклых оболочек.
+ */
+
 #ifndef INCLUDE_SHELL_MERGE_HPP_
 #define INCLUDE_SHELL_MERGE_HPP_
 
@@ -12,7 +19,7 @@ namespace geometry {
  */
 struct Point {
   double x, y;
-  Point(double xx = 0, double yy = 0) : x(xx), y(yy) {}
+  explicit Point(double xx = 0, double yy = 0) : x(xx), y(yy) {}
 };
 
 /**
@@ -34,6 +41,11 @@ class Polygon {
 
   Polygon() : head(nullptr) {}
 
+/**
+ * @brief Вставляет точку в конец списка вершин.
+ * @param p точка
+ */
+
   void insert(const Point& p) {
     if (!head) {
       head = new Vertex(p);
@@ -47,7 +59,9 @@ class Polygon {
     cur->next = v;
     v->next = head;
   }
-
+/**
+ * @brief Печать всех вершин мноугольника.
+ */
   void print() const {
     if (!head) return;
     Vertex* v = head;
@@ -91,7 +105,8 @@ inline Polygon* MergeHulls(const Polygon* L, const Polygon* R) {
     v = v->next;
   } while (v != R->head);
 
-  std::sort(combined.begin(), combined.end(), [](const Point& a, const Point& b) {
+  std::sort(combined.begin(), combined.end(),
+   [](const Point& a, const Point& b) {
     return a.x < b.x || (a.x == b.x && a.y < b.y);
   });
 
@@ -107,7 +122,7 @@ inline Polygon* MergeHulls(const Polygon* L, const Polygon* R) {
 
   // Верхняя часть
   size_t t = hull.size() + 1;
-  for (int i = (int)combined.size() - 2; i >= 0; i--) {
+  for (int i = static_cast<int>(combined.size()) - 2; i >= 0; i--) {
     while (hull.size() >= t &&
            orientation(hull[hull.size() - 2], hull.back(), combined[i]) <= 0)
       hull.pop_back();
