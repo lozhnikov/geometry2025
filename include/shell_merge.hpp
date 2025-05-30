@@ -96,18 +96,21 @@ inline int orientation(const Point& a, const Point& b, const Point& c) {
 inline Polygon* MergeHulls(const Polygon* L, const Polygon* R) {
   std::vector<Point> combined;
 
+  if (L && L->head) {
   Vertex* v = L->head;
   do {
     combined.push_back(v->pt);
     v = v->next;
   } while (v != L->head);
+  }
 
-  v = R->head;
+  if (R && R->head) {
+  Vertex* v = R->head;
   do {
     combined.push_back(v->pt);
     v = v->next;
   } while (v != R->head);
-
+  }
   std::sort(combined.begin(), combined.end(),
    [](const Point& a, const Point& b) {
     return a.x < b.x || (a.x == b.x && a.y < b.y);
