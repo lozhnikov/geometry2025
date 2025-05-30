@@ -16,9 +16,10 @@ namespace geometry {
 
 /**
  * @brief Серверная часть метода слияния двух выпуклых оболочек.
- * 
+ *
  * @param input JSON с двумя оболочками: "left" и "right" — массивы точек [[x, y], ...]
  * @param output JSON с результатом — объединённая выпуклая оболочка как массив точек
+ * @return 0 в случае упеха
  */
 
 int ShellMergeMethod(const nlohmann::json& input, nlohmann::json* output);
