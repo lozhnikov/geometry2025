@@ -5,6 +5,7 @@
  */
 
 #include <httplib.h>
+#include <iostream>
 #include <vector>
 #include <random>
 #include <utility>
@@ -16,9 +17,9 @@ static void SimpleClipTest(httplib::Client* cli);
 static void OutsideClipTest(httplib::Client* cli);
 static void RandomClipTest(httplib::Client* cli);
 
-void TestCyrusBek(httplib::Client* cli) {
-    TestSuite suite("TestCyrusBek");
-    
+void TestCyrusBeck(httplib::Client* cli) {
+    TestSuite suite("TestCyrusBeck");
+
     RUN_TEST_REMOTE(suite, cli, SimpleClipTest);
     RUN_TEST_REMOTE(suite, cli, OutsideClipTest);
     RUN_TEST_REMOTE(suite, cli, RandomClipTest);
@@ -29,13 +30,13 @@ static void SimpleClipTest(httplib::Client* cli) {
         {
             "segment": {
                 "start": {"x": 0.0, "y": 0.0},
-                "end": {"x": 2.0, "y": 2.0}
+                "end": {"x": 6.0, "y": 3.0}
             },
             "polygon": [
-                {"x": 1.0, "y": 0.0},
-                {"x": 2.0, "y": 1.0},
-                {"x": 1.0, "y": 2.0},
-                {"x": 0.0, "y": 1.0}
+                {"x": 2.0, "y": 0.0},
+                {"x": 2.0, "y": 2.0},
+                {"x": 5.0, "y": 2.0},
+                {"x": 5.0, "y": 0.0}
             ]
         }
     )"_json;

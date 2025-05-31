@@ -1,13 +1,14 @@
 /**
- * @file include/cyrus_bek.hpp
+ * @file include/cyrus_beck.hpp
  * 
- * @brief Cyrus-Bek line clipping algorithm implementation.
+ * @brief Cyrus-Beck line clipping algorithm implementation.
  */
 
-#ifndef INCLUDE_CYRUS_BEK_HPP_
-#define INCLUDE_CYRUS_BEK_HPP_
+#ifndef INCLUDE_CYRUS_BECK_HPP_
+#define INCLUDE_CYRUS_BECK_HPP_
 
 #include <vector>
+#include <iostream>
 #include <algorithm>
 #include "point.hpp"
 #include "edge.hpp"
@@ -16,7 +17,20 @@
 namespace geometry {
 
 /**
- * @brief Clip a line segment against a convex polygon using Cyrus-Bek algorithm.
+ * @brief Compute the dot product of two points.
+ *
+ * @tparam T coordinate type
+ * @param a first point
+ * @param b second point
+ * @return The dot product of the two points
+ */
+template<typename T>
+T DotProduct(const Point<T>& a, const Point<T>& b) {
+    return a.X() * b.X() + a.Y() * b.Y();
+}
+
+/**
+ * @brief Clip a line segment against a convex polygon using Cyrus-Beck algorithm.
  *
  * @tparam T coordinate type
  * @param s line segment to clip
@@ -26,42 +40,39 @@ namespace geometry {
  * @return false if segment is completely outside
  */
 template<typename T>
-bool ClipLineSegment(const Edge<T>& s, const Polygon<T>& p, Edge<T>& result) {
-    double t0 = 0.0;
-    double t1 = 1.0;
-    Point<T> v = s.Dest() - s.Org();
+bool ClipLineSegment(const Edge<T>& s, Polygon<T>* p, Edge<T>* result) {
+    T t0 = 0.0;
+    T t1 = 1.0;
+    T t;
+    Point<T> v = s.Destination() - s.Origin();
 
-    for (size_t i = 0; i < p.Size(); i++) {
-        Edge<T> e = p.Edge(i);
-        double t;
-        IntersectionType intersect = s.Intersect(e, t);
+    for (int i = 0; i < p->Size(); i++, p->Advance(Rotation::ClockWise)) {
+        Edge<T> e = p->GetEdge();
+        Intersection intersect = s.Intersect(e, &t, 1e-10);
 
-        if (intersect == SKEW) {
+        if (intersect == Intersection::Skew) {
             Edge<T> f = e;
             f.Rotate();
-            Point<T> n = f.Dest() - f.Org();
-            
-            if (DotProduct(n, v) > 0.0) { // Entering point
+            Point<T> n = f.Destination() - f.Origin();
+            if (DotProduct(n, v) > 0.0) {  // Entering point
                 if (t > t0) t0 = t;
-            } else { // Leaving point
+            } else {  // Leaving point
                 if (t < t1) t1 = t;
             }
-        } else if (intersect == PARALLEL) {
-            if (s.Org().Classify(e) == LEFT) {
+        } else {
+            if (s.Origin().Classify(e, 1e-10) == Position::Left) {
                 return false;
             }
         }
-
-        if (t0 > t1) return false;
     }
 
     if (t0 <= t1) {
-        result = Edge<T>(s.Point(t0), s.Point(t1));
+        *result = Edge<T>(s.Value(t0), s.Value(t1));
         return true;
     }
     return false;
 }
 
-} // namespace geometry
+}  // namespace geometry
 
-#endif // INCLUDE_CYRUS_BEK_HPP_
+#endif  // INCLUDE_CYRUS_BECK_HPP_

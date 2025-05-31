@@ -36,6 +36,6 @@ void TestOrientation();
  * @param cli указатель на HTTP клиент
  */
 
-void TestCyrusBek(httplib::Client* cli);
+void TestCyrusBeck(httplib::Client* cli);
 
 #endif  // TESTS_TEST_HPP_

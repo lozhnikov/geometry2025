@@ -125,7 +125,7 @@ add_executable(
   include/polygon.hpp
   include/polygon_impl.hpp
 
-  methods/cyrus_bek_method.cpp
+  methods/cyrus_beck_method.cpp
 
   methods/main.cpp
   methods/methods.hpp

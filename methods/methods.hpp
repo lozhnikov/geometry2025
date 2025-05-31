@@ -22,7 +22,7 @@ namespace geometry {
  * @return return code: 0 - success, otherwise - error
  */
 
-  int CyrusBekMethod(const nlohmann::json& input, nlohmann::json* output);
+  int CyrusBeckMethod(const nlohmann::json& input, nlohmann::json* output);
 
 /* Конец вставки. */
 

@@ -37,9 +37,9 @@ int main(int argc, char* argv[]) {
     std::string url = host + ":" + std::to_string(port);
 
     httplib::Client cli(url.c_str());
-    
-    TestCyrusBek(&cli);
-    
+
+    TestCyrusBeck(&cli);
+
     httplib::Result res = cli.Get("/stop");
 
     if (res->status != 200) {

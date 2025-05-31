@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     svr.stop();
   });
 
-  server.Post("/CyrusBek",[](const httplib::Request& req,
+  svr.Post("/CyrusBek", [](const httplib::Request& req,
                              httplib::Response& res) {
     nlohmann::json input, output;
     try {
@@ -45,8 +45,8 @@ int main(int argc, char* argv[]) {
         res.set_content(output.dump(), "application/json");
         return;
         }
-        
-        int ret = CyrusBekMethod(input, &output);
+
+        int ret = geometry::CyrusBeckMethod(input, &output);
         res.status = ret == 0 ? 200 : 400;
         res.set_content(output.dump(), "application/json");
   });
