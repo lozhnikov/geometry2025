@@ -138,7 +138,8 @@ static void RandomPointsTest(httplib::Client* cli) {
   }
 }
 
-double CalculatePolygonArea(const std::vector<std::pair<double, double>>& points) {
+double CalculatePolygonArea(const std::vector<std::pair<double,
+                            double>>& points) {
     double area = 0.0;
     size_t n = points.size();
     for (size_t i = 0; i < n; i++) {
@@ -150,7 +151,8 @@ double CalculatePolygonArea(const std::vector<std::pair<double, double>>& points
 }
 
 
-bool IsPointInConvexPolygon(const std::vector<std::pair<double, double>>& polygon,
+bool IsPointInConvexPolygon(const std::vector<std::pair<double,
+                            double>>& polygon,
                            const std::pair<double, double>& point,
                            double eps = 1e-9) {
     double total_area = 0.0;
@@ -209,7 +211,8 @@ static void PointInConvexHullTest(httplib::Client* cli) {
                 point["y"].get<double>()
             };
             
-            bool is_in_hull = IsPointInConvexPolygon(convex_hull, p, eps);
+            bool is_in_hull = IsPointInConvexPolygon(convex_hull,
+                                                     p, eps);
             
             
             REQUIRE(is_in_hull);
@@ -224,7 +227,8 @@ static void PointInConvexHullTest(httplib::Client* cli) {
             }
             std::pair<double, double> outside_point = {max_x + 1.0, 0.0};
             
-            bool outside_in_hull = IsPointInConvexPolygon(convex_hull, outside_point, eps);
+            bool outside_in_hull = IsPointInConvexPolygon(convex_hull,
+                                                          outside_point, eps);
             REQUIRE(!outside_in_hull);
         }
     }
