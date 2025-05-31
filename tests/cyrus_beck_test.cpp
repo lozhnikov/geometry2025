@@ -94,11 +94,9 @@ static void RandomClipTest(httplib::Client* cli) {
         input["segment"]["start"]["y"] = coordDist(gen);
         input["segment"]["end"]["x"] = coordDist(gen);
         input["segment"]["end"]["y"] = coordDist(gen);
-        
         httplib::Result res = cli->Post("/CyrusBek",
                                     input.dump(), "application/json");
         nlohmann::json output = nlohmann::json::parse(res->body);
-        
         REQUIRE(output.contains("visible"));
         if (output["visible"]) {
           REQUIRE(output.contains("clipped_segment"));
