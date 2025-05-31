@@ -158,6 +158,7 @@ bool IsPointInConvexPolygon(const std::vector<std::pair<double, double>>& polygo
     
     for (size_t i = 0; i < n; i++) {
         size_t j = (i + 1) % n;
+
         double area = std::abs(
             (polygon[i].first*(polygon[j].second - point.second) +
              polygon[j].first*(point.second - polygon[i].second) +
@@ -212,6 +213,19 @@ static void PointInConvexHullTest(httplib::Client* cli) {
             
             
             REQUIRE(is_in_hull);
+        }
+        
+        
+        if (convex_hull.size() >= 3) {
+            
+            double max_x = convex_hull[0].first;
+            for (const auto& p : convex_hull) {
+                if (p.first > max_x) max_x = p.first;
+            }
+            std::pair<double, double> outside_point = {max_x + 1.0, 0.0};
+            
+            bool outside_in_hull = IsPointInConvexPolygon(convex_hull, outside_point, eps);
+            REQUIRE(!outside_in_hull);
         }
     }
 }
