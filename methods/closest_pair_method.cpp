@@ -30,7 +30,8 @@ int ClosestPairMethod(const nlohmann::json& input, nlohmann::json* output) {
     for (const auto& pt : input["points"]) {
       if (!pt.is_object() || !pt.contains("x") || !pt.contains("y") ||
           !pt["x"].is_number() || !pt["y"].is_number()) {
-        (*output)["error"] = "Each point must be an object with numeric 'x' and 'y'";
+        (*output)["error"] =
+          "Each point must be an object with numeric 'x' and 'y'";
         return 2;
       }
       points.emplace_back(pt["x"].get<double>(), pt["y"].get<double>());
