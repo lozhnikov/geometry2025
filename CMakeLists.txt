@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
+
 project(geometry CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -99,6 +100,10 @@ if (NOT MSVC)
   set(GEOMETRY_LIBS "pthread;ws2_32")
 endif ()
 
+if (WIN32)
+  set(WINDOWS_LIBS "ws2_32")
+endif (WIN32)
+
 include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 ####################################################################
@@ -109,17 +114,19 @@ include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 add_executable(
   geometry_server
+  include/closest_pair_impl.hpp
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
+  include/graham_scan.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
   include/polygon.hpp
-  include/closest_pair_impl.hpp
+  include/polygon_impl.hpp
+  methods/closest_pair_method.cpp
   methods/main.cpp
   methods/methods.hpp
-  methods/closest_pair_method.cpp
 )
 
 ####################################################################
@@ -128,7 +135,7 @@ add_executable(
 
 
 
-target_link_libraries(geometry_server ${GEOMETRY_LIBS})
+target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
 ####################################################################
 #    Исходные файлы клиентской части (набор тестов).
@@ -139,6 +146,7 @@ target_link_libraries(geometry_server ${GEOMETRY_LIBS})
 
 add_executable(
   geometry_test
+  include/closest_pair_impl.hpp
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
@@ -147,9 +155,9 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
-  include/closest_pair_impl.hpp
   tests/closest_pair_test.cpp
   tests/edge_test.cpp
+  tests/graham_scan_test.cpp
   tests/io.hpp
   tests/main.cpp
   tests/orientation_test.cpp
@@ -166,5 +174,5 @@ add_executable(
 
 
 
-target_link_libraries(geometry_test ${GEOMETRY_LIBS})
+target_link_libraries(geometry_test ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 

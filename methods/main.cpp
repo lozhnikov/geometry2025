@@ -43,11 +43,13 @@ int main(int argc, char* argv[]) {
       auto input = json::parse(req.body);
       json output;
 
+
       int result = geometry::ClosestPairMethod(input, &output);
 
       if (result != 0) {
         res.status = 400;
       }
+
 
       res.set_content(output.dump(), "application/json");
     } catch (const std::exception& e) {
