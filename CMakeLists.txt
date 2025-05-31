@@ -1,6 +1,10 @@
+
 cmake_minimum_required(VERSION 3.5)
 
+
 project(geometry CXX)
+
+set(SSL_CERT_FILE "C:/mingw/mingw64/ssl/certs/cacert.pem")
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -124,6 +128,8 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  methods/angle_point_in_polygon_method.cpp
+  methods/graham_scan_method.cpp
   methods/main.cpp
   methods/graham_scan_method.cpp
   methods/angle_point_in_polygon_method.cpp
