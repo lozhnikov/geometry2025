@@ -72,7 +72,6 @@ bool ClipLineSegment(const Edge<T>& s, Polygon<T>* p, Edge<T>* result) {
     }
     return false;
 }
-
 }  // namespace geometry
 
 #endif  // INCLUDE_CYRUS_BECK_HPP_
