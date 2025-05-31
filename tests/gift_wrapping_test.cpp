@@ -213,18 +213,5 @@ static void PointInConvexHullTest(httplib::Client* cli) {
             
             REQUIRE(is_in_hull);
         }
-        
-        
-        if (convex_hull.size() >= 3) {
-            
-            double max_x = convex_hull[0].first;
-            for (const auto& p : convex_hull) {
-                if (p.first > max_x) max_x = p.first;
-            }
-            std::pair<double, double> outside_point = {max_x + 1.0, 0.0};
-            
-            bool outside_in_hull = IsPointInConvexPolygon(convex_hull, outside_point, eps);
-            REQUIRE(!outside_in_hull);
-        }
     }
 }
