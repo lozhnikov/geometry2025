@@ -42,9 +42,9 @@ int main(int argc, char* argv[]) {
 
   /* Сюда нужно вставить вызов набора тестов для алгоритма. */
 
-  TestGrahamScan(&cli);
 
-  /* Конец вставки. */
+  TestClosestPair(&cli);
+
 
   // Отправляем GET запрос для остановки сервера.
   httplib::Result res = cli.Get("/stop");

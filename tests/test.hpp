@@ -31,14 +31,8 @@ void TestPolygon();
 void TestOrientation();
 
 /* Сюда нужно добавить объявления тестовых функций. */
+void TestClosestPair(httplib::Client* cli);
 
-/**
- * @brief testing Graham scan
- * 
- * @param cli pointer to HTTP client
- */
-
-void TestGrahamScan(httplib::Client* cli);
 
 /* Конец вставки. */
 

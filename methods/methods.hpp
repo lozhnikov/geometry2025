@@ -9,11 +9,12 @@
 
 #ifndef METHODS_METHODS_HPP_
 #define METHODS_METHODS_HPP_
-
+#include <nlohmann/json.hpp>
 namespace geometry {
 
 /* Сюда нужно вставить объявление серверной части алгоритма. */
 
+int ClosestPairMethod(const nlohmann::json& input, nlohmann::json* output);
 /** 
  * @brief Method for Graham scan convex hull algorithm realization.
  * 

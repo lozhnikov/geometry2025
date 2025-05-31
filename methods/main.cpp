@@ -36,18 +36,19 @@ int main(int argc, char* argv[]) {
   });
 
   /* Сюда нужно вставить обработчик post запроса для алгоритма. */
-
-  svr.Post("/GrahamScan",
+  svr.Post("/ClosestPair",
            [&](const httplib::Request& req, httplib::Response& res) {
     try {
       auto input = json::parse(req.body);
       json output;
 
-      int result = geometry::GrahamScanMethod(input, &output);
+
+      int result = geometry::ClosestPairMethod(input, &output);
 
       if (result != 0) {
-        res.status = 400;  // Bad request
+        res.status = 400;
       }
+
 
       res.set_content(output.dump(), "application/json");
     } catch (const std::exception& e) {
@@ -56,6 +57,7 @@ int main(int argc, char* argv[]) {
       res.set_content(error_output.dump(), "application/json");
     }
   });
+
 
     svr.Post("/AnglePointInPolygon",
            [&](const httplib::Request& req, httplib::Response& res) {

@@ -117,6 +117,7 @@ include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 add_executable(
   geometry_server
+  include/closest_pair_impl.hpp
   include/angle_point_in_polygon.hpp
   include/common.hpp
   include/edge.hpp
@@ -127,6 +128,7 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  methods/closest_pair_method.cpp
   methods/angle_point_in_polygon_method.cpp
   methods/graham_scan_method.cpp
   methods/main.cpp
@@ -150,6 +152,7 @@ target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
 add_executable(
   geometry_test
+  include/closest_pair_impl.hpp
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
@@ -158,6 +161,7 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  tests/closest_pair_test.cpp
   tests/edge_test.cpp
   tests/graham_scan_test.cpp
   tests/io.hpp
