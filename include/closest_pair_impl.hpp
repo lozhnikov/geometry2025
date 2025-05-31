@@ -1,5 +1,4 @@
 /**
- * @file closest_pair.hpp
  * @brief Template implementation of Closest Pair of Points algorithm
  */
 
