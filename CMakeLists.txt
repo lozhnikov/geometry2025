@@ -130,6 +130,7 @@ add_executable(
   include/polygon_impl.hpp
   methods/angle_point_in_polygon_method.cpp
   methods/graham_scan_method.cpp
+  methods/shell_merge_method.cpp
   methods/main.cpp
   methods/methods.hpp
   
