@@ -26,6 +26,8 @@ namespace geometry {
   int AnglePointInPolygonMethod(const nlohmann::json& input, \
     nlohmann::json* output);
 
+  int GiftWrappingMethod(const nlohmann::json& input, nlohmann::json* output);
+
 /* Конец вставки. */
 
 }  // namespace geometry

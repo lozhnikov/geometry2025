@@ -39,6 +39,8 @@ void TestOrientation();
  */
 
 void TestGrahamScan(httplib::Client* cli);
+void TestGiftWrapping(httplib::Client* cli);
+
 
 /* Конец вставки. */
 

@@ -56,6 +56,20 @@ int main(int argc, char* argv[]) {
       res.set_content(error_output.dump(), "application/json");
     }
   });
+    svr.Post("/GiftWrapping",
+             [&](const httplib::Request& request,
+                 httplib::Response& response) {
+      nlohmann::json output;
+      if (geometry::GiftWrappingMethod(nlohmann::json::parse(request.body),
+                                       &output) == 0) {
+        response.set_content(output.dump(),
+                             "application/json");
+      } else {
+        response.status = 400;
+        response.set_content(output.dump(),
+                             "application/json");
+      }
+    });
 
     svr.Post("/AnglePointInPolygon",
            [&](const httplib::Request& req, httplib::Response& res) {
