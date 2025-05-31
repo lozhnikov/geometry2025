@@ -1,7 +1,7 @@
 /**
- * @file methods/graham_scan_method.cpp 
+ * @file methods/graham_scan_method.cpp
  * @author Maria Fedorova
- * 
+ *
  * @brief Graham scan convex hull algorithm implementation.
  */
 
@@ -12,7 +12,7 @@
 
 /**
  * @brief Method for Graham scan convex hull algorithm implementation.
- * 
+ *
  * @param input input data in JSON format
  * @param output pointer to JSON output
  * @return return code: 0 - success, otherwise - error
@@ -78,7 +78,7 @@ namespace geometry {
   *      {"x": 2.0, "y": 0.0}
   *   ]
   * }
-  * 
+  *
   * Output JSON structure:
   * {
   *   "convex_hull" : [
@@ -90,5 +90,3 @@ namespace geometry {
   *   "original_size" : 3
   * }
   */
-
-
