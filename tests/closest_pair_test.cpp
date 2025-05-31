@@ -3,10 +3,10 @@
  * @brief Набор тестов для алгоритма поиска ближайшей пары точек
  */
 
-#include <httplib.h>
-#include <nlohmann/json.hpp>
 #include <random>
 #include <cmath>
+#include <httplib.h>
+#include <nlohmann/json.hpp>
 #include "test_core.hpp"
 #include "test.hpp"
 
@@ -39,7 +39,8 @@ static void ClosestPairSimpleTest(httplib::Client* cli) {
     }
   )"_json;
 
-  httplib::Result res = cli->Post("/ClosestPair", input.dump(), "application/json");
+  httplib::Result res = cli->Post("/ClosestPair",
+  input.dump(), "application/json");
 
   REQUIRE(res != nullptr);
   REQUIRE_EQUAL(res->status, 200);
@@ -73,7 +74,8 @@ static void ClosestPairRandomTest(httplib::Client* cli) {
     input["points"].push_back({{"x", baseX}, {"y", baseY}});
     input["points"].push_back({{"x", baseX + 1e-10}, {"y", baseY}});
 
-    httplib::Result res = cli->Post("/ClosestPair", input.dump(), "application/json");
+    httplib::Result res = cli->Post("/ClosestPair", 
+    input.dump(), "application/json");
     REQUIRE(res != nullptr);
     REQUIRE_EQUAL(res->status, 200);
 
@@ -92,7 +94,8 @@ static void ClosestPairColinearTest(httplib::Client* cli) {
     input["points"].push_back({{"x", static_cast<double>(i)}, {"y", 0.0}});
   }
 
-  httplib::Result res = cli->Post("/ClosestPair", input.dump(), "application/json");
+  httplib::Result res = cli->Post("/ClosestPair",
+  input.dump(), "application/json");
 
   REQUIRE(res != nullptr);
   REQUIRE_EQUAL(res->status, 200);
@@ -113,7 +116,8 @@ static void ClosestPairTinyDistanceTest(httplib::Client* cli) {
     }}
   };
 
-  httplib::Result res = cli->Post("/ClosestPair", input.dump(), "application/json");
+  httplib::Result res = cli->Post("/ClosestPair",
+  input.dump(), "application/json");
 
   REQUIRE(res != nullptr);
   REQUIRE_EQUAL(res->status, 200);
