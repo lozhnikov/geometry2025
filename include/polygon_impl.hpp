@@ -1,5 +1,6 @@
 /**
  * @file include/polygon_impl.hpp
+ * 
  * @author Mikhail Lozhnikov
  *
  * Реализация методов класса многоугольника.

@@ -4,15 +4,15 @@
  * @brief Tests for Cyrus-Bek line clipping algorithm.
  */
 
-#include <algorithm>
-#include <httplib.h>
-#include <iostream>
-#include <vector>
-#include <random>
-#include <utility>
-#include <nlohmann/json.hpp>
 #include "test_core.hpp"
 #include "test.hpp"
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <utility>
+#include <vector>
+#include <httplib.h>
+#include <nlohmann/json.hpp>
 
 static void SimpleClipTest(httplib::Client* cli);
 static void OutsideClipTest(httplib::Client* cli);
