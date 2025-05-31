@@ -119,10 +119,12 @@ add_executable(
   include/shell_merge.hpp
   include/orientation.hpp
   include/point.hpp
+  include/graham_scan.hpp
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
   methods/main.cpp
+  methods/graham_scan_method.cpp
   methods/shell_merge_method.cpp
   methods/methods.hpp
   
@@ -156,6 +158,7 @@ add_executable(
   include/shell_merge.hpp
   tests/edge_test.cpp
   tests/shell_merge_test.cpp
+  tests/graham_scan_test.cpp
   tests/io.hpp
   tests/main.cpp
   tests/orientation_test.cpp

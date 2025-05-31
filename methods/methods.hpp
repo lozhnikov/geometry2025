@@ -21,7 +21,7 @@ namespace geometry {
  * @param output JSON с результатом — объединённая выпуклая оболочка как массив точек
  * @return 0 в случае упеха
  */
-
+int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
 int ShellMergeMethod(const nlohmann::json& input, nlohmann::json* output);
 
 /* Конец вставки. */
