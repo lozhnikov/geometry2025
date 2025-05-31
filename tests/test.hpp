@@ -31,7 +31,7 @@ void TestPolygon();
 void TestOrientation();
 
 /* Сюда нужно добавить объявления тестовых функций. */
-
+void TestClosestPair(httplib::Client* cli);
 
 
 /* Конец вставки. */

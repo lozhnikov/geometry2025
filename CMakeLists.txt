@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.25)
 
 project(geometry CXX)
 
@@ -96,7 +96,7 @@ else ()
 endif ()
 
 if (NOT MSVC)
-  set(GEOMETRY_LIBS "pthread")
+  set(GEOMETRY_LIBS "pthread;ws2_32")
 endif ()
 
 include_directories(${GEOMETRY_INCLUDE_DIRS})
@@ -116,9 +116,10 @@ add_executable(
   include/point.hpp
   include/point_impl.hpp
   include/polygon.hpp
-  include/polygon_impl.hpp
+  include/closest_pair_impl.hpp
   methods/main.cpp
   methods/methods.hpp
+  methods/closest_pair_method.cpp
 )
 
 ####################################################################
@@ -146,6 +147,8 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  include/closest_pair_impl.hpp
+  tests/closest_pair_test.cpp
   tests/edge_test.cpp
   tests/io.hpp
   tests/main.cpp
