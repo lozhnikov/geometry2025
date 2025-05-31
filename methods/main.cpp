@@ -36,7 +36,6 @@ int main(int argc, char* argv[]) {
   });
 
   /* Сюда нужно вставить обработчик post запроса для алгоритма. */
-  
   svr.Post("/ClosestPair",
            [&](const httplib::Request& req, httplib::Response& res) {
     try {
@@ -58,7 +57,6 @@ int main(int argc, char* argv[]) {
       res.set_content(error_output.dump(), "application/json");
     }
   });
-  
   /* Конец вставки. */
 
   // Эта функция запускает сервер на указанном порту. Программа не завершится
