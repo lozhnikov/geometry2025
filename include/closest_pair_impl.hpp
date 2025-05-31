@@ -54,7 +54,8 @@ bool cmpY(const Point<T>* a, const Point<T>* b) {
  * @brief Split Y-array for merge step
  */
 template<typename T>
-void splitY(const std::vector<Point<T>*>& y, T xMid, std::vector<Point<T>*>& yL, std::vector<Point<T>*>& yR) {
+void splitY(const std::vector<Point<T>*>& y,
+T xMid, std::vector<Point<T>*>& yL, std::vector<Point<T>*>& yR) {
   for (auto p : y) {
     (p->x < xMid ? yL : yR).push_back(p);
   }
@@ -67,7 +68,8 @@ template<typename T>
 T checkStrip(const std::vector<Point<T>*>& strip, T delta, Edge<T>& closest) {
   T minDist = delta;
   for (size_t i = 0; i < strip.size(); ++i) {
-    for (size_t j = i + 1; j < strip.size() && (strip[j]->y - strip[i]->y) < minDist; ++j) {
+    for (size_t j = i + 1; j < strip.size() &&
+      (strip[j]->y - strip[i]->y) < minDist; ++j) {
       T dx = strip[i]->x - strip[j]->x;
       T dy = strip[i]->y - strip[j]->y;
       T dist = std::sqrt(dx * dx + dy * dy);
@@ -84,7 +86,8 @@ T checkStrip(const std::vector<Point<T>*>& strip, T delta, Edge<T>& closest) {
  * @brief Recursive function to find closest pair
  */
 template<typename T>
-T closestRecursive(std::vector<Point<T>*>& xPts, std::vector<Point<T>*>& yPts, Edge<T>& closest) {
+T closestRecursive(std::vector<Point<T>*>& xPts,
+std::vector<Point<T>*>& yPts, Edge<T>& closest) {
   if (xPts.size() <= 1) return std::numeric_limits<T>::max();
 
   size_t mid = xPts.size() / 2;
