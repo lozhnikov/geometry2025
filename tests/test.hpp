@@ -30,16 +30,13 @@ void TestPolygon();
  */
 void TestOrientation();
 
-/* Сюда нужно добавить объявления тестовых функций. */
-
 /**
- * @brief testing Graham scan
- * 
- * @param cli pointer to HTTP client
+ * @brief Набор тестов для алгоритма Цируса-Бека (отсечение отрезка)
+ *
+ * @param cli указатель на HTTP клиент
  */
 
+void TestCyrusBeck(httplib::Client* cli);
 void TestGrahamScan(httplib::Client* cli);
-
-/* Конец вставки. */
 
 #endif  // TESTS_TEST_HPP_

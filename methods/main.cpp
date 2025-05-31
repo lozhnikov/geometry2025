@@ -35,8 +35,6 @@ int main(int argc, char* argv[]) {
     svr.stop();
   });
 
-  /* Сюда нужно вставить обработчик post запроса для алгоритма. */
-
   svr.Post("/GrahamScan",
            [&](const httplib::Request& req, httplib::Response& res) {
     try {
@@ -57,6 +55,21 @@ int main(int argc, char* argv[]) {
     }
   });
 
+  svr.Post("/CyrusBek", [](const httplib::Request& req,
+                             httplib::Response& res) {
+    nlohmann::json input, output;
+    try {
+      input = nlohmann::json::parse(req.body);
+      } catch (...) {
+        output["error"] = "Invalid JSON";
+        res.set_content(output.dump(), "application/json");
+        return;
+        }
+
+        int ret = geometry::CyrusBeckMethod(input, &output);
+        res.status = ret == 0 ? 200 : 400;
+        res.set_content(output.dump(), "application/json");
+  });
     svr.Post("/AnglePointInPolygon",
            [&](const httplib::Request& req, httplib::Response& res) {
     try {
@@ -79,8 +92,6 @@ int main(int argc, char* argv[]) {
 
   /* Конец вставки. */
 
-  // Эта функция запускает сервер на указанном порту. Программа не завершится
-  // до тех пор, пока сервер не будет остановлен.
   svr.listen("0.0.0.0", port);
 
   return 0;
