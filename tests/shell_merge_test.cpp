@@ -16,6 +16,9 @@ static void SimpleMergeTest(httplib::Client* cli);
 static void CollinearMergeTest(httplib::Client* cli);
 static void RandomMergeTest(httplib::Client* cli);
 
+/**
+ * @brief Простой тест слияния двуз выпуклых оболочек
+ */
 void TestShellMerge(httplib::Client* cli) {
   TestSuite suite("TestShellMerge");
 
