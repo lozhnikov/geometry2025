@@ -127,7 +127,7 @@ add_executable(
   methods/main.cpp
   methods/graham_scan_method.cpp
   methods/angle_point_in_polygon_method.cpp
-  methods/shell_merge_method.cpp
+  methods/graham_scan_method.cpp
   methods/methods.hpp
   
 )
