@@ -1,5 +1,5 @@
 /**
- * @file tests/monotonePolygonTriangulationTest.cpp
+ * @file tests/monotone_polygone_triangulation_test.cpp
  * @author Taisiya Osipova
  *
  * @brief Realization of a set of tests for the Monotone Polygon Triangulation algorithm
