@@ -1,7 +1,7 @@
 /**
  * @file methods/cyrus_beck_method.cpp
  *
- * @brief Cyrus-Bek line clipping algorithm implementation.
+ * @brief Cyrus-Beck line clipping algorithm implementation.
  *
  */
 

@@ -1,7 +1,7 @@
 /**
- * @file tests/cyrus_bek_test.cpp
- * 
- * @brief Tests for Cyrus-Bek line clipping algorithm.
+ * @file tests/cyrus_beck_test.cpp
+ *
+ * @brief Tests for Cyrus-Beck line clipping algorithm.
  */
 
 #include <httplib.h>
