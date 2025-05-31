@@ -146,14 +146,12 @@ static void RandomPointsTest(httplib::Client* cli) {
         // Call method
         httplib::Result res = cli->Post("/AnglePointInPolygon",
                                       input.dump(), "application/json");
-
         nlohmann::json output = nlohmann::json::parse(res->body);
         // Verify output
         REQUIRE_EQUAL(size, output["polygon_size"]);
         // Simple verification - if point is within radius it should be inside
         double distance = sqrt(pow(test_point.X() - center_x, 2) + 
                               pow(test_point.Y() - center_y, 2));
-        
         if (distance < radius * 0.99) {
             REQUIRE_EQUAL("inside", output["position"]);
         } else if (distance > radius * 1.01) {
