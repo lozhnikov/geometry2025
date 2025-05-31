@@ -181,7 +181,6 @@ static void PointInConvexHullTest(httplib::Client* cli) {
     std::uniform_real_distribution<double> coord_dist(-10.0, 10.0);
 
     for (int test = 0; test < numTests; test++) {
-
         nlohmann::json input;
         size_t size = size_dist(gen);
         for (size_t i = 0; i < size; i++) {
@@ -222,7 +221,6 @@ static void PointInConvexHullTest(httplib::Client* cli) {
                 if (p.first > max_x) max_x = p.first;
             }
             std::pair<double, double> outside_point = {max_x + 1.0, 0.0};
-            
             bool outside_in_hull = IsPointInConvexPolygon(convex_hull,
                                                           outside_point, eps);
             REQUIRE(!outside_in_hull);
