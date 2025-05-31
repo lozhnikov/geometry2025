@@ -4,6 +4,7 @@
  * @brief Tests for Cyrus-Bek line clipping algorithm.
  */
 
+#include <algorithm>
 #include <httplib.h>
 #include <iostream>
 #include <vector>
@@ -85,7 +86,6 @@ static void RandomClipTest(httplib::Client* cli) {
             angles.push_back(coordDist(gen));
         }
         std::sort(angles.begin(), angles.end());
-        
         nlohmann::json input;
         for (double angle : angles) {
             double x = 5.0 * cos(angle);
