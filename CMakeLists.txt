@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.5)
 
 
 project(geometry CXX)
@@ -97,7 +97,7 @@ else ()
 endif ()
 
 if (NOT MSVC)
-  set(GEOMETRY_LIBS "pthread;ws2_32")
+  set(GEOMETRY_LIBS "pthread")
 endif ()
 
 if (WIN32)
