@@ -119,6 +119,7 @@ add_executable(
   include/cyrus_beck.hpp
   include/edge.hpp
   include/edge_impl.hpp
+  include/graham_scan.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
@@ -126,7 +127,7 @@ add_executable(
   include/polygon_impl.hpp
 
   methods/cyrus_beck_method.cpp
-
+  methods/graham_scan_method.cpp
   methods/main.cpp
   methods/methods.hpp
 )
@@ -152,6 +153,7 @@ add_executable(
   include/cyrus_beck.hpp
   include/edge.hpp
   include/edge_impl.hpp
+  include/graham_scan.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
@@ -159,6 +161,7 @@ add_executable(
   include/polygon_impl.hpp
   tests/cyrus_beck_test.cpp
   tests/edge_test.cpp
+  tests/graham_scan_test.cpp
   tests/io.hpp
   tests/main.cpp
   tests/orientation_test.cpp

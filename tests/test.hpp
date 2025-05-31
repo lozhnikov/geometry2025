@@ -37,5 +37,6 @@ void TestOrientation();
  */
 
 void TestCyrusBeck(httplib::Client* cli);
+void TestGrahamScan(httplib::Client* cli);
 
 #endif  // TESTS_TEST_HPP_

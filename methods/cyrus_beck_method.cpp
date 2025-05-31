@@ -15,7 +15,6 @@ namespace geometry {
 
 int CyrusBeckMethod(const nlohmann::json& input, nlohmann::json* output) {
     try {
-        // Validate input
         if (!input.contains("segment") || !input["segment"].is_object() ||
             !input.contains("polygon") || !input["polygon"].is_array()) {
             (*output)["error"] = "Input must contain"
@@ -23,7 +22,6 @@ int CyrusBeckMethod(const nlohmann::json& input, nlohmann::json* output) {
             return 1;
         }
 
-        // Parse segment
         auto& seg_json = input["segment"];
         if (!seg_json.contains("start") || !seg_json["start"].is_object() ||
             !seg_json.contains("end") || !seg_json["end"].is_object()) {
@@ -38,7 +36,6 @@ int CyrusBeckMethod(const nlohmann::json& input, nlohmann::json* output) {
                          seg_json["end"]["y"].get<double>());
         Edge<double> segment(start, end);
 
-        // Parse polygon
         std::list<Point<double>> polygon_points;
         for (const auto& point_json : input["polygon"]) {
             polygon_points.emplace_back(
@@ -47,11 +44,9 @@ int CyrusBeckMethod(const nlohmann::json& input, nlohmann::json* output) {
         }
         Polygon<double> polygon(polygon_points);
 
-        // Perform clipping
         Edge<double> result;
         bool visible = ClipLineSegment(segment, &polygon, &result);
 
-        // Prepare output
         (*output)["visible"] = visible;
         if (visible) {
             (*output)["clipped_segment"] = {

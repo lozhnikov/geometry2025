@@ -78,9 +78,8 @@ static void RandomClipTest(httplib::Client* cli) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> coordDist(-10.0, 10.0);
-
+    
     for (int i = 0; i < numTries; i++) {
-        // Generate random convex polygon
         std::vector<double> angles;
         for (int j = 0; j < 10; j++) {
             angles.push_back(coordDist(gen));
@@ -92,17 +91,16 @@ static void RandomClipTest(httplib::Client* cli) {
             double y = 5.0 * sin(angle);
             input["polygon"].push_back({{"x", x}, {"y", y}});
         }
-
-        // Generate random segment
+        
         input["segment"]["start"]["x"] = coordDist(gen);
         input["segment"]["start"]["y"] = coordDist(gen);
         input["segment"]["end"]["x"] = coordDist(gen);
         input["segment"]["end"]["y"] = coordDist(gen);
-
+        
         httplib::Result res = cli->Post("/CyrusBek",
-                                       input.dump(), "application/json");
+                                        input.dump(), "application/json");
         nlohmann::json output = nlohmann::json::parse(res->body);
-
+        
         REQUIRE(output.contains("visible"));
         if (output["visible"]) {
             REQUIRE(output.contains("clipped_segment"));

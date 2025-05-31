@@ -39,6 +39,7 @@ int main(int argc, char* argv[]) {
     httplib::Client cli(url.c_str());
 
     TestCyrusBeck(&cli);
+    TestGrahamScan(&cli);
 
     httplib::Result res = cli.Get("/stop");
 

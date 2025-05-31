@@ -1,6 +1,6 @@
 /**
  * @file methods/main.cpp
- * @author Mikhail Lozhnikov, Dmitrii Chebanov
+ * @author Mikhail Lozhnikov
  *
  * Файл с функией main() для серверной части программы.
  */
@@ -31,6 +31,26 @@ int main(int argc, char* argv[]) {
 
   // Обработчик для GET запроса по адресу /stop. Этот обработчик
   // останавливает сервер.
+  svr.Post("/GrahamScan",
+           [&](const httplib::Request& req, httplib::Response& res) {
+    try {
+      auto input = json::parse(req.body);
+      json output;
+
+      int result = geometry::GrahamScanMethod(input, &output);
+
+      if (result != 0) {
+        res.status = 400;  // Bad request
+      }
+
+      res.set_content(output.dump(), "application/json");
+    } catch (const std::exception& e) {
+      json error_output = {{"error", std::string("Parse error: ") + e.what()}};
+      res.status = 400;
+      res.set_content(error_output.dump(), "application/json");
+    }
+  });
+
   svr.Get("/stop", [&](const httplib::Request&, httplib::Response&) {
     svr.stop();
   });

@@ -21,7 +21,7 @@ namespace geometry {
  * @param output pointer to JSON output
  * @return return code: 0 - success, otherwise - error
  */
-
+  int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
   int CyrusBeckMethod(const nlohmann::json& input, nlohmann::json* output);
 
 /* Конец вставки. */
