@@ -3,9 +3,9 @@
  * @brief Набор тестов для алгоритма поиска ближайшей пары точек
  */
 
+#include <httplib.h>
 #include <random>
 #include <cmath>
-#include <httplib.h>
 #include <nlohmann/json.hpp>
 #include "test_core.hpp"
 #include "test.hpp"
@@ -74,7 +74,7 @@ static void ClosestPairRandomTest(httplib::Client* cli) {
     input["points"].push_back({{"x", baseX}, {"y", baseY}});
     input["points"].push_back({{"x", baseX + 1e-10}, {"y", baseY}});
 
-    httplib::Result res = cli->Post("/ClosestPair", 
+    httplib::Result res = cli->Post("/ClosestPair",
     input.dump(), "application/json");
     REQUIRE(res != nullptr);
     REQUIRE_EQUAL(res->status, 200);
