@@ -113,6 +113,7 @@ include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 add_executable(
   geometry_server
+  include/angle_point_in_polygon.hpp
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
@@ -125,6 +126,7 @@ add_executable(
   include/polygon_impl.hpp
   methods/main.cpp
   methods/graham_scan_method.cpp
+  methods/angle_point_in_polygon_method.cpp
   methods/shell_merge_method.cpp
   methods/methods.hpp
   
