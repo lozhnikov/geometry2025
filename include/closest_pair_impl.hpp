@@ -22,6 +22,7 @@ struct Point {
 /**
  * @brief Edge representing a pair of points
  */
+
 template<typename T>
 struct Edge {
   Point<T> p1, p2;
