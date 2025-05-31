@@ -160,11 +160,13 @@ bool IsPointInConvexPolygon(const std::vector<std::pair<double,
 
     for (size_t i = 0; i < n; i++) {
         size_t j = (i + 1) % n;
+        
+        double a = (polygon[j].second - point.second)*(polygon[j].second - point.second) + (polygon[j].first - point.first)*(polygon[j].first - point.first);
+        double b = (polygon[i].second - point.second)*(polygon[i].second - point.second) + (polygon[i].first - point.first)*(polygon[i].first - point.first);
+        double c = (polygon[j].second - polygon[i].second)*(polygon[j].second - polygon[i].second) + (polygon[j].first - polygon[i].first)*(polygon[j].first - polygon[i].first);
+        double p = (a + b + c)/2;
 
-        double area = std::abs(
-            (polygon[i].first*(polygon[j].second - point.second) +
-             polygon[j].first*(point.second - polygon[i].second) +
-             point.first*(polygon[i].second - polygon[j].second)) / 2.0);
+        double area = sqrt((p)*(p - a)*(p - b)*(p - c));
         total_area += area;
     }
 
