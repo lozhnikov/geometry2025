@@ -157,70 +157,66 @@ bool IsPointInConvexPolygon(const std::vector<std::pair<double,
                            double eps = 1e-9) {
     double total_area = 0.0;
     size_t n = polygon.size();
-    
+
     for (size_t i = 0; i < n; i++) {
         size_t j = (i + 1) % n;
 
         double area = std::abs(
             (polygon[i].first*(polygon[j].second - point.second) +
              polygon[j].first*(point.second - polygon[i].second) +
-             point.first*(polygon[i].second - polygon[j].second)) / 2.0
-        );
+             point.first*(polygon[i].second - polygon[j].second)) / 2.0);
         total_area += area;
     }
-    
+
     double polygon_area = CalculatePolygonArea(polygon);
     return std::abs(total_area - polygon_area) < eps;
 }
-
 static void PointInConvexHullTest(httplib::Client* cli) {
     const int numTests = 50;
     const double eps = 1e-6;
-    
+
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<size_t> size_dist(5, 20);
     std::uniform_real_distribution<double> coord_dist(-10.0, 10.0);
-    
+
     for (int test = 0; test < numTests; test++) {
-        
+
         nlohmann::json input;
         size_t size = size_dist(gen);
         for (size_t i = 0; i < size; i++) {
             input["points"][i]["x"] = coord_dist(gen);
             input["points"][i]["y"] = coord_dist(gen);
         }
-        
-        
+
+
         httplib::Result res = cli->Post("/GiftWrapping",
                                       input.dump(),
                                       "application/json");
         nlohmann::json output = nlohmann::json::parse(res->body);
-        
-        
+
         std::vector<std::pair<double, double>> convex_hull;
         for (const auto& p : output["convex_hull"]) {
             convex_hull.emplace_back(p["x"].get<double>(),
                                    p["y"].get<double>());
         }
-        
-        
+
+
         for (const auto& point : input["points"]) {
             std::pair<double, double> p = {
                 point["x"].get<double>(),
                 point["y"].get<double>()
             };
-            
+
             bool is_in_hull = IsPointInConvexPolygon(convex_hull,
                                                      p, eps);
-            
-            
+
+
             REQUIRE(is_in_hull);
         }
-        
-        
+
+
         if (convex_hull.size() >= 3) {
-            
             double max_x = convex_hull[0].first;
             for (const auto& p : convex_hull) {
                 if (p.first > max_x) max_x = p.first;
