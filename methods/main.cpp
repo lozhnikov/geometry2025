@@ -51,10 +51,6 @@ int main(int argc, char* argv[]) {
     }
   });
 
-  svr.Get("/stop", [&](const httplib::Request&, httplib::Response&) {
-    svr.stop();
-  });
-
   svr.Post("/CyrusBek", [](const httplib::Request& req,
                              httplib::Response& res) {
     nlohmann::json input, output;
@@ -69,6 +65,10 @@ int main(int argc, char* argv[]) {
         int ret = geometry::CyrusBeckMethod(input, &output);
         res.status = ret == 0 ? 200 : 400;
         res.set_content(output.dump(), "application/json");
+  });
+    
+  svr.Get("/stop", [&](const httplib::Request&, httplib::Response&) {
+    svr.stop();
   });
 
   svr.listen("0.0.0.0", port);
