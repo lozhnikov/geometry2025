@@ -15,7 +15,7 @@
 template<typename T>
 struct Point {
   T x, y;
-  Point(T x = T(), T y = T()) : x(x), y(y) {}
+  explicit Point(T x = T(), T y = T()) : x(x), y(y) {}
 };
 
 /**
@@ -25,7 +25,7 @@ struct Point {
 template<typename T>
 struct Edge {
   Point<T> p1, p2;
-  Edge(Point<T> p1 = {}, Point<T> p2 = {}) : p1(p1), p2(p2) {}
+  explicit Edge(Point<T> p1 = {}, Point<T> p2 = {}) : p1(p1), p2(p2) {}
 
   T length() const {
     T dx = p1.x - p2.x;
