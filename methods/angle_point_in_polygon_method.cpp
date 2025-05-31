@@ -43,15 +43,13 @@ int AnglePointInPolygonMethod(const nlohmann::json& input, \
         Point<double> point(
             input["point"]["x"].get<double>(),
             input["point"]["y"].get<double>());
-        
         // Parse polygon
         std::list<Point<double>> polygon_points;
         for (const auto& point_json : input["polygon"]) {
-            if (!point_json.is_object() || 
+            if (!point_json.is_object() ||
                 !point_json.contains("x") || !point_json["x"].is_number() ||
                 !point_json.contains("y") || !point_json["y"].is_number()) {
-                (*output)["error"] = "Each polygon point must have 'x'\
-                 and 'y' numeric fields";
+                (*output)["error"] = "Each polygon point must have 'x' & 'y'";
                 return 5;
             }
             polygon_points.emplace_back(\

@@ -65,7 +65,7 @@ double SignedAngle(const Point<T>& a, const Point<T>& b, \
  * @return PointPosition position of the point relative to polygon
  */
 template<typename T>
-PointPosition AnglePointInPolygon(const Point<T>& point, 
+PointPosition AnglePointInPolygon(const Point<T>& point,
     const Polygon<T>& polygon, T precision = T(1e-9)) {
     double total_angle = 0.0;
     bool is_boundary = false;
@@ -73,7 +73,7 @@ PointPosition AnglePointInPolygon(const Point<T>& point,
     for (size_t i = 0; i < temp_polygon.Size(); i++) {
         Edge<T> edge = temp_polygon.GetEdge();
         temp_polygon.Advance(Rotation::ClockWise);
-        double angle = SignedAngle(point, edge.Origin(), 
+        double angle = SignedAngle(point, edge.Origin(),
                                  edge.Destination(), precision);
         if (angle == 180.0) {
             is_boundary = true;
@@ -83,8 +83,8 @@ PointPosition AnglePointInPolygon(const Point<T>& point,
     if (is_boundary) {
         return PointPosition::BOUNDARY;
     }
-    return (std::abs(total_angle) > 180.0) ? PointPosition::INSIDE 
+    return (std::abs(total_angle) > 180.0) ? PointPosition::INSIDE
                                          : PointPosition::OUTSIDE;
 }
-} // namespace geometry
+}  // namespace geometry
 #endif  // INCLUDE_ANGLE_POINT_IN_POLYGON_HPP_
