@@ -51,7 +51,6 @@ int ClosestPairMethod(const nlohmann::json& input, nlohmann::json* output) {
     (*output)["input_size"] = points.size();
 
     return 0;
-
   } catch (const std::exception& e) {
     (*output)["error"] = std::string("Exception: ") + e.what();
     return -1;
