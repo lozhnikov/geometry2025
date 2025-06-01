@@ -18,6 +18,8 @@ static void RandomMergeTest(httplib::Client* cli);
 
 /**
  * @brief Простой тест слияния двуз выпуклых оболочек
+ *
+ * @param cli указатель на http клиент для отправки запросов на сервер
  */
 void TestShellMerge(httplib::Client* cli) {
   TestSuite suite("TestShellMerge");
@@ -28,7 +30,7 @@ void TestShellMerge(httplib::Client* cli) {
 }
 
 /**
- * @brief Простой тест слияния двуз выпуклых оболочек
+ * @brief Простой тест слияния двух выпуклых оболочек
  */
 static void SimpleMergeTest(httplib::Client* cli) {
   nlohmann::json input = {
