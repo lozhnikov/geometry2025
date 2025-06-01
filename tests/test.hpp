@@ -33,12 +33,9 @@ void TestOrientation();
 /* Сюда нужно добавить объявления тестовых функций. */
 
 /**
- * @brief testing Graham scan
- * 
- * @param cli pointer to HTTP client
+ * @brief Набор тестов.
  */
-
-void TestGrahamScan(httplib::Client* cli);
+void TestShellMerge(httplib::Client* cli);
 
 /* Конец вставки. */
 
