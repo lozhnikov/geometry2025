@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 #include <nlohmann/json.hpp>
-#include "../include/alh_graham.hpp"
+#include "../include/alg_graham.hpp"
 
 /**
  * @brief The method of implementing the algorithm for constructing the convex hull of the Graham scan

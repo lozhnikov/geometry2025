@@ -144,6 +144,7 @@ target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
 add_executable(
   geometry_test
+  include/alg_graham.hpp
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
@@ -153,7 +154,7 @@ add_executable(
   include/polygon.hpp
   include/polygon_impl.hpp
   tests/edge_test.cpp
-  tests/graham_scan_test.cpp
+  tests/alg_graham_test.cpp
   tests/io.hpp
   tests/main.cpp
   tests/orientation_test.cpp
