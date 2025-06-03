@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 4.0.2)
 
 project(geometry CXX)
 
@@ -116,13 +116,13 @@ add_executable(
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
-  include/graham_scan.hpp
+  include/alg_graham.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
-  methods/graham_scan_method.cpp
+  methods/alg_graham_method.cpp
   methods/main.cpp
   methods/methods.hpp
 )

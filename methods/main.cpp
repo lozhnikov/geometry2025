@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
       auto input = json::parse(req.body);
       json output;
 
-      int result = geometry::GrahamScanMethod(input, &output);
+      int result = geometry::AlgGrahamMethod(input, &output);
 
       if (result != 0) {
         res.status = 400;  // Bad request

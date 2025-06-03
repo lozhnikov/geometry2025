@@ -1,17 +1,17 @@
 /**
- * @file methods/graham_scan_method.cpp 
- * @author Maria Fedorova
+ * @file methods/alg_graham_method.cpp 
+ * @author Almaz Sadykov
  * 
- * @brief Graham scan convex hull algorithm implementation.
+ * @brief Implementation of the algorithm for constructing the Graham convex hull.
  */
 
 #include <vector>
 #include <string>
 #include <nlohmann/json.hpp>
-#include "../include/graham_scan.hpp"
+#include "../include/alh_graham.hpp"
 
 /**
- * @brief Method for Graham scan convex hull algorithm implementation.
+ * @brief The method of implementing the algorithm for constructing the convex hull of the Graham scan
  * 
  * @param input input data in JSON format
  * @param output pointer to JSON output
@@ -19,7 +19,7 @@
  */
 
 namespace geometry {
-  int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output) {
+  int AlgGrahamMethod(const nlohmann::json& input, nlohmann::json* output) {
     try {
       if (!input.contains("points") || !input["points"].is_array()) {
         (*output)["error"] = "Input must contain 'points' array";
@@ -46,7 +46,7 @@ namespace geometry {
           point_json["y"].get<double>());
       }
 
-      auto convex_hull = geometry::GrahamScan(points);
+      auto convex_hull = geometry::AlgGraham(points);
 
       nlohmann::json hull_json = nlohmann::json::array();
       for (const auto& point : convex_hull) {

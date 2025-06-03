@@ -1,12 +1,12 @@
 /** 
- * @file include/graham_scan.hpp 
- * @author Maria Fedorova
+ * @file include/alg_graham.hpp 
+ * @author Almaz Sadykov
  * 
- * @brief Graham scan convex hull algorithm implementation.
+ * @brief Implementation of the algorithm for constructing the Graham convex hull.
  */
 
-#ifndef INCLUDE_GRAHAM_SCAN_HPP_
-#define INCLUDE_GRAHAM_SCAN_HPP_
+#ifndef INCLUDE_GRAHAM_ALGORITHM_HPP_
+#define INCLUDE_GRAHAM_ALGORITHM_HPP_
 
 #include <vector>
 #include <algorithm>
@@ -30,14 +30,14 @@ namespace geometry {
   }
 
   /**
-   * @brief Graham scan algorithm.
+   * @brief Graham algorithm.
    * 
    * @tparam T point coordinate type
    * @param points vector of points for processing
    * @return std::vector<Point<T>> convex hull points in traversal order
    */
   template<typename T>
-  std::vector<Point<T>> GrahamScan(std::vector<Point<T>> points) {
+  std::vector<Point<T>> AlgGraham(std::vector<Point<T>> points) {
     size_t n = points.size();
     if (n <= 1) return points;
 
@@ -74,4 +74,4 @@ namespace geometry {
   }
 }  // namespace geometry
 
-#endif  // INCLUDE_GRAHAM_SCAN_HPP_
+#endif  // INCLUDE_ALG_GRAHAM_HPP_

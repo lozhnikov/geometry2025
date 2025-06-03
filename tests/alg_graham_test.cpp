@@ -1,10 +1,11 @@
 /**
- * @file tests/graham_scan_test.cpp 
- * @author Maria Fedorova
+ * @file tests/alg_graham_test.cpp 
+ * @author Almaz Sadykov
  * 
  * @brief Realization of a set of tests for the Graham scan algorithm
  */
 
+ 
 #include <httplib.h>
 #include <vector>
 #include <random>
@@ -17,8 +18,8 @@ static void SimpleConvexTest(httplib::Client* cli);
 static void CollinearPointsTest(httplib::Client* cli);
 static void RandomPointsTest(httplib::Client* cli);
 
-void TestGrahamScan(httplib::Client* cli) {
-  TestSuite suite("TestGrahamScan");
+void TestAlgGraham(httplib::Client* cli) {
+  TestSuite suite("TestAlgGraham");
 
   RUN_TEST_REMOTE(suite, cli, SimpleConvexTest);
   RUN_TEST_REMOTE(suite, cli, CollinearPointsTest);
@@ -43,7 +44,7 @@ static void SimpleConvexTest(httplib::Client* cli) {
     }
   )"_json;
 
-  httplib::Result res = cli->Post("/GrahamScan",
+  httplib::Result res = cli->Post("/AlgGraham",
                                   input.dump(), "application/json");
 
   nlohmann::json output = nlohmann::json::parse(res->body);
@@ -81,7 +82,7 @@ static void CollinearPointsTest(httplib::Client* cli) {
     }
   )"_json;
 
-  httplib::Result res = cli->Post("/GrahamScan",
+  httplib::Result res = cli->Post("/AlgGraham",
                                   input.dump(), "application/json");
 
   nlohmann::json output = nlohmann::json::parse(res->body);
@@ -125,7 +126,7 @@ static void RandomPointsTest(httplib::Client* cli) {
       input["points"][i]["y"] = coordDist(gen);
     }
 
-    httplib::Result res = cli->Post("/GrahamScan",
+    httplib::Result res = cli->Post("/AlgGraham",
                                     input.dump(), "application/json");
 
     nlohmann::json output = nlohmann::json::parse(res->body);
