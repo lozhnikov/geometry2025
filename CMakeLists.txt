@@ -123,6 +123,7 @@ add_executable(
   include/polygon.hpp
   include/polygon_impl.hpp
   methods/alg_graham_method.cpp
+  methods/graham_scan_method.cpp
   methods/main.cpp
   methods/methods.hpp
 )
