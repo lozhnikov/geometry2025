@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
 
   /* Сюда нужно вставить обработчик post запроса для алгоритма. */
 
-  svr.Post("/GrahamScan",
+  svr.Post("/AlgGraham",
            [&](const httplib::Request& req, httplib::Response& res) {
     try {
       auto input = json::parse(req.body);

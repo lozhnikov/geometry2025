@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.0.2)
+cmake_minimum_required(VERSION 3.5)
 
 project(geometry CXX)
 
@@ -113,10 +113,10 @@ include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 add_executable(
   geometry_server
+  include/alg_graham.hpp
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
-  include/alg_graham.hpp
   include/orientation.hpp
   include/point.hpp
   include/point_impl.hpp
@@ -144,7 +144,6 @@ target_link_libraries(geometry_server ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
 
 add_executable(
   geometry_test
-  include/alg_graham.hpp
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
@@ -153,8 +152,8 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
-  tests/edge_test.cpp
   tests/alg_graham_test.cpp
+  tests/edge_test.cpp
   tests/io.hpp
   tests/main.cpp
   tests/orientation_test.cpp

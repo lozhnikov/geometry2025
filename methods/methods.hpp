@@ -15,7 +15,7 @@ namespace geometry {
 /* Сюда нужно вставить объявление серверной части алгоритма. */
 
 /** 
- * @brief Implementation of the algorithm for constructing the Graham convex hull.
+ * @brief A method for implementing the algorithm for constructing a convex hull by the Graham method.
  * 
  * @param input input data in JSON format
  * @param output pointer to JSON output

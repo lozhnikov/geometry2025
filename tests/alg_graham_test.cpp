@@ -1,11 +1,10 @@
 /**
  * @file tests/alg_graham_test.cpp 
- * @author Almaz Sadykov
+ * @author Almaz Sadikov
  * 
- * @brief Realization of a set of tests for the Graham scan algorithm
+ * @brief A method for implementing the algorithm for constructing a convex hull by the Graham method.
  */
 
- 
 #include <httplib.h>
 #include <vector>
 #include <random>
