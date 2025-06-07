@@ -1,10 +1,9 @@
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 
 project(geometry CXX)
 
-set(CMAKE_CXX_COMPILER "g++-11")
 
 set(SSL_CERT_FILE "C:/mingw/mingw64/ssl/certs/cacert.pem")
 
@@ -179,4 +178,3 @@ add_executable(
 
 
 target_link_libraries(geometry_test ${GEOMETRY_LIBS} ${WINDOWS_LIBS})
-
