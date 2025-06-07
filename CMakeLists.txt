@@ -119,7 +119,7 @@ add_executable(
   geometry_server
 
   include/alg_graham.hpp
-
+  include/graham_scan.hpp
   include/common.hpp
   include/edge.hpp
   include/edge_impl.hpp
