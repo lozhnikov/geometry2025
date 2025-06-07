@@ -117,7 +117,7 @@ include_directories(${GEOMETRY_INCLUDE_DIRS})
 
 add_executable(
   geometry_server
-
+  include/angle_point_in_polygon.hpp
   include/alg_graham.hpp
   include/graham_scan.hpp
   include/common.hpp
@@ -130,7 +130,7 @@ add_executable(
   include/polygon_impl.hpp
 
   methods/alg_graham_method.cpp
-
+  methods/monotone_polygone_triangulation_method.cpp
   methods/graham_scan_method.cpp
   methods/main.cpp
   methods/methods.hpp
@@ -161,7 +161,9 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  include/angle_point_in_polygon.hpp
   tests/alg_graham_test.cpp
+  tests/angle_point_in_polygon_test.cpp
   tests/edge_test.cpp
   tests/io.hpp
   tests/main.cpp
