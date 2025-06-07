@@ -69,7 +69,7 @@ namespace geometry {
 }  // namespace geometry
 
 
- /**
+  /**
   * Input JSON structure:
   * {
   *   "points" : [
