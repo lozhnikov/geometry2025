@@ -46,7 +46,6 @@ std::vector<Point<T>> AlgGraham(std::vector<Point<T>> points) {
 
   std::vector<Point<T>> hull;
 
-  // Construct upper part of the hull
   for (size_t i = 0; i < n; ++i) {
     while (hull.size() >= 2 &&
            CrossProduct(hull[hull.size() - 2], hull.back(), points[i]) <= 0) {
@@ -56,7 +55,6 @@ std::vector<Point<T>> AlgGraham(std::vector<Point<T>> points) {
   }
 
   const size_t upper_hull_size = hull.size();
-  // Construct lower part of the hull
   for (size_t i = n; i-- > 0;) {
     while (hull.size() > upper_hull_size &&
            CrossProduct(hull[hull.size() - 2], hull.back(), points[i]) <= 0) {

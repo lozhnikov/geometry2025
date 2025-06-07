@@ -23,7 +23,6 @@ namespace geometry {
  */
 int AlgGrahamMethod(const nlohmann::json& input, nlohmann::json* output) {
   try {
-    // Validate input structure
     if (!input.is_object() || !input.contains("points")) {
       (*output)["error"] = "Input must contain 'points' array";
       return 1;
@@ -35,9 +34,8 @@ int AlgGrahamMethod(const nlohmann::json& input, nlohmann::json* output) {
     }
 
     std::vector<geometry::Point<double>> points;
-    points.reserve(input["points"].size());  // Pre-allocate memory
+    points.reserve(input["points"].size());
 
-    // Parse points from JSON
     for (const auto& point_json : input["points"]) {
       if (!point_json.is_object()) {
         (*output)["error"] = "Each point must be an object";
@@ -50,14 +48,13 @@ int AlgGrahamMethod(const nlohmann::json& input, nlohmann::json* output) {
         return 2;
       }
 
-      points.emplace_back(point_json["x"].get<double>(),
-                         point_json["y"].get<double>());
+      points.emplace_back(
+          point_json["x"].get<double>(),
+          point_json["y"].get<double>());
     }
 
-    // Compute convex hull
     const auto convex_hull = geometry::AlgGraham(points);
 
-    // Prepare JSON output
     nlohmann::json hull_json = nlohmann::json::array();
     for (const auto& point : convex_hull) {
       hull_json.push_back({{"x", point.X()}, {"y", point.Y()}});
@@ -74,5 +71,3 @@ int AlgGrahamMethod(const nlohmann::json& input, nlohmann::json* output) {
   }
 }
 }  // namespace geometry
-
- 
