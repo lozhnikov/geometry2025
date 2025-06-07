@@ -1,8 +1,10 @@
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5)
 
 
 project(geometry CXX)
+
+set(CMAKE_CXX_COMPILER "g++-11")
 
 set(SSL_CERT_FILE "C:/mingw/mingw64/ssl/certs/cacert.pem")
 

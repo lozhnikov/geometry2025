@@ -23,6 +23,10 @@ namespace geometry {
  */
 
   int AlgGrahamMethod(const nlohmann::json& input, nlohmann::json* output);
+  int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
+  int AnglePointInPolygonMethod(const nlohmann::json& input, \
+    nlohmann::json* output);
+
 /* Конец вставки. */
 
 }  // namespace geometry
