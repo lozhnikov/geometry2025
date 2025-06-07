@@ -1,10 +1,12 @@
 
-cmake_minimum_required(VERSION 3.5)
-
+cmake_minimum_required(VERSION 3.10)
+set(CMAKE_CXX_COMPILER "g++")
 
 project(geometry CXX)
 
-set(SSL_CERT_FILE "C:/mingw/mingw64/ssl/certs/cacert.pem")
+if(NOT CMAKE_CXX_COMPILER)
+    message(FATAL_ERROR "C++ compiler not found! Please install g++")
+endif()
 
 set(CMAKE_CXX_STANDARD 17)
 
