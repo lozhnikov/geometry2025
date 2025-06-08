@@ -26,13 +26,13 @@ struct PolarAngleComparator {
   explicit PolarAngleComparator(const Point<T>& p) : pivot(p) {}
   bool operator()(const Point<T>& a, const Point<T>& b) const {
     // Compute orientation
-    double orientation = (a.X() - pivot.X()) * (b.Y() - pivot.Y()) 
+    double orientation = (a.X() - pivot.X()) * (b.Y() - pivot.Y())
              - (a.Y() - pivot.Y()) * (b.X() - pivot.X());
     if (orientation == 0) {
       // If collinear, get the farthest point by comparing squared distances
-      double dist_a = (a.X() - pivot.X())*(a.X() - pivot.X()) + 
+      double dist_a = (a.X() - pivot.X())*(a.X() - pivot.X()) +
                       (a.Y() - pivot.Y())*(a.Y() - pivot.Y());
-      double dist_b = (b.X() - pivot.X())*(b.X() - pivot.X()) + 
+      double dist_b = (b.X() - pivot.X())*(b.X() - pivot.X()) +
                       (b.Y() - pivot.Y())*(b.Y() - pivot.Y());
       return dist_a < dist_b;
     }
@@ -42,7 +42,7 @@ struct PolarAngleComparator {
 
 /**
 * @brief Alternative Graham scan implementation with different point
-*  processing
+*processing
 */
 template<typename T>
 std::vector<Point<T>> ComputeConvexHull(std::vector<Point<T>> points) {
