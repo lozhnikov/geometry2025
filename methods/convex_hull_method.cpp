@@ -5,7 +5,6 @@
  * @brief implementation of the algorithm for constructing a convex
  * hull by the Graham method.
 */
-
 #include <vector>
 #include <string>
 #include <nlohmann/json.hpp>
