@@ -41,9 +41,11 @@ struct PolarAngleComparator {
 };
 
 /**
-* @brief Alternative Graham scan implementation with different point
-*processing
-*/
+     * @brief Alternative Graham scan implementation with different point
+     *
+     * @param points
+     * @return
+     */
 template<typename T>
 std::vector<Point<T>> ComputeConvexHull(std::vector<Point<T>> points) {
   if (points.size() <= 2) return points;
