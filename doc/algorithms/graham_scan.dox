@@ -1,9 +1,9 @@
 /*!
 
-@file algorithms/alg_graham.dox 
-@author Almaz Sadikov
+@file algorithms/graham_scan.dox 
+@author Maria Fedorova
 
-@page alg_graham Алгоритм Грэхема
+@page graham_scan Алгоритм Грэхема
 
 @section overview Обзор
 
@@ -18,9 +18,10 @@ n - число точек
 
 @section implementation Реализация
 Основные этапы работы:
-1. Cортировка точек.
-2. Построение нижней и верхней цепей оболочки.
-3. Удаление дубликата начальной точки.
+1. Лексикографическая сортировка точек.
+2. Построение нижней цепи оболочки.
+3. Построение верхней цепи оболочки.
+4. Удаление дубликата начальной точки.
 
 @subsection details Детали реализации
 1. Сортировка точек.

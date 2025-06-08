@@ -37,13 +37,13 @@ int main(int argc, char* argv[]) {
 
   /* Сюда нужно вставить обработчик post запроса для алгоритма. */
 
-  svr.Post("/AlgGraham",
+  svr.Post("/GrahamScan",
            [&](const httplib::Request& req, httplib::Response& res) {
     try {
       auto input = json::parse(req.body);
       json output;
 
-      int result = geometry::AlgGrahamMethod(input, &output);
+      int result = geometry::GrahamScanMethod(input, &output);
 
       if (result != 0) {
         res.status = 400;  // Bad request
@@ -56,6 +56,27 @@ int main(int argc, char* argv[]) {
       res.set_content(error_output.dump(), "application/json");
     }
   });
+
+    svr.Post("/AnglePointInPolygon",
+           [&](const httplib::Request& req, httplib::Response& res) {
+    try {
+      auto input = json::parse(req.body);
+      json output;
+
+      int result = geometry::AnglePointInPolygonMethod(input, &output);
+
+      if (result != 0) {
+        res.status = 400;  // Bad request
+      }
+
+      res.set_content(output.dump(), "application/json");
+    } catch (const std::exception& e) {
+      json error_output = {{"error", std::string("Parse error: ") + e.what()}};
+      res.status = 400;
+      res.set_content(error_output.dump(), "application/json");
+    }
+  });
+
   /* Конец вставки. */
 
   // Эта функция запускает сервер на указанном порту. Программа не завершится

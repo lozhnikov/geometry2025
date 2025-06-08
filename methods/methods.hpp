@@ -15,14 +15,17 @@ namespace geometry {
 /* Сюда нужно вставить объявление серверной части алгоритма. */
 
 /** 
- * @brief A method for implementing the algorithm for constructing a convex hull by the Graham method.
+ * @brief Method for Graham scan convex hull algorithm realization.
  * 
  * @param input input data in JSON format
  * @param output pointer to JSON output
  * @return return code: 0 - success, otherwise - error
  */
 
-  int AlgGrahamMethod(const nlohmann::json& input, nlohmann::json* output);
+  int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
+  int AnglePointInPolygonMethod(const nlohmann::json& input, \
+    nlohmann::json* output);
+
 /* Конец вставки. */
 
 }  // namespace geometry
