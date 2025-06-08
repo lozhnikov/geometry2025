@@ -1,8 +1,8 @@
 /**
- * @file methods/angle_point_in_polygon_method.cpp 
+ * @file methods/angle_point_in_polygon_method.cpp
  * @author Almaz Sadikov
  * 
- * @brief implementation of the algorithm for constructing a convex 
+ * @brief implementation of the algorithm for constructing a convex
  * hull by the Graham method.
 */
 

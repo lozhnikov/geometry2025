@@ -23,7 +23,7 @@ namespace geometry {
  */
 
  
-  int AnglePointInPolygonMethod(const nlohmann::json& input, 
+  int AnglePointInPolygonMethod(const nlohmann::json& input,
     nlohmann::json* output);
 int GrahamScanMethod(const nlohmann::json& input,
    nlohmann::json* output);

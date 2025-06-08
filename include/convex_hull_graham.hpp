@@ -1,5 +1,5 @@
 /**
- * @file include/convex_hull_graham.hpp 
+ * @file include/convex_hull_graham.hpp
  * @author Almaz Sadikov
  * 
  * @brief implementation of the algorithm for constructing a convex
@@ -24,12 +24,10 @@ struct PolarAngleComparator {
   Point<T> pivot;
     
   explicit PolarAngleComparator(const Point<T>& p) : pivot(p) {}
-    
   bool operator()(const Point<T>& a, const Point<T>& b) const {
     // Compute orientation
     double orientation = (a.X() - pivot.X()) * (b.Y() - pivot.Y()) 
              - (a.Y() - pivot.Y()) * (b.X() - pivot.X());
-        
     if (orientation == 0) {
       // If collinear, get the farthest point by comparing squared distances
       double dist_a = (a.X() - pivot.X())*(a.X() - pivot.X()) + 
