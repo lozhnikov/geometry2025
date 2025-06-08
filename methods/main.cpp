@@ -34,9 +34,6 @@ int main(int argc, char* argv[]) {
   svr.Get("/stop", [&](const httplib::Request&, httplib::Response&) {
     svr.stop();
   });
-
-  /* Сюда нужно вставить обработчик post запроса для алгоритма. */
-
   svr.Post("/GrahamScan",
            [&](const httplib::Request& req, httplib::Response& res) {
     try {
@@ -57,7 +54,7 @@ int main(int argc, char* argv[]) {
     }
   });
 
-    svr.Post("/AnglePointInPolygon",
+  svr.Post("/AnglePointInPolygon",
            [&](const httplib::Request& req, httplib::Response& res) {
     try {
       auto input = json::parse(req.body);
@@ -77,7 +74,25 @@ int main(int argc, char* argv[]) {
     }
   });
 
-  /* Конец вставки. */
+  svr.Post("/ComputeConvexHull",
+           [&](const httplib::Request& req, httplib::Response& res) {
+    try {
+      auto input = json::parse(req.body);
+      json output;
+
+      int result = geometry::ComputeConvexHullMethod(input, &output);
+
+      if (result != 0) {
+        res.status = 400;  // Bad request
+      }
+
+      res.set_content(output.dump(), "application/json");
+    } catch (const std::exception& e) {
+      json error_output = {{"error", std::string("Parse error: ") + e.what()}};
+      res.status = 400;
+      res.set_content(error_output.dump(), "application/json");
+    }
+  });
 
   // Эта функция запускает сервер на указанном порту. Программа не завершится
   // до тех пор, пока сервер не будет остановлен.
