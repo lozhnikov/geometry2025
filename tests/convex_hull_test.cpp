@@ -2,7 +2,7 @@
  * @file tests/convex_hull_test.cpp 
  * @author Almaz Sadikov
  * 
- * @brief Tests for convex hull computation using Graham's scan algorithm
+ * @brief Tests for convex hull computation using Graham's  algorithm
  */
 
 #include <httplib.h>
