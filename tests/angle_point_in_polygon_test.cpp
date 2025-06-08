@@ -3,7 +3,8 @@
  * @file tests/angle_point_in_polygon_test.cpp 
  * @author Your Name
  * 
- * @brief Realization of a set of tests for the angle-based point-in-polygon algorithm
+ * @brief Realization of a set of tests for the angle-based point-in-polygon
+ *  algorithm
  */
 
 #include <httplib.h>

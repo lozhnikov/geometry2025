@@ -43,7 +43,8 @@ struct PolarAngleComparator {
 };
 
 /**
- * @brief Alternative Graham scan implementation with different point processing
+ * @brief Alternative Graham scan implementation with different point
+ *  processing
  */
 template<typename T>
 std::vector<Point<T>> ComputeConvexHull(std::vector<Point<T>> points) {
@@ -79,7 +80,8 @@ std::vector<Point<T>> ComputeConvexHull(std::vector<Point<T>> points) {
     }
         
     Point<T> next_to_top = hull.back();
-    double cross = (top.X() - next_to_top.X()) * (points[i].Y() - next_to_top.Y()) 
+    double cross = (top.X() - next_to_top.X()) * (points[i].Y()
+    - next_to_top.Y()) 
           - (top.Y() - next_to_top.Y()) * (points[i].X() - next_to_top.X());
         
     if (cross > 0) {

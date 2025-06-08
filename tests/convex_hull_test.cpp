@@ -14,13 +14,10 @@ static void CollinearTest(httplib::Client* cli);
 static void RandomHullTest(httplib::Client* cli);
 void TestConvexHull(httplib::Client* cli) {
     TestSuite suite("TestConvexHull");
-
     // Basic convex hull test with simple square shape
     RUN_TEST_REMOTE(suite, cli, SimpleHullTest);
-    
     // Test handling of collinear points
     RUN_TEST_REMOTE(suite, cli, CollinearTest);
-    
     // Randomized stress testing
     RUN_TEST_REMOTE(suite, cli, RandomHullTest);
 }

@@ -12,7 +12,8 @@
 
 namespace geometry {
 
-int ComputeConvexHullMethod(const nlohmann::json& input, nlohmann::json* output) {
+int ComputeConvexHullMethod(const nlohmann::json& input,
+nlohmann::json* output) {
   try {
     // Validate input
     if (!input.contains("points") || !input["points"].is_array()) {
