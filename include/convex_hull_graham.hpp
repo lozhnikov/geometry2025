@@ -9,6 +9,7 @@
 #ifndef INCLUDE_CONVEX_HULL_GRAHAM_HPP_
 #define INCLUDE_CONVEX_HULL_GRAHAM_HPP_
 
+
 #include <vector>
 #include <algorithm>
 #include "point.hpp"
