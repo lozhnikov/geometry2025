@@ -1,10 +1,10 @@
 /**
- * @file include/convex_hull_graham.hpp
- * @author Almaz Sadikov
- * 
- * @brief implementation of the algorithm for constructing a convex
- *  hull by the Graham method
- */
+* @file include/convex_hull_graham.hpp
+* @author Almaz Sadikov
+* 
+* @brief implementation of the algorithm for constructing a convex
+*  hull by the Graham method
+*/
 
 #ifndef INCLUDE_CONVEX_HULL_GRAHAM_HPP_
 #define INCLUDE_CONVEX_HULL_GRAHAM_HPP_
@@ -17,8 +17,8 @@
 namespace geometry {
 
 /**
- * @brief Custom polar angle comparator for point sorting
- */
+* @brief Custom polar angle comparator for point sorting
+*/
 template<typename T>
 struct PolarAngleComparator {
   Point<T> pivot;
@@ -41,9 +41,9 @@ struct PolarAngleComparator {
 };
 
 /**
- * @brief Alternative Graham scan implementation with different point
- *  processing
- */
+* @brief Alternative Graham scan implementation with different point
+*  processing
+*/
 template<typename T>
 std::vector<Point<T>> ComputeConvexHull(std::vector<Point<T>> points) {
   if (points.size() <= 2) return points;
