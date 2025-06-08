@@ -28,7 +28,7 @@ namespace geometry {
 int GrahamScanMethod(const nlohmann::json& input,
    nlohmann::json* output);
 int ComputeConvexHullMethod(const nlohmann::json& input,
-   nlohmann::json* output); 
+   nlohmann::json* output);
 
 /* Конец вставки. */
 
