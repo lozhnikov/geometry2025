@@ -22,9 +22,13 @@ namespace geometry {
  * @return return code: 0 - success, otherwise - error
  */
 
-  int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
-  int AnglePointInPolygonMethod(const nlohmann::json& input, \
+ 
+  int AnglePointInPolygonMethod(const nlohmann::json& input, 
     nlohmann::json* output);
+int GrahamScanMethod(const nlohmann::json& input,
+   nlohmann::json* output);
+int ComputeConvexHullMethod(const nlohmann::json& input,
+   nlohmann::json* output); 
 
 /* Конец вставки. */
 

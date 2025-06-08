@@ -118,6 +118,7 @@ add_executable(
   geometry_server
   include/angle_point_in_polygon.hpp
   include/common.hpp
+  include/convex_hull_graham.hpp
   include/edge.hpp
   include/edge_impl.hpp
   include/graham_scan.hpp
@@ -127,6 +128,7 @@ add_executable(
   include/polygon.hpp
   include/polygon_impl.hpp
   methods/angle_point_in_polygon_method.cpp
+  methods/convex_hull_method.cpp
   methods/graham_scan_method.cpp
   methods/main.cpp
   methods/methods.hpp
@@ -157,6 +159,7 @@ add_executable(
   include/point_impl.hpp
   include/polygon.hpp
   include/polygon_impl.hpp
+  tests/convex_hull_test.cpp
   tests/edge_test.cpp
   tests/graham_scan_test.cpp
   tests/io.hpp

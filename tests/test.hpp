@@ -39,6 +39,7 @@ void TestOrientation();
  */
 
 void TestGrahamScan(httplib::Client* cli);
+void TestConvexHull(httplib::Client* cli);
 
 /* Конец вставки. */
 
