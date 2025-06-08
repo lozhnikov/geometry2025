@@ -22,7 +22,7 @@ namespace geometry {
 template<typename T>
 struct PolarAngleComparator {
   Point<T> pivot;
-    
+
   explicit PolarAngleComparator(const Point<T>& p) : pivot(p) {}
   bool operator()(const Point<T>& a, const Point<T>& b) const {
     // Compute orientation
@@ -53,7 +53,7 @@ std::vector<Point<T>> ComputeConvexHull(std::vector<Point<T>> points) {
      [](const Point<T>& a, const Point<T>& b) {
       return (a.Y() < b.Y()) || (a.Y() == b.Y() && a.X() < b.X());
     });
-    
+
   Point<T> pivot = *pivot_it;
   points.erase(pivot_it);
 
@@ -64,24 +64,24 @@ std::vector<Point<T>> ComputeConvexHull(std::vector<Point<T>> points) {
   std::vector<Point<T>> hull;
   hull.push_back(pivot);
   hull.push_back(points[0]);
-    
+
   // Build the hull with different point processing
   for (size_t i = 1; i < points.size(); ) {
     Point<T> top = hull.back();
     hull.pop_back();
-        
+
     if (hull.empty()) {
       hull.push_back(top);
       hull.push_back(points[i]);
       i++;
       continue;
     }
-        
+
     Point<T> next_to_top = hull.back();
     double cross = (top.X() - next_to_top.X()) * (points[i].Y()
-    - next_to_top.Y()) 
+    - next_to_top.Y())
           - (top.Y() - next_to_top.Y()) * (points[i].X() - next_to_top.X());
-        
+
     if (cross > 0) {
       hull.push_back(top);
       hull.push_back(points[i]);

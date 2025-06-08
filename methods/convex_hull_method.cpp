@@ -7,6 +7,7 @@
 */
 
 #include <vector>
+#include <string>
 #include <nlohmann/json.hpp>
 #include "../include/convex_hull_graham.hpp"
 
