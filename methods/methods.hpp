@@ -24,6 +24,8 @@ namespace geometry {
 
   int GrahamScanMethod(const nlohmann::json& input, nlohmann::json* output);
 
+  int VoronoiPolygonMethod(const nlohmann::json& input, nlohmann::json* output);
+
 /* Конец вставки. */
 
 }  // namespace geometry

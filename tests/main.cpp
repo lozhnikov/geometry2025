@@ -44,6 +44,8 @@ int main(int argc, char* argv[]) {
 
   TestGrahamScan(&cli);
 
+  TestVoronoiPolygon(&cli);
+
   /* Конец вставки. */
 
   // Отправляем GET запрос для остановки сервера.

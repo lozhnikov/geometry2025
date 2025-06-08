@@ -40,6 +40,8 @@ void TestOrientation();
 
 void TestGrahamScan(httplib::Client* cli);
 
+void TestVoronoiPolygon(httplib::Client* cli);
+
 /* Конец вставки. */
 
 #endif  // TESTS_TEST_HPP_
