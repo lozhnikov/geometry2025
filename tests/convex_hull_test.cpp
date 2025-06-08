@@ -4,17 +4,14 @@
  * 
  * @brief Tests for convex hull computation using Graham's  algorithm
  */
-
 #include <httplib.h>
 #include <vector>
 #include <nlohmann/json.hpp>
 #include "test_core.hpp"
 #include "test.hpp"
-
 static void SimpleHullTest(httplib::Client* cli);
 static void CollinearTest(httplib::Client* cli);
 static void RandomHullTest(httplib::Client* cli);
-
 void TestConvexHull(httplib::Client* cli) {
     TestSuite suite("TestConvexHull");
 
@@ -27,7 +24,6 @@ void TestConvexHull(httplib::Client* cli) {
     // Randomized stress testing
     RUN_TEST_REMOTE(suite, cli, RandomHullTest);
 }
-
 /**
  * @brief Test with a simple square convex hull
  */
@@ -52,10 +48,8 @@ static void SimpleHullTest(httplib::Client* cli) {
     // All 5 input points should be processed
     REQUIRE_EQUAL(5, output["input_size"]);
 }
-
 /**
  * @brief Test with collinear points
- 
  */
 static void CollinearTest(httplib::Client* cli) {
     // Input: Horizontal line + two non-collinear points
@@ -68,16 +62,13 @@ static void CollinearTest(httplib::Client* cli) {
             {{"x", 1.0}, {"y", 1.0}}   // Non-collinear
         }}
     };
-
     auto res = cli->Post("/ComputeConvexHull", input.dump(),
      "application/json");
     nlohmann::json output = nlohmann::json::parse(res->body);
-
     // Should keep 4 points: two extremes of line + two non-collinear
     REQUIRE_EQUAL(4, output["hull_size"]);
     REQUIRE_EQUAL(5, output["input_size"]);
 }
-
 /**
  * @brief Randomized convex hull test
  */
@@ -86,7 +77,6 @@ static void RandomHullTest(httplib::Client* cli) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> dis(-10.0, 10.0);
-
     // Generate random input
     nlohmann::json input;
     const int num_points = 20;
@@ -94,13 +84,10 @@ static void RandomHullTest(httplib::Client* cli) {
         input["points"][i]["x"] = dis(gen);
         input["points"][i]["y"] = dis(gen);
     }
-
     auto res = cli->Post("/ComputeConvexHull", input.dump(),
      "application/json");
     nlohmann::json output = nlohmann::json::parse(res->body);
-
     // Basic verification
     REQUIRE_EQUAL(num_points, output["input_size"]);
     REQUIRE(output["hull_size"] <= output["input_size"]);
-    
 }
