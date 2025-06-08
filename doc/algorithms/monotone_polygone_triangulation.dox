@@ -4,7 +4,7 @@
 @author Taisiya Osipova
 
 @page monotone_polygone_triangulation Триангуляция монотонных полигонов
-@section overview Обзор
+@section monotone_polygone_overview Обзор
 
 Алгоритм для построения
 Реализация использует подход с построением левой и правой цепей
